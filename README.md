@@ -3,6 +3,24 @@
 ## OPIS
 Aplikacja fronendowa na moduł sumatywny. Dokładny opis aplikacji zamieszczony jest w pliku README.md w projektu.
 
+___
+## SPIS TREŚCI
+Trochę bardziej szczegółowo:
+1. [Struktura](docs/structure.md)
+2. [Flow](docs/flow.md)
+2. [Storybook](docs/storybook.md)
+3. [~~Komponenty~~]()
+4. [~~Routing~~]()
+5. [~~Funkcjonalności~~]()
+6. [~~API~~]()
+7. [~~Stylowanie~~]()
+8. [~~Animacje~~]()
+9. [~~Typy~~]()
+10. [~~Deploy~~]()
+
+Reszta dokmentacji do uzupełnienia w miarę postępu prac.
+
+___
 ## STOS TECHNOLOGICZNY
 - React
 - Vite
@@ -15,6 +33,7 @@ Aplikacja fronendowa na moduł sumatywny. Dokładny opis aplikacji zamieszczony 
 - framer-motion
 - ...
 
+___
 ## URUCHOMIENIE
 1. Sklonuj repozytorium
 2. Zainstaluj zależności
@@ -27,9 +46,11 @@ npm install
 npm run dev
 ```
 
+___
 ## DEPLOY
 Aplikacja jest deployowana ręcznie przez Damiana na jego serwerze.
 
+___
 ## KONTRIBUTING
 1. Stwórz branch o nazwie `feature/NAZWA_FEATURE`
 2. Zaimplementuj feature
