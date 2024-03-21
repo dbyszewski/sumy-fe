@@ -3,8 +3,8 @@ import { mainTheme } from './mainTheme.ts';
 export const lightTheme = Object.assign({}, mainTheme, {
   colors: {
     buttons: {
-      primary: 'blue',
-      secondary: 'green',
+      primary: '#0C82ED',
+      secondary: '#F52C23',
     },
   },
 });
