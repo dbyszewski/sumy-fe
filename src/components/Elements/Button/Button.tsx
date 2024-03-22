@@ -25,11 +25,14 @@ const StyledButton = styled.button<ButtonProps>`
     const bgColor = theme.colors.buttons[variant];
     return css`
       background-color: ${bgColor};
+      font: ${theme.text};
       font-size: ${theme.text[size]};
       padding: ${theme.space[sizes[size][0]]} ${theme.space[sizes[size][1]]};
-      border-radius: 0.5rem;
+      border-radius: 1rem;
+      border: 0;
       &:hover {
-        opacity: 0.5;
+        transform: translateY(-2px);
+        background-image: linear-gradient(rgb(0 0 0/10%) 0 0);
       }
     `;
   }}
