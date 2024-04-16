@@ -1,16 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import Divider from './Divider';
+import Logo from './Logo.tsx';
 
 const meta = {
-  title: 'Components/Elements/Divider',
-  component: Divider,
+  title: 'Components/Elements/Logo',
+  component: Logo,
   parameters: {
     layout: 'centered',
     controls: { expanded: true },
   },
-  tags: ['autodocs'],
-} satisfies Meta<typeof Divider>;
+} satisfies Meta<typeof Logo>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Standard: Story = {};

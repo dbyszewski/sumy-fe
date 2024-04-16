@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import logoImg from '../../../assets/Logo.png';
+import logoImg from '../../../../assets/Logo.png';
 
 const LogoStyled = styled.img`
   width: auto;
