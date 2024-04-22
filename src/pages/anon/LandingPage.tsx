@@ -7,15 +7,14 @@ import Logo from '@/components/Elements/LandingPage/Logo/Logo.tsx';
 const LandingPage = () => {
   return (
     <div>
-      <h1>Landing Page</h1>
       <LandingPageLayout>
         <Logo></Logo>
-        <Button variant={'secondary'} size={'lg'}>
-          Wezwij pomoc!
+        <Button variant="secondary" size="lg">
+          Zgłoś zagrożenie!
         </Button>
         <Divider></Divider>
         <ButtonContainer>
-          <Button variant={'primary'} size={'md'}>
+          <Button variant="primary" size="md">
             Zaloguj się
           </Button>
           <Button variant={'primary'} size={'md'}>

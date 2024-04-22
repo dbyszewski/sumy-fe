@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-const Divider = styled.div`
+export const Divider = styled.div`
   ${({ theme }) => `
     width: 100%; 
-    min-width: 300px;
+    max-width: 300px;
+    min-width: 24rem;
     height: 3px; 
     background-color: #cdcdcd; 
     margin: ${theme.space[0]} 0; 

@@ -22,11 +22,12 @@ export const Button = ({ variant, size, children }: PropsWithChildren<ButtonProp
 
 const StyledButton = styled.button<ButtonProps>`
   ${({ variant, size, theme }) => {
-    const bgColor = theme.colors.buttons[variant];
     return css`
-      background-color: ${bgColor};
+      background-color: ${theme.colors.buttons[variant]};
       font: ${theme.text[size]};
       font-size: ${theme.text[size]};
+      color: ${theme.colors.buttonsText};
+      font-weight: ${theme.colors.buttonsFontWeight};
       padding: ${theme.space[sizes[size][0]]} ${theme.space[sizes[size][1]]};
       border-radius: 2rem;
       border: none;

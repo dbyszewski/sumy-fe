@@ -6,5 +6,7 @@ export const darkTheme = Object.assign({}, mainTheme, {
       primary: '#0C82ED',
       secondary: '#F52C23',
     },
+    buttonsText: '#ffffff',
+    buttonsFontWeight: 'bold',
   },
 });
