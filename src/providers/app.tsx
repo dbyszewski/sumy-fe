@@ -1,12 +1,14 @@
 import { ReactNode, Suspense } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 
-import { GlobalStyles } from '@/themes';
+import { GlobalStyles, lightTheme } from '@/themes';
 
 type AppProviderProps = {
   children: ReactNode;
 };
 
+const theme = lightTheme;
 export const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <Suspense
@@ -16,8 +18,10 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           {/* TODO: Change to spinner */}
         </div>
       }>
-      <GlobalStyles />
-      <Router>{children}</Router>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Router>{children}</Router>
+      </ThemeProvider>
     </Suspense>
   );
 };
