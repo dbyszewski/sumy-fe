@@ -6,6 +6,7 @@ import { userRoutes } from './user';
 
 import LandingPage from '@/pages/anon/LandingPage.tsx';
 import Nullable from '@/types/nullable.ts';
+import { ReportRouter } from '@/features/report';
 
 type AuthType = Nullable<{
   user: {
@@ -20,6 +21,7 @@ export const AppRoutes = () => {
 
   const commonRoutes = [
     { path: '/', element: <LandingPage /> },
+    { path: '/report/*', element: <ReportRouter /> },
     { path: '/*', element: <h1>404</h1> },
   ];
 

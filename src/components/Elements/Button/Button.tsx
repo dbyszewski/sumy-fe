@@ -1,7 +1,7 @@
-import { PropsWithChildren } from 'react';
+import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 import styled, { css } from 'styled-components';
 
-export type ButtonProps = {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant: 'primary' | 'secondary';
   size: 'sm' | 'md' | 'lg';
 };
@@ -12,9 +12,9 @@ const sizes = {
   lg: [3, 8],
 };
 
-export const Button = ({ variant, size, children }: PropsWithChildren<ButtonProps>) => {
+export const Button = ({ variant, size, children, ...rest }: PropsWithChildren<ButtonProps>) => {
   return (
-    <StyledButton variant={variant} size={size}>
+    <StyledButton {...rest} variant={variant} size={size}>
       {children}
     </StyledButton>
   );
