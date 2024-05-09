@@ -5,12 +5,23 @@ import { operatorRoutes } from './operator';
 import { userRoutes } from './user';
 
 import LandingPage from '@/pages/anon/LandingPage.tsx';
+import Nullable from '@/types/nullable.ts';
+
+type AuthType = Nullable<{
+  user: {
+    id: number;
+    operator: boolean;
+  };
+}>;
 
 export const AppRoutes = () => {
   //TODO: replace with auth context
-  const auth = { user: { id: 123, operator: false } };
+  const auth = null;
 
-  const commonRoutes = [{ path: '/', element: <LandingPage /> }];
+  const commonRoutes = [
+    { path: '/', element: <LandingPage /> },
+    { path: '/*', element: <h1>404</h1> },
+  ];
 
   const routes = determineRoutes(auth);
 
@@ -19,8 +30,8 @@ export const AppRoutes = () => {
   return <>{element}</>;
 };
 
-const determineRoutes = (auth: { user: { id: number; operator: boolean } }) => {
-  if (auth.user) {
+const determineRoutes = (auth: AuthType) => {
+  if (auth?.user) {
     return auth.user.operator ? operatorRoutes : userRoutes;
   } else {
     return anonRoutes;
