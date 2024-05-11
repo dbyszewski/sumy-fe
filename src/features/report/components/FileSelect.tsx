@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { Button } from '@/components/Elements/Button';
 import ButtonContainer from '@/components/Elements/LandingPage/ButtonContainer/ButtonContainer.tsx';
+// import { axios } from '@/lib/axios.ts';
 
 interface FileInputProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -17,10 +18,26 @@ interface FileInputProps {
 export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
   const navigate = useNavigate();
 
-  const handleNext = () => {
+  const handleNext = async () => {
     // alert('File sent');
-    localStorage.clear();
-    navigate('/');
+    try {
+      // const requestBody = {
+      //   phone: 123456789,
+      //   title: 'tytle',
+      //   description: 'Styrta się pali',
+      //   event_date: '2024-05-09T21:57:49.971Z',
+      //   latitude: 21,
+      //   longitude: 0,
+      // };
+      // const response = await axios.post('/home/events', requestBody);
+      // console.log('response', response);
+      navigate('/');
+      localStorage.clear();
+    } catch (error) {
+      alert('Wystąpił błąd podczas wysyłania zgłoszenia');
+    } finally {
+      console.log('finally');
+    }
   };
 
   return (
@@ -70,6 +87,7 @@ const FileInputWrapper = styled.div`
   justify-content: space-between;
   gap: 10px;
   margin: 10px 0;
+  max-width: 100%;
 `;
 
 const FileInputLabel = styled.label`
@@ -98,6 +116,7 @@ const FileNameDisplay = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   flex-grow: 1;
+  max-width: 100%;
 `;
 
 const FilePreview = styled.img`

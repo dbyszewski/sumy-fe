@@ -1,10 +1,15 @@
 import { IFormInput, ReportDataForm } from '@/features/report/components/ReportDataForm.tsx';
 
 export const ReportData = () => {
-  const initialValues = localStorage.getItem('reportData');
+  const localData = localStorage.getItem('reportData');
 
-  if (!initialValues) {
-    return <ReportDataForm />;
+  const defaultValues = {
+    description: '',
+    eventDate: new Date().toISOString().split('.')[0],
+  };
+
+  if (!localData) {
+    return <ReportDataForm initialValues={defaultValues} />;
   }
-  return <ReportDataForm initialValues={JSON.parse(initialValues) as IFormInput} />;
+  return <ReportDataForm initialValues={JSON.parse(localData) as IFormInput} />;
 };

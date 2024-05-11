@@ -5,20 +5,19 @@ import * as yup from 'yup';
 
 import { Button } from '@/components/Elements/Button';
 import { FormContainer } from '@/components/Elements/Form/Container';
-import { TextArea } from '@/components/Elements/InputFields/TextArea/TextArea.tsx';
+import { DateTime } from '@/components/Elements/InputFields/DateTime';
+import { TextArea } from '@/components/Elements/InputFields/TextArea';
 
 const schema = yup
   .object({
     description: yup.string().required('Opis jest wymagany'),
-    eventDate: yup.date(),
-    //   .max(new Date(), 'Data nie może być z przyszłości')
-    //   .required('Data jest wymagana'),
+    eventDate: yup.string().required('Data zdarzenia jest wymagana'),
   })
   .required();
 
 export interface IFormInput {
   description: string;
-  eventDate?: Date;
+  eventDate: string;
 }
 
 type ReportDataFormProps = {
@@ -29,8 +28,7 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
   const {
     handleSubmit,
     formState: { errors },
-    control
-
+    control,
   } = useForm<IFormInput>({ resolver: yupResolver(schema), defaultValues: initialValues });
   const navigate = useNavigate();
 
@@ -49,6 +47,19 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
           <TextArea label="Opis" size="md" {...field} error={errors.description?.message} />
         )}
         name="description"
+        control={control}
+      />
+      <Controller
+        render={({ field }) => (
+          <DateTime
+            label="Data zdarzenia"
+            id="eventDate"
+            max={new Date().toISOString().split('.')[0]}
+            {...field}
+            error={errors.eventDate?.message}
+          />
+        )}
+        name="eventDate"
         control={control}
       />
       <Button size="md" variant="primary">
