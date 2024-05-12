@@ -10,8 +10,8 @@ const LandingPage = () => {
   return (
     <div>
       <LandingPageLayout>
-        <Logo></Logo>
-        <Link to="/report">
+        <Logo />
+        <Link to="/report/data">
           <Button variant="secondary" size="lg">
             Zgłoś zagrożenie!
           </Button>
