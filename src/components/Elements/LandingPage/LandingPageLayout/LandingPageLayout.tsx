@@ -17,6 +17,7 @@ const LayoutStyled = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100vh;
+  justify-content: center;
   gap: 20px;
 `;
 
