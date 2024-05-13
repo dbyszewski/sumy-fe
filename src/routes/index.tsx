@@ -7,6 +7,7 @@ import { userRoutes } from './user';
 import LandingPage from '@/pages/anon/LandingPage.tsx';
 import Nullable from '@/types/nullable.ts';
 import { ReportRouter } from '@/features/report';
+import { AdminRouter } from '@/features/admin/adminPanel';
 
 type AuthType = Nullable<{
   user: {
@@ -22,6 +23,7 @@ export const AppRoutes = () => {
   const commonRoutes = [
     { path: '/', element: <LandingPage /> },
     { path: '/report/*', element: <ReportRouter /> },
+    { path: '/admin/*', element: <AdminRouter /> },
     { path: '/*', element: <h1>404</h1> },
   ];
 
