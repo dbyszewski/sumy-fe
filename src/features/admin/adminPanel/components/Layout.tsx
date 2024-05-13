@@ -4,10 +4,8 @@ import styled from 'styled-components';
 export const Layout = () => {
   return (
     <Container>
-      <AdminCard>
-        <Title>Panel Administratora</Title>
-        <Outlet />
-      </AdminCard>
+      <Title>Panel Administratora</Title>
+      <Outlet />
     </Container>
   );
 };
@@ -19,18 +17,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-const AdminCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80%;
-  margin: 0 auto;
-  background: #f9f9f9;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 `;
 
 const Title = styled.div`
