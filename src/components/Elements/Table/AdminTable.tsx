@@ -62,6 +62,7 @@ const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   background-color: #f9f9f9;
+  border: 1px solid #232323;
 
   th,
   td {
@@ -76,9 +77,5 @@ const StyledTable = styled.table`
 
   tbody tr:nth-child(even) {
     background-color: #dddddd;
-  }
-
-  td:not(:last-child) {
-    border-right: 1px solid #232323;
   }
 `;
