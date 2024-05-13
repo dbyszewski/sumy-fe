@@ -1,8 +1,34 @@
+import { faClock, faThumbsUp, faBan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { Tooltip } from '@/features/admin/adminPanel/components/Tooltip.tsx';
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
+
+const getStatusIcon = (status) => {
+  let icon = null;
+  switch (status) {
+    case 'pending':
+      icon = faClock;
+      break;
+    case 'approved':
+      icon = faThumbsUp;
+      break;
+    case 'rejected':
+      icon = faBan;
+      break;
+    default:
+      return status;
+  }
+
+  return (
+    <Tooltip status={status}>
+      <FontAwesomeIcon icon={icon} />
+    </Tooltip>
+  );
+};
 
 export const AdminTable = () => {
   const [tableData, setTableData] = useState([]);
@@ -42,7 +68,7 @@ export const AdminTable = () => {
             <td>{row.description}</td>
             <td>{formatDateTime(row.eventDate)}</td>
             <td>{formatDateTime(row.reportDate)}</td>
-            <td>{row.status}</td>
+            <td>{getStatusIcon(row.status)}</td>
           </tr>
         ))}
       </tbody>
@@ -64,7 +90,7 @@ const StyledTable = styled.table`
 
   th {
     background-color: #232323;
-    color: #fff;
+    color: white;
   }
 
   tbody tr:nth-child(even) {
