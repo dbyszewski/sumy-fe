@@ -20,6 +20,7 @@
     "@vis.gl/react-google-maps": "^0.10.0",
     "axios": "^1.6.8",
     "framer-motion": "^11.0.14",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.2",
