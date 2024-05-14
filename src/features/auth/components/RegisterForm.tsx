@@ -39,7 +39,7 @@ export const RegisterForm = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      alert('Register form data: ' + JSON.stringify(data));
+      // alert('Register form data: ' + JSON.stringify(data));
       // TODO: Implement login
       navigate('/');
     } catch (error) {

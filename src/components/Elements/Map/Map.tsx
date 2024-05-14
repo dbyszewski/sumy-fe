@@ -1,4 +1,9 @@
-import { AdvancedMarker, APIProvider, Map as GoogleMap } from '@vis.gl/react-google-maps';
+import {
+  AdvancedMarker,
+  APIProvider,
+  Map as GoogleMap,
+  MapMouseEvent,
+} from '@vis.gl/react-google-maps';
 
 import Nullable from '@/types/nullable.ts';
 
@@ -13,7 +18,7 @@ type MapProps = {
 };
 
 export const Map = ({ currentPosition, setCurrentPosition }: MapProps) => {
-  const handleLocationChange = (event: google.maps.MapMouseEvent) => {
+  const handleDragLocationChange = (event: google.maps.MapMouseEvent) => {
     if (!event.latLng) {
       return;
     }
@@ -28,10 +33,26 @@ export const Map = ({ currentPosition, setCurrentPosition }: MapProps) => {
     return <div>Wczytywanie...</div>;
   }
 
+  const handleClickLocationChange = (event: MapMouseEvent) => {
+    const latLng = event.detail.latLng;
+    if (!latLng) {
+      return;
+    }
+    setCurrentPosition({
+      lat: latLng.lat,
+      lng: latLng.lng,
+    });
+  };
+
+  if (!currentPosition) {
+    //TODO: add spinner
+    return <div>Wczytywanie...</div>;
+  }
+
   const marker = {
     position: currentPosition,
     draggable: true,
-    onDragEnd: handleLocationChange,
+    onDragEnd: handleDragLocationChange,
   };
 
   return (
@@ -42,6 +63,7 @@ export const Map = ({ currentPosition, setCurrentPosition }: MapProps) => {
         clickableIcons={false}
         disableDefaultUI={true}
         zoomControl={true}
+        onClick={handleClickLocationChange}
         mapId="report-map">
         <AdvancedMarker {...marker} />
       </GoogleMap>

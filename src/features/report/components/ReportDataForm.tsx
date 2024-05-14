@@ -6,16 +6,19 @@ import * as yup from 'yup';
 import { Button } from '@/components/Elements/Button';
 import { FormContainer } from '@/components/Elements/Form/Container';
 import { DateTime } from '@/components/Elements/InputFields/DateTime';
+import { TextInput } from '@/components/Elements/InputFields/Text';
 import { TextArea } from '@/components/Elements/InputFields/TextArea';
 
 const schema = yup
   .object({
+    title: yup.string().required('Tytuł jest wymagany'),
     description: yup.string().required('Opis jest wymagany'),
     eventDate: yup.string().required('Data zdarzenia jest wymagana'),
   })
   .required();
 
 export interface IFormInput {
+  title: string;
   description: string;
   eventDate: string;
 }
@@ -42,6 +45,13 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
 
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        render={({ field }) => (
+          <TextInput label="Tytuł" size="md" {...field} error={errors.title?.message} />
+        )}
+        name="title"
+        control={control}
+      />
       <Controller
         render={({ field }) => (
           <TextArea label="Opis" size="md" {...field} error={errors.description?.message} />

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { Button } from '@/components/Elements/Button';
 import ButtonContainer from '@/components/Elements/LandingPage/ButtonContainer/ButtonContainer.tsx';
-// import { axios } from '@/lib/axios.ts';
+import { axios } from '@/lib/axios';
 
 interface FileInputProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -20,17 +20,20 @@ export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
 
   const handleNext = async () => {
     // alert('File sent');
+    const reportData = JSON.parse(localStorage.getItem('reportData'));
+    const reportLocation = JSON.parse(localStorage.getItem('reportLocation'));
     try {
-      // const requestBody = {
-      //   phone: 123456789,
-      //   title: 'tytle',
-      //   description: 'Styrta się pali',
-      //   event_date: '2024-05-09T21:57:49.971Z',
-      //   latitude: 21,
-      //   longitude: 0,
-      // };
-      // const response = await axios.post('/home/events', requestBody);
-      // console.log('response', response);
+      const requestBody = {
+        phone: 123456789,
+        title: reportData.title,
+        description: reportData.description,
+        eventDate: reportData.eventDate,
+        latitude: reportLocation.lat,
+        longitude: reportLocation.lng,
+      };
+      console.log('requestBody', requestBody);
+      const response = await axios.post('/home/events', requestBody);
+      console.log('response', response);
       navigate('/');
       localStorage.clear();
     } catch (error) {
