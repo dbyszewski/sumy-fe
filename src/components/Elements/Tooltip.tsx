@@ -1,28 +1,15 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-export const Tooltip = ({ children, status }) => {
+export const Tooltip = ({ children, message }) => {
   const [showTooltip, setShowTooltip] = useState(false);
-
-  const getStatusName = () => {
-    switch (status) {
-      case 'pending':
-        return 'Oczekujący';
-      case 'approved':
-        return 'Zatwierdzony';
-      case 'rejected':
-        return 'Odrzucony';
-      default:
-        return '';
-    }
-  };
 
   return (
     <TooltipWrapper
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}>
       {children}
-      {showTooltip && <TooltipText>{getStatusName()}</TooltipText>}
+      {showTooltip && <TooltipText>{message}</TooltipText>}
     </TooltipWrapper>
   );
 };

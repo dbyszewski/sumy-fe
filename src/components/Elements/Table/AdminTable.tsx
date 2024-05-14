@@ -3,9 +3,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Tooltip } from '@/features/admin/adminPanel/components/Tooltip.tsx';
+import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
+
+const getStatusMappedName = (status) => {
+  switch (status) {
+    case 'pending':
+      return 'Oczekujący';
+    case 'approved':
+      return 'Zatwierdzony';
+    case 'rejected':
+      return 'Odrzucony';
+    default:
+      return status;
+  }
+};
 
 const getStatusIcon = (status) => {
   let icon = null;
@@ -24,7 +37,7 @@ const getStatusIcon = (status) => {
   }
 
   return (
-    <Tooltip status={status}>
+    <Tooltip message={getStatusMappedName(status)}>
       <FontAwesomeIcon icon={icon} />
     </Tooltip>
   );
