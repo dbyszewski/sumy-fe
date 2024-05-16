@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import { Layout } from './components/Layout.tsx';
-import { AdminPanel } from './pages/AdminPanel.tsx';
+import { AdminPanelEvents } from './pages/AdminPanelEvents.tsx';
 
 export const AdminRouter = () => {
   return (
@@ -11,7 +11,8 @@ export const AdminRouter = () => {
         element={<Layout />}
         children={
           <>
-            <Route path="/" element={<AdminPanel />} />
+            <Route path="/events" element={<AdminPanelEvents />} />
+            <Route path="/users" element={<AdminPanelEvents />} />
             <Route path="*" element={<h1>404-xd</h1>} />
           </>
         }
