@@ -90,7 +90,7 @@ export const AdminTableEvents = () => {
 };
 
 const StyledTable = styled.table`
-  width: 100%;
+  width: 80%;
   border-collapse: collapse;
   background-color: #f9f9f9;
   border: 1px solid #232323;
