@@ -1,7 +1,16 @@
+import {
+  faLock,
+  faUnlock,
+  faTrash,
+  faCheckCircle,
+  faCircleXmark,
+  faQuestionCircle,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Button } from '@/components/Elements/Button';
+import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 
@@ -41,24 +50,51 @@ export const AdminTableUsers = () => {
             <td>{row.userName}</td>
             <td>{row.phone}</td>
             <td>{row.email}</td>
-            <td>{row.is_phone_verified}</td>
-            <td>{row.is_email_verified}</td>
-            <td>{formatDateTime(row.locked_at)}</td>
+            <td>
+              {row.is_phone_verified ? (
+                <FontAwesomeIcon icon={faCheckCircle} />
+              ) : (
+                <FontAwesomeIcon icon={faCircleXmark} />
+              )}
+            </td>
+            <td>
+              {row.is_email_verified ? (
+                <FontAwesomeIcon icon={faCheckCircle} />
+              ) : (
+                <FontAwesomeIcon icon={faCircleXmark} />
+              )}{' '}
+            </td>
+            <td>
+              {row.locked_at ? (
+                formatDateTime(row.locked_at)
+              ) : (
+                <FontAwesomeIcon icon={faQuestionCircle} />
+              )}
+            </td>
             <td>{row.locked_at ? 'zablokowany' : 'aktywny'}</td>
+            {row.locked_at ? (
+              <td>
+                <Tooltip message={'Odblokuj'}>
+                  <Icon>
+                    <FontAwesomeIcon icon={faUnlock} />
+                  </Icon>
+                </Tooltip>
+              </td>
+            ) : (
+              <td>
+                <Tooltip message={'Blokuj'}>
+                  <Icon>
+                    <FontAwesomeIcon icon={faLock} />
+                  </Icon>
+                </Tooltip>
+              </td>
+            )}
             <td>
-              <Button size={'sm'} variant={'secondary'}>
-                Blokuj
-              </Button>
-            </td>
-            <td>
-              <Button size={'sm'} variant={'primary'}>
-                Odblokuj
-              </Button>
-            </td>
-            <td>
-              <Button size={'sm'} variant={'secondary'}>
-                Usuń
-              </Button>
+              <Tooltip message={'Usuń'}>
+                <Icon>
+                  <FontAwesomeIcon icon={faTrash} />
+                </Icon>
+              </Tooltip>
             </td>
           </tr>
         ))}
@@ -87,4 +123,8 @@ const StyledTable = styled.table`
   tbody tr:nth-child(even) {
     background-color: #dddddd;
   }
+`;
+
+const Icon = styled.i`
+  cursor: pointer;
 `;
