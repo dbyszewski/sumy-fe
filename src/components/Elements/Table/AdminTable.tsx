@@ -92,21 +92,26 @@ export const AdminTable = () => {
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
-  background-color: #f9f9f9;
-  border: 1px solid #232323;
-
+  border: 1px solid ${({ theme }) => theme.colors.elements.dark};
+  border-radius: 1rem;
+  overflow: hidden;
   th,
   td {
     padding: 1rem;
     text-align: center;
   }
 
+  tr {
+    background-color: ${({ theme }) => theme.colors.elements.light};
+    color: ${({ theme }) => theme.colors.text.dark};
+  }
+
   th {
-    background-color: #232323;
-    color: white;
+    background-color: ${({ theme }) => theme.colors.elements.dark};
+    color: ${({ theme }) => theme.colors.text.light};
   }
 
   tbody tr:nth-child(even) {
-    background-color: #dddddd;
+    background-color: ${({ theme }) => theme.colors.elements.brightLight};
   }
 `;
