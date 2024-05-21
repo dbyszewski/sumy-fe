@@ -1,9 +1,9 @@
-import { faBan, faClock, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faClock, faThumbsUp, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 
-export const getStatusMappedName = (status) => {
+const getStatusMappedName = (status) => {
   switch (status) {
     case 'pending':
       return 'Oczekujący';
@@ -16,25 +16,23 @@ export const getStatusMappedName = (status) => {
   }
 };
 
-export const getStatusIconWithTooltip = (status) => {
-  let icon = null;
+const getStatusIcon = (status) => {
   switch (status) {
     case 'pending':
-      icon = faClock;
-      break;
+      return faClock;
     case 'approved':
-      icon = faThumbsUp;
-      break;
+      return faThumbsUp;
     case 'rejected':
-      icon = faBan;
-      break;
+      return faBan;
     default:
-      return status;
+      return faQuestionCircle;
   }
+};
 
+export const StatusIconWithTooltip = ({ status }) => {
   return (
     <Tooltip message={getStatusMappedName(status)}>
-      <FontAwesomeIcon icon={icon} />
+      <FontAwesomeIcon icon={getStatusIcon(status)} />
     </Tooltip>
   );
 };

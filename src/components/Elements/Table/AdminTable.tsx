@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
-import { getStatusIconWithTooltip } from '@/utils/StatusMapper.tsx';
 
 export const AdminTable = () => {
   const [tableData, setTableData] = useState([]);
@@ -43,7 +43,7 @@ export const AdminTable = () => {
             <td>{row.description}</td>
             <td>{formatDateTime(row.eventDate)}</td>
             <td>{formatDateTime(row.reportDate)}</td>
-            <td>{getStatusIconWithTooltip(row.status)}</td>
+            <td>{StatusIconWithTooltip(row.status)}</td>
           </tr>
         ))}
       </tbody>
