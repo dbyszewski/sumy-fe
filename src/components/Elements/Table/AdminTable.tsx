@@ -1,47 +1,9 @@
-import { faClock, faThumbsUp, faBan } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Tooltip } from '@/components/Elements/Tooltip.tsx';
+import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
-
-const getStatusMappedName = (status) => {
-  switch (status) {
-    case 'pending':
-      return 'Oczekujący';
-    case 'approved':
-      return 'Zatwierdzony';
-    case 'rejected':
-      return 'Odrzucony';
-    default:
-      return status;
-  }
-};
-
-const getStatusIcon = (status) => {
-  let icon = null;
-  switch (status) {
-    case 'pending':
-      icon = faClock;
-      break;
-    case 'approved':
-      icon = faThumbsUp;
-      break;
-    case 'rejected':
-      icon = faBan;
-      break;
-    default:
-      return status;
-  }
-
-  return (
-    <Tooltip message={getStatusMappedName(status)}>
-      <FontAwesomeIcon icon={icon} />
-    </Tooltip>
-  );
-};
 
 export const AdminTable = () => {
   const [tableData, setTableData] = useState([]);
@@ -81,7 +43,9 @@ export const AdminTable = () => {
             <td>{row.description}</td>
             <td>{formatDateTime(row.eventDate)}</td>
             <td>{formatDateTime(row.reportDate)}</td>
-            <td>{getStatusIcon(row.status)}</td>
+            <td>
+              <StatusIconWithTooltip status={row.status} />
+            </td>
           </tr>
         ))}
       </tbody>
