@@ -43,7 +43,9 @@ export const AdminTable = () => {
             <td>{row.description}</td>
             <td>{formatDateTime(row.eventDate)}</td>
             <td>{formatDateTime(row.reportDate)}</td>
-            <td>{StatusIconWithTooltip(row.status)}</td>
+            <td>
+              <StatusIconWithTooltip status={row.status} />
+            </td>
           </tr>
         ))}
       </tbody>
