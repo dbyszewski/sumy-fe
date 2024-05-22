@@ -1,47 +1,9 @@
-import { faClock, faThumbsUp, faBan } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 import { axios } from '@/lib/axios.ts';
+import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { formatDateTime } from '@/utils/dateHelper.ts';
-
-const getStatusMappedName = (status) => {
-  switch (status) {
-    case 'pending':
-      return 'Oczekujący';
-    case 'approved':
-      return 'Zatwierdzony';
-    case 'rejected':
-      return 'Odrzucony';
-    default:
-      return status;
-  }
-};
-
-const getStatusIcon = (status) => {
-  let icon = null;
-  switch (status) {
-    case 'pending':
-      icon = faClock;
-      break;
-    case 'approved':
-      icon = faThumbsUp;
-      break;
-    case 'rejected':
-      icon = faBan;
-      break;
-    default:
-      return status;
-  }
-
-  return (
-    <Tooltip message={getStatusMappedName(status)}>
-      <FontAwesomeIcon icon={icon} />
-    </Tooltip>
-  );
-};
 
 export const AdminTableEvents = () => {
   const [tableData, setTableData] = useState([]);
@@ -81,7 +43,9 @@ export const AdminTableEvents = () => {
             <td>{row.description}</td>
             <td>{formatDateTime(row.eventDate)}</td>
             <td>{formatDateTime(row.reportDate)}</td>
-            <td>{getStatusIcon(row.status)}</td>
+            <td>
+              <StatusIconWithTooltip status={row.status} />
+            </td>
           </tr>
         ))}
       </tbody>
@@ -92,21 +56,26 @@ export const AdminTableEvents = () => {
 const StyledTable = styled.table`
   width: 80%;
   border-collapse: collapse;
-  background-color: #f9f9f9;
-  border: 1px solid #232323;
-
+  border: 1px solid ${({ theme }) => theme.colors.elements.dark};
+  border-radius: 1rem;
+  overflow: hidden;
   th,
   td {
     padding: 1rem;
     text-align: center;
   }
 
+  tr {
+    background-color: ${({ theme }) => theme.colors.elements.light};
+    color: ${({ theme }) => theme.colors.text.dark};
+  }
+
   th {
-    background-color: #232323;
-    color: white;
+    background-color: ${({ theme }) => theme.colors.elements.dark};
+    color: ${({ theme }) => theme.colors.text.light};
   }
 
   tbody tr:nth-child(even) {
-    background-color: #dddddd;
+    background-color: ${({ theme }) => theme.colors.elements.brightLight};
   }
 `;
