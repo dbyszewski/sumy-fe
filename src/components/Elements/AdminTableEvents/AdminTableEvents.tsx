@@ -5,7 +5,7 @@ import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/St
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 
-export const AdminTable = () => {
+export const AdminTableEvents = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export const AdminTable = () => {
 };
 
 const StyledTable = styled.table`
-  width: 100%;
+  width: 80%;
   border-collapse: collapse;
   border: 1px solid ${({ theme }) => theme.colors.elements.dark};
   border-radius: 1rem;
