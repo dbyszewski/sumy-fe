@@ -6,17 +6,17 @@ import { NavbarItem } from './NavbarItem';
 const MOCK_NAV_DATA = [
   {
     title: 'Zgłoszenia',
-    href: '1st',
+    href: '/admin/events',
     icon: faHouseChimney,
   },
   {
     title: 'Użytkownicy',
-    href: '2nd',
+    href: '/admin/users',
     icon: faUser,
   },
   {
     title: 'Mapa zgłoszeń',
-    href: '3rd',
+    href: '/admin/map',
     icon: faGears,
   },
 ];
