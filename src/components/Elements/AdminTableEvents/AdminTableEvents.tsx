@@ -1,6 +1,9 @@
+import { faCheckCircle, faCircleXmark, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
@@ -32,6 +35,7 @@ export const AdminTableEvents = () => {
           <th>Data zdarzenia</th>
           <th>Data zgłoszenia</th>
           <th>Status</th>
+          <th colSpan={2}>Akcje</th>
         </tr>
       </thead>
       <tbody>
@@ -46,6 +50,46 @@ export const AdminTableEvents = () => {
             <td>
               <StatusIconWithTooltip status={row.status} />
             </td>
+            {row.status === 'pending' ? (
+              <>
+                <td>
+                  <Icon>
+                    <Tooltip message={'Potwierdź'}>
+                      <FontAwesomeIcon icon={faCheckCircle} />
+                    </Tooltip>
+                  </Icon>
+                </td>
+                <td>
+                  <Icon>
+                    <Tooltip message={'Odrzuć'}>
+                      <FontAwesomeIcon icon={faCircleXmark} />
+                    </Tooltip>
+                  </Icon>
+                </td>
+              </>
+            ) : row.status === 'approved' ? (
+              <td colSpan={2}>
+                <Icon>
+                  <Tooltip message={'Odrzuć'}>
+                    <FontAwesomeIcon icon={faCircleXmark} />
+                  </Tooltip>
+                </Icon>
+              </td>
+            ) : row.status === 'rejected' ? (
+              <td colSpan={2}>
+                <Icon>
+                  <Tooltip message={'Potwierdź'}>
+                    <FontAwesomeIcon icon={faCheckCircle} />
+                  </Tooltip>
+                </Icon>
+              </td>
+            ) : (
+              <td colSpan={2}>
+                <Tooltip message={'Błąd statusu'}>
+                  <FontAwesomeIcon icon={faQuestionCircle} />
+                </Tooltip>
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
@@ -78,4 +122,8 @@ const StyledTable = styled.table`
   tbody tr:nth-child(even) {
     background-color: ${({ theme }) => theme.colors.elements.brightLight};
   }
+`;
+
+const Icon = styled.i`
+  cursor: pointer;
 `;
