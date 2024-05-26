@@ -25,10 +25,10 @@ export const AdminTableEvents = () => {
     <StyledTable>
       <thead>
         <tr>
-          <th>Numer telefonu</th>
-          <th>Nazwa użytkownika</th>
           <th>Tytuł</th>
           <th>Opis</th>
+          <th>Nazwa użytkownika</th>
+          <th>Numer telefonu</th>
           <th>Data zdarzenia</th>
           <th>Data zgłoszenia</th>
           <th>Status</th>
@@ -37,10 +37,10 @@ export const AdminTableEvents = () => {
       <tbody>
         {tableData.map((row, index) => (
           <tr key={index}>
-            <td>{row.phone}</td>
-            <td>{row.userName}</td>
             <td>{row.title}</td>
             <td>{row.description}</td>
+            <td>{row.userName}</td>
+            <td>{row.phone}</td>
             <td>{formatDateTime(row.eventDate)}</td>
             <td>{formatDateTime(row.reportDate)}</td>
             <td>
