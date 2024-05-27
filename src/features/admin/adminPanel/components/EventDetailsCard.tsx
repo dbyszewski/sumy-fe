@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { AdminEventMap } from '@/features/admin/adminPanel/components/AdminEventMap.tsx';
 import { EventCard } from '@/features/admin/adminPanel/components/EventCard.tsx';
+import { getStatusMappedName } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 
 export const EventDetailsCard = ({ event, onClose }) => {
@@ -50,7 +51,7 @@ export const EventDetailsCard = ({ event, onClose }) => {
           <ColumnLeft>
             <strong>Status:</strong>
           </ColumnLeft>
-          <ColumnRight>{event.status}</ColumnRight>
+          <ColumnRight>{getStatusMappedName(event.status)}</ColumnRight>
         </Row>
         <MapContainer>
           <AdminEventMap position={{ lat: event.latitude, lng: event.longitude }} />

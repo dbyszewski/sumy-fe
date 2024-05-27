@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 
-const getStatusMappedName = (status) => {
+export const getStatusMappedName = (status) => {
   switch (status) {
     case 'pending':
       return 'Oczekujący';
-    case 'approved':
+    case 'accepted':
       return 'Zatwierdzony';
     case 'rejected':
       return 'Odrzucony';
@@ -20,7 +20,7 @@ const getStatusIcon = (status) => {
   switch (status) {
     case 'pending':
       return faClock;
-    case 'approved':
+    case 'accepted':
       return faThumbsUp;
     case 'rejected':
       return faBan;

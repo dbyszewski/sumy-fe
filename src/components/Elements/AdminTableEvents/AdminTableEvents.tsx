@@ -1,4 +1,4 @@
-import { faCheckCircle, faCircleXmark, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import { EventDetailsCard } from '@/features/admin/adminPanel/components/EventDe
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
+
 export const AdminTableEvents = () => {
   const [tableData, setTableData] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -38,6 +39,32 @@ export const AdminTableEvents = () => {
     setSelectedEvent(null);
   };
 
+  const handleApprove = async (eventId) => {
+    try {
+      await axios.put(`/home/events/approve/${eventId}`);
+      setTableData((prevData) =>
+        prevData.map((event) =>
+          event.eventID === eventId ? { ...event, status: 'accepted' } : event
+        )
+      );
+    } catch (error) {
+      console.error('Błąd podczas zatwierdzania zgłoszenia:', error);
+    }
+  };
+
+  const handleReject = async (eventId) => {
+    try {
+      await axios.put(`/home/events/reject/${eventId}`);
+      setTableData((prevData) =>
+        prevData.map((event) =>
+          event.eventID === eventId ? { ...event, status: 'rejected' } : event
+        )
+      );
+    } catch (error) {
+      console.error('Błąd podczas odrzucania zgłoszenia:', error);
+    }
+  };
+
   return (
     <div>
       <StyledTable>
@@ -56,16 +83,10 @@ export const AdminTableEvents = () => {
         <tbody>
           {tableData.map((row, index) => (
             <tr key={index}>
-              <td
-                onClick={() => handleTitleClick(row.eventID)}
-                style={{ cursor: 'pointer', color: 'blue' }}>
-                {row.title.length > 20 ? `${row.title.substring(0, 20)}...` : row.title}
-              </td>
               <td>
-                {row.description.length > 20
-                  ? `${row.description.substring(0, 20)}...`
-                  : row.description}
+                <Link onClick={() => handleTitleClick(row.eventID)}>{row.title}</Link>
               </td>
+              <td>{row.description}</td>
               <td>{row.userName}</td>
               <td>{row.phone}</td>
               <td>{formatDateTime(row.eventDate)}</td>
@@ -73,46 +94,26 @@ export const AdminTableEvents = () => {
               <td>
                 <StatusIconWithTooltip status={row.status} />
               </td>
-              {row.status === 'pending' ? (
-                <>
-                  <td>
-                    <Icon>
+              <td>
+                {(row.status === 'pending' || row.status === 'rejected') && (
+                  <p>
+                    <Icon onClick={() => handleApprove(row.eventID)}>
                       <Tooltip message={'Potwierdź'}>
                         <FontAwesomeIcon icon={faCheckCircle} />
                       </Tooltip>
                     </Icon>
-                  </td>
-                  <td>
-                    <Icon>
+                  </p>
+                )}
+                {(row.status === 'pending' || row.status === 'accepted') && (
+                  <p>
+                    <Icon onClick={() => handleReject(row.eventID)}>
                       <Tooltip message={'Odrzuć'}>
                         <FontAwesomeIcon icon={faCircleXmark} />
                       </Tooltip>
                     </Icon>
-                  </td>
-                </>
-              ) : row.status === 'approved' ? (
-                <td colSpan={2}>
-                  <Icon>
-                    <Tooltip message={'Odrzuć'}>
-                      <FontAwesomeIcon icon={faCircleXmark} />
-                    </Tooltip>
-                  </Icon>
-                </td>
-              ) : row.status === 'rejected' ? (
-                <td colSpan={2}>
-                  <Icon>
-                    <Tooltip message={'Potwierdź'}>
-                      <FontAwesomeIcon icon={faCheckCircle} />
-                    </Tooltip>
-                  </Icon>
-                </td>
-              ) : (
-                <td colSpan={2}>
-                  <Tooltip message={'Błąd statusu'}>
-                    <FontAwesomeIcon icon={faQuestionCircle} />
-                  </Tooltip>
-                </td>
-              )}
+                  </p>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -132,6 +133,10 @@ const StyledTable = styled.table`
   td {
     padding: 1rem;
     text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
   }
 
   tr {
@@ -151,4 +156,9 @@ const StyledTable = styled.table`
 
 const Icon = styled.i`
   cursor: pointer;
+`;
+
+const Link = styled.td`
+  cursor: pointer;
+  font-weight: bold;
 `;
