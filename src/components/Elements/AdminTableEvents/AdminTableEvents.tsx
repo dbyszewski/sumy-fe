@@ -1,12 +1,17 @@
+import { faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { Tooltip } from '@/components/Elements/Tooltip.tsx';
+import { EventDetailsCard } from '@/features/admin/adminPanel/components/EventDetailsCard.tsx';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 
 export const AdminTableEvents = () => {
   const [tableData, setTableData] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,40 +26,105 @@ export const AdminTableEvents = () => {
     fetchData();
   }, []);
 
+  const handleTitleClick = async (eventId) => {
+    try {
+      const response = await axios.get(`/home/events/${eventId}`);
+      setSelectedEvent(response.data.result);
+    } catch (error) {
+      console.error('Błąd podczas pobierania szczegółów zgłoszenia:', error);
+    }
+  };
+
+  const handleCloseCard = () => {
+    setSelectedEvent(null);
+  };
+
+  const handleApprove = async (eventId) => {
+    try {
+      await axios.put(`/home/events/approve/${eventId}`);
+      setTableData((prevData) =>
+        prevData.map((event) =>
+          event.eventID === eventId ? { ...event, status: 'accepted' } : event
+        )
+      );
+    } catch (error) {
+      console.error('Błąd podczas zatwierdzania zgłoszenia:', error);
+    }
+  };
+
+  const handleReject = async (eventId) => {
+    try {
+      await axios.put(`/home/events/reject/${eventId}`);
+      setTableData((prevData) =>
+        prevData.map((event) =>
+          event.eventID === eventId ? { ...event, status: 'rejected' } : event
+        )
+      );
+    } catch (error) {
+      console.error('Błąd podczas odrzucania zgłoszenia:', error);
+    }
+  };
+
   return (
-    <StyledTable>
-      <thead>
-        <tr>
-          <th>Numer telefonu</th>
-          <th>Nazwa użytkownika</th>
-          <th>Tytuł</th>
-          <th>Opis</th>
-          <th>Data zdarzenia</th>
-          <th>Data zgłoszenia</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tableData.map((row, index) => (
-          <tr key={index}>
-            <td>{row.phone}</td>
-            <td>{row.userName}</td>
-            <td>{row.title}</td>
-            <td>{row.description}</td>
-            <td>{formatDateTime(row.eventDate)}</td>
-            <td>{formatDateTime(row.reportDate)}</td>
-            <td>
-              <StatusIconWithTooltip status={row.status} />
-            </td>
+    <div>
+      <StyledTable>
+        <thead>
+          <tr>
+            <th>Tytuł</th>
+            <th>Opis</th>
+            <th>Nazwa użytkownika</th>
+            <th>Numer telefonu</th>
+            <th>Data zdarzenia</th>
+            <th>Data zgłoszenia</th>
+            <th>Status</th>
+            <th colSpan={2}>Akcje</th>
           </tr>
-        ))}
-      </tbody>
-    </StyledTable>
+        </thead>
+        <tbody>
+          {tableData.map((row, index) => (
+            <tr key={index}>
+              <td className={'overflowed linked'} onClick={() => handleTitleClick(row.eventID)}>
+                {row.title}
+              </td>
+              <td className={'overflowed'}>{row.description}</td>
+              <td>{row.userName}</td>
+              <td>{row.phone}</td>
+              <td>{formatDateTime(row.eventDate)}</td>
+              <td>{formatDateTime(row.reportDate)}</td>
+              <td>
+                <StatusIconWithTooltip status={row.status} />
+              </td>
+              <td>
+                {(row.status === 'pending' || row.status === 'rejected') && (
+                  <p>
+                    <Icon onClick={() => handleApprove(row.eventID)}>
+                      <Tooltip message={'Potwierdź'}>
+                        <FontAwesomeIcon icon={faCheckCircle} />
+                      </Tooltip>
+                    </Icon>
+                  </p>
+                )}
+                {(row.status === 'pending' || row.status === 'accepted') && (
+                  <p>
+                    <Icon onClick={() => handleReject(row.eventID)}>
+                      <Tooltip message={'Odrzuć'}>
+                        <FontAwesomeIcon icon={faCircleXmark} />
+                      </Tooltip>
+                    </Icon>
+                  </p>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </StyledTable>
+      {selectedEvent && <EventDetailsCard event={selectedEvent} onClose={handleCloseCard} />}
+    </div>
   );
 };
 
 const StyledTable = styled.table`
-  width: 80%;
+  width: 70%;
   border-collapse: collapse;
   border: 1px solid ${({ theme }) => theme.colors.elements.dark};
   border-radius: 1rem;
@@ -78,4 +148,18 @@ const StyledTable = styled.table`
   tbody tr:nth-child(even) {
     background-color: ${({ theme }) => theme.colors.elements.brightLight};
   }
+  .overflowed {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+  .linked {
+    cursor: pointer;
+    font-weight: bold;
+  }
+`;
+
+const Icon = styled.i`
+  cursor: pointer;
 `;
