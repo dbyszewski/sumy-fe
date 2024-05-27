@@ -58,7 +58,7 @@ export const AdminTableEvents = () => {
             <tr key={index}>
               <td>{row.phone}</td>
               <td>{row.userName}</td>
-              <td onClick={() => handleTitleClick(5)} style={{ cursor: 'pointer', color: 'blue' }}>
+              <td onClick={() => handleTitleClick(row.eventID)} style={{ cursor: 'pointer', color: 'blue' }}>
                 {row.title.length > 20 ? `${row.title.substring(0, 20)}...` : row.title}
               </td>
               <td>

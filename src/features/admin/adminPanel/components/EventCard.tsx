@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 
+import { Button } from '@/components/Elements/Button';
+
 export const EventCard = ({ title, children, onClose }) => {
   return (
     <Overlay>
       <CardWrapper>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
-          <CloseButton onClick={onClose}>X</CloseButton>
+          <Button size={'sm'} variant={'secondary'} onClick={onClose}>
+            X
+          </Button>
         </CardHeader>
-          {children}
+        {children}
       </CardWrapper>
     </Overlay>
   );
@@ -27,8 +31,10 @@ const Overlay = styled.div`
 `;
 
 const CardWrapper = styled.div`
-  width: 90%;
+  width: 80%;
   max-width: 800px;
+  height: 80%;
+  max-height: 600px;
   background: white;
   padding: 20px;
   border-radius: 10px;
@@ -47,12 +53,3 @@ const CardHeader = styled.div`
 const CardTitle = styled.h2`
   margin: 0;
 `;
-
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-`;
-
-
