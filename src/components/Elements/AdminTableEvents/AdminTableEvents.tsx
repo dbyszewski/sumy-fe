@@ -83,9 +83,7 @@ export const AdminTableEvents = () => {
         <tbody>
           {tableData.map((row, index) => (
             <tr key={index}>
-              <td
-                className={('overflowed linked')}
-                onClick={() => handleTitleClick(row.eventID)}>
+              <td className={'overflowed linked'} onClick={() => handleTitleClick(row.eventID)}>
                 {row.title}
               </td>
               <td className={'overflowed'}>{row.description}</td>
