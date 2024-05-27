@@ -24,6 +24,32 @@ export const AdminTableEvents = () => {
     fetchData();
   }, []);
 
+  const handleApprove = async (eventId) => {
+    try {
+      await axios.put(`/home/events/approve/${eventId}`);
+      setTableData((prevData) =>
+        prevData.map((event) =>
+          event.eventID === eventId ? { ...event, status: 'accepted' } : event
+        )
+      );
+    } catch (error) {
+      console.error('Błąd podczas zatwierdzania zgłoszenia:', error);
+    }
+  };
+
+  const handleReject = async (eventId) => {
+    try {
+      await axios.put(`/home/events/reject/${eventId}`);
+      setTableData((prevData) =>
+        prevData.map((event) =>
+          event.eventID === eventId ? { ...event, status: 'rejected' } : event
+        )
+      );
+    } catch (error) {
+      console.error('Błąd podczas odrzucania zgłoszenia:', error);
+    }
+  };
+
   return (
     <StyledTable>
       <thead>
@@ -53,23 +79,23 @@ export const AdminTableEvents = () => {
             {row.status === 'pending' ? (
               <>
                 <td>
-                  <Icon>
+                  <Icon onClick={() => handleApprove(row.eventID)}>
                     <Tooltip message={'Potwierdź'}>
                       <FontAwesomeIcon icon={faCheckCircle} />
                     </Tooltip>
                   </Icon>
                 </td>
                 <td>
-                  <Icon>
+                  <Icon onClick={() => handleReject(row.eventID)}>
                     <Tooltip message={'Odrzuć'}>
                       <FontAwesomeIcon icon={faCircleXmark} />
                     </Tooltip>
                   </Icon>
                 </td>
               </>
-            ) : row.status === 'approved' ? (
+            ) : row.status === 'accepted' ? (
               <td colSpan={2}>
-                <Icon>
+                <Icon onClick={() => handleReject(row.eventID)}>
                   <Tooltip message={'Odrzuć'}>
                     <FontAwesomeIcon icon={faCircleXmark} />
                   </Tooltip>
@@ -77,7 +103,7 @@ export const AdminTableEvents = () => {
               </td>
             ) : row.status === 'rejected' ? (
               <td colSpan={2}>
-                <Icon>
+                <Icon onClick={() => handleApprove(row.eventID)}>
                   <Tooltip message={'Potwierdź'}>
                     <FontAwesomeIcon icon={faCheckCircle} />
                   </Tooltip>
