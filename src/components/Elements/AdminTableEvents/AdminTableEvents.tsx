@@ -83,10 +83,12 @@ export const AdminTableEvents = () => {
         <tbody>
           {tableData.map((row, index) => (
             <tr key={index}>
-              <td>
-                <Link onClick={() => handleTitleClick(row.eventID)}>{row.title}</Link>
+              <td
+                className={('overflowed linked')}
+                onClick={() => handleTitleClick(row.eventID)}>
+                {row.title}
               </td>
-              <td>{row.description}</td>
+              <td className={'overflowed'}>{row.description}</td>
               <td>{row.userName}</td>
               <td>{row.phone}</td>
               <td>{formatDateTime(row.eventDate)}</td>
@@ -133,10 +135,6 @@ const StyledTable = styled.table`
   td {
     padding: 1rem;
     text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
   }
 
   tr {
@@ -152,13 +150,18 @@ const StyledTable = styled.table`
   tbody tr:nth-child(even) {
     background-color: ${({ theme }) => theme.colors.elements.brightLight};
   }
+  .overflowed {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+  .linked {
+    cursor: pointer;
+    font-weight: bold;
+  }
 `;
 
 const Icon = styled.i`
   cursor: pointer;
-`;
-
-const Link = styled.td`
-  cursor: pointer;
-  font-weight: bold;
 `;
