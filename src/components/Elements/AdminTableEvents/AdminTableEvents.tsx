@@ -43,10 +43,10 @@ export const AdminTableEvents = () => {
       <StyledTable>
         <thead>
           <tr>
-            <th>Numer telefonu</th>
-            <th>Nazwa użytkownika</th>
             <th>Tytuł</th>
             <th>Opis</th>
+            <th>Nazwa użytkownika</th>
+            <th>Numer telefonu</th>
             <th>Data zdarzenia</th>
             <th>Data zgłoszenia</th>
             <th>Status</th>
@@ -56,9 +56,9 @@ export const AdminTableEvents = () => {
         <tbody>
           {tableData.map((row, index) => (
             <tr key={index}>
-              <td>{row.phone}</td>
-              <td>{row.userName}</td>
-              <td onClick={() => handleTitleClick(row.eventID)} style={{ cursor: 'pointer', color: 'blue' }}>
+              <td
+                onClick={() => handleTitleClick(row.eventID)}
+                style={{ cursor: 'pointer', color: 'blue' }}>
                 {row.title.length > 20 ? `${row.title.substring(0, 20)}...` : row.title}
               </td>
               <td>
@@ -66,6 +66,8 @@ export const AdminTableEvents = () => {
                   ? `${row.description.substring(0, 20)}...`
                   : row.description}
               </td>
+              <td>{row.userName}</td>
+              <td>{row.phone}</td>
               <td>{formatDateTime(row.eventDate)}</td>
               <td>{formatDateTime(row.reportDate)}</td>
               <td>
