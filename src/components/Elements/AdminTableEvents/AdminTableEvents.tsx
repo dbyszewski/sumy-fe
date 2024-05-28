@@ -124,7 +124,7 @@ export const AdminTableEvents = () => {
 };
 
 const StyledTable = styled.table`
-  width: 70%;
+  width: 100%;
   border-collapse: collapse;
   border: 1px solid ${({ theme }) => theme.colors.elements.dark};
   border-radius: 1rem;
@@ -137,7 +137,7 @@ const StyledTable = styled.table`
 
   tr {
     background-color: ${({ theme }) => theme.colors.elements.light};
-    color: ${({ theme }) => theme.colors.text.dark};
+    color: ${({ theme }) => theme.colors.text.light};
   }
 
   th {
