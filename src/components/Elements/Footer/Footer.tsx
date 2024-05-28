@@ -1,14 +1,10 @@
 import styled from 'styled-components';
 
 export const Footer = () => {
-  return (
-    <FooterContainer>Sumy - aplikacja SafelyAround. {new Date().getFullYear()}</FooterContainer>
-  );
+  return <FooterContainer>SafelyAround. {new Date().getFullYear()}</FooterContainer>;
 };
 
 const FooterContainer = styled.footer`
-  position: fixed;
-  bottom: 0;
   z-index: 50;
   display: flex;
   width: 100%;

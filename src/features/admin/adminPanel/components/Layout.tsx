@@ -2,13 +2,11 @@ import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Footer } from '@/components/Elements/Footer';
-import { Header } from '@/components/Elements/Header';
 import { Navbar } from '@/components/Elements/Navbar';
 
 export const Layout = () => {
   return (
     <Container>
-      <Header />
       <InterContainer>
         <Navbar />
         <MainComponent>
@@ -33,9 +31,6 @@ const InterContainer = styled.div`
 `;
 
 const MainComponent = styled.main`
-  margin-left: 16rem;
-  margin-top: 4rem;
-  flex: 1 1 0;
   overflow-y: auto;
-  padding: 1rem;
+  padding: 2rem;
 `;
