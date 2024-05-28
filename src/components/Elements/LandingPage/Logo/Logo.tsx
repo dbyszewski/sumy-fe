@@ -7,7 +7,7 @@ interface LogoProps {
 }
 
 const Logo = ({ size }: LogoProps) => {
-  return <LogoStyled src={logoSvg} alt="Logo 112" size={size} />;
+  return <LogoStyled src={logoSvg} alt="Logo SafelyAround" size={size} />;
 };
 
 const LogoStyled = styled.img<LogoProps>`

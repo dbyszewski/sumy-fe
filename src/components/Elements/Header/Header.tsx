@@ -10,7 +10,7 @@ export const Header = () => {
     <HeaderContainer>
       <StyledLink to={'/'}>
         <Logo />
-        <h1>112 - panel administratora</h1>
+        <h1>SafelyAround - panel administratora</h1>
       </StyledLink>
     </HeaderContainer>
   );
