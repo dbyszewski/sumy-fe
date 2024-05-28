@@ -16,7 +16,7 @@ export const AdminRouter = () => {
             <Route index element={<Navigate to="/admin/events" />} />
             <Route path="/events" element={<AdminPanelEvents />} />
             <Route path="/users" element={<AdminPanelUsers />} />
-            <Route path="*" element={<h1>404-xd</h1>} />
+            <Route path="*" element={<h1>404</h1>} />
           </>
         }
       />
