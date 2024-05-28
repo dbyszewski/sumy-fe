@@ -64,7 +64,7 @@ export const Navbar = () => {
         <LogOutContainer>
           <LogOutButton>
             <FontAwesomeIcon icon={faRightFromBracket} />
-            Wyloguj
+            Wyloguj się
           </LogOutButton>
         </LogOutContainer>
       </StyledNavigation>
