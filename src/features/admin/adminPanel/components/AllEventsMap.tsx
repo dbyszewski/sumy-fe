@@ -8,7 +8,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import { getStatusMappedName } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
-import Nullable from '@/types/nullable.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 
 type Event = {
@@ -29,9 +28,17 @@ type EventsMapProps = {
 };
 
 export const AllEventsMap = ({ events }: EventsMapProps) => {
-  const [selectedEvent, setSelectedEvent] = useState<Nullable<Event>>(null);
+  const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
 
   const LodzCoordinates = { lat: 51.7592, lng: 19.456 };
+
+  const handleMarkerClick = (clickedEvent: Event) => {
+    const overlappingEvents = events.filter(
+      (event) =>
+        event.latitude === clickedEvent.latitude && event.longitude === clickedEvent.longitude
+    );
+    setSelectedEvents(overlappingEvents);
+  };
 
   return (
     <APIProvider apiKey={'AIzaSyD-vIAZx7ywuyHukcLw2qZlgm8CRceTOsc'}>
@@ -46,33 +53,38 @@ export const AllEventsMap = ({ events }: EventsMapProps) => {
           <AdvancedMarker
             key={event.eventID}
             position={{ lat: event.latitude, lng: event.longitude }}
-            onClick={() => setSelectedEvent(event)}
+            onClick={() => handleMarkerClick(event)}
           />
         ))}
-        {selectedEvent && (
+        {selectedEvents.length > 0 && (
           <InfoWindow
-            position={{ lat: selectedEvent.latitude, lng: selectedEvent.longitude }}
-            onCloseClick={() => setSelectedEvent(null)}>
+            position={{ lat: selectedEvents[0].latitude, lng: selectedEvents[0].longitude }}
+            onCloseClick={() => setSelectedEvents([])}>
             <InfoWindowContent>
-              <h3>{`Zgłoszenie - [${selectedEvent.eventID}] ${selectedEvent.title}`}</h3>
-              <p>
-                <strong>Opis:</strong> {selectedEvent.description}
-              </p>
-              <p>
-                <strong>Nazwa użytkownika:</strong> {selectedEvent.userName}
-              </p>
-              <p>
-                <strong>Numer telefonu:</strong> {selectedEvent.phone}
-              </p>
-              <p>
-                <strong>Data zdarzenia:</strong> {formatDateTime(selectedEvent.eventDate)}
-              </p>
-              <p>
-                <strong>Data zgłoszenia:</strong> {formatDateTime(selectedEvent.reportDate)}
-              </p>
-              <p>
-                <strong>Status:</strong> {getStatusMappedName(selectedEvent.status)}
-              </p>
+              {selectedEvents.map((event) => (
+                <div key={event.eventID}>
+                  <h3>{`Zgłoszenie - [${event.eventID}] ${event.title}`}</h3>
+                  <p>
+                    <strong>Opis:</strong> {event.description}
+                  </p>
+                  <p>
+                    <strong>Nazwa użytkownika:</strong> {event.userName}
+                  </p>
+                  <p>
+                    <strong>Numer telefonu:</strong> {event.phone}
+                  </p>
+                  <p>
+                    <strong>Data zdarzenia:</strong> {formatDateTime(event.eventDate)}
+                  </p>
+                  <p>
+                    <strong>Data zgłoszenia:</strong> {formatDateTime(event.reportDate)}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {getStatusMappedName(event.status)}
+                  </p>
+                  <hr />
+                </div>
+              ))}
             </InfoWindowContent>
           </InfoWindow>
         )}
@@ -83,22 +95,21 @@ export const AllEventsMap = ({ events }: EventsMapProps) => {
 
 const InfoWindowContent = styled.div`
   max-width: 500px;
-  white-space: pre-wrap; 
-  word-wrap: break-word; 
-
+  white-space: pre-wrap;
+  word-wrap: break-word;
   h3 {
     margin: 0;
     text-align: center;
     font-size: 1.3rem;
   }
-
   p {
     margin: 5px 0;
   }
-
   strong {
     font-weight: bold;
   }
-
-\` ;
+  hr {
+    border: 1px solid #999;
+    margin: 10px 0;
+  }
 `;
