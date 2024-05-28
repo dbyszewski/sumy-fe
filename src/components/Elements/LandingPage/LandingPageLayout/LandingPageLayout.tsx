@@ -1,14 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Footer } from '@/components/Elements/Footer';
 
 interface Props {
   children: React.ReactNode;
 }
 const Layout = ({ children }: Props) => {
   return (
+    <>
     <Container>
       <LayoutStyled>{children}</LayoutStyled>
     </Container>
+    <Footer />
+    </>
   );
 };
 

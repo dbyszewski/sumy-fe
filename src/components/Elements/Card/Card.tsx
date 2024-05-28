@@ -2,13 +2,13 @@ import { FormHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 export interface FormContainerProps extends FormHTMLAttributes<HTMLDivElement> {
-  title: string;
+  title?: string;
 }
 
 export const Card = ({ title, children, ...rest }: FormContainerProps) => {
   return (
     <Container {...rest}>
-      <Title>{title}</Title>
+      {title && <Title>{title}</Title>}
       {children}
     </Container>
   );

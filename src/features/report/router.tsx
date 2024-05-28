@@ -16,7 +16,7 @@ export const ReportRouter = () => {
             <Route path="/data" element={<ReportData />} />
             <Route path="/location" element={<LocationSelect />} />
             <Route path="/files" element={<FilesUpload />} />
-            <Route path="*" element={<h1>404-xd</h1>} />
+            <Route path="*" element={<h1>404</h1>} />
           </>
         }
       />

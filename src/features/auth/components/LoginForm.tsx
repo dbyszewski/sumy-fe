@@ -34,7 +34,7 @@ export const LoginForm = () => {
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
       // TODO: Implement login
-      alert('Login form data: ' + JSON.stringify(data));
+      // alert('Login form data: ' + JSON.stringify(data));
       navigate('/');
     } catch (error) {
       // TODO: Handle error depending on backend response

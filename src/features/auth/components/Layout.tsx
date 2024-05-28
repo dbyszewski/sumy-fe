@@ -1,10 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Card } from '@/components/Elements/Card';
+
 export const Layout = () => {
   return (
     <Container>
-      <Outlet />
+      <Card>
+        <Outlet />
+      </Card>
     </Container>
   );
 };

@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 export const Footer = () => {
-  return <FooterContainer>Sumy - aplikacja 112. {new Date().getFullYear()}</FooterContainer>;
+  return (
+    <FooterContainer>Sumy - aplikacja SafelyAround. {new Date().getFullYear()}</FooterContainer>
+  );
 };
 
 const FooterContainer = styled.footer`
