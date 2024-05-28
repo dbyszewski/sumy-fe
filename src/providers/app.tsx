@@ -13,7 +13,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center w-screen h-screen">
+        <div>
           Loading...
           {/* TODO: Change to spinner */}
         </div>

@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant: 'primary' | 'secondary';
   size: 'sm' | 'md' | 'lg';
-};
+}
 
 const sizes = {
   sm: [2, 4],

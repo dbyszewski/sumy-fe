@@ -1,5 +1,3 @@
-import { faImages } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -10,19 +8,18 @@ export const Header = () => {
     <HeaderContainer>
       <StyledLink to={'/'}>
         <Logo />
-        <h1>SafelyAround - panel administratora</h1>
+        <Title>SafelyAround</Title>
       </StyledLink>
     </HeaderContainer>
   );
 };
 
 const HeaderContainer = styled.header`
-  position: sticky;
   height: 4rem;
-  top: 0;
-  z-index: 50;
   width: 100%;
-  background-color: ${({ theme }) => theme.colors.elements.dark};
+  background-color: ${({ theme }) => theme.colors.navigation.darkRed};
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 1rem 0;
 `;
 
 const StyledLink = styled(Link)`
@@ -32,5 +29,10 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${({ theme }) => theme.colors.text.light};
   align-items: center;
-  margin-left: 2rem;
+`;
+
+const Title = styled.h1`
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.text.light};
 `;
