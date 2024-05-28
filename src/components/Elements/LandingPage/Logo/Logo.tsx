@@ -1,14 +1,29 @@
 import styled from 'styled-components';
 
-import logoImg from '@/assets/Logo.png';
+import logoSvg from '@/assets/Logo.svg';
 
-const Logo = () => {
-  return <LogoStyled src={logoImg} alt="Logo 112" />;
+interface LogoProps {
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const Logo = ({ size }: LogoProps) => {
+  return <LogoStyled src={logoSvg} alt="Logo 112" size={size} />;
 };
 
-const LogoStyled = styled.img`
+const LogoStyled = styled.img<LogoProps>`
   width: auto;
-  height: 10rem;
+  height: ${({ size }) => {
+    switch (size) {
+      case 'sm':
+        return '2rem';
+      case 'md':
+        return '5rem';
+      case 'lg':
+        return '20rem';
+      default:
+        return '5rem';
+    }
+  }};
 `;
 
 export default Logo;

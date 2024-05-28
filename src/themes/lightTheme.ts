@@ -16,9 +16,9 @@ export const lightTheme = Object.assign({}, mainTheme, {
     buttonsText: '#ffffff',
     buttonsFontWeight: 'bold',
     elements: {
-      light: '#8bc34a',
-      dark: '#689f38',
-      brightLight: '#DCEDC8',
+      light: '#b91c1c',
+      dark: '#991b1b',
+      brightLight: '#fca5a5',
     },
     text: {
       dark: '#000000',

@@ -4,7 +4,7 @@ import Axios from 'axios';
 
 export const axios = Axios.create({
   // TODO: Change this to the actual API URL
-  baseURL: 'http://85.89.171.114:5000',
+  baseURL: 'http://localhost:5000',
 });
 
 // axios.interceptors.request.use((config) => {

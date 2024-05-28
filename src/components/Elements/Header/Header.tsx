@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import Logo from '@/components/Elements/LandingPage/Logo/Logo.tsx';
+
 export const Header = () => {
   return (
     <HeaderContainer>
       <StyledLink to={'/'}>
-        <FontAwesomeIcon icon={faImages} size="2xl" />
+        <Logo />
         <h1>112 - panel administratora</h1>
       </StyledLink>
     </HeaderContainer>
