@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Footer } from '@/components/Elements/Footer';
-import { Navbar } from '@/components/Elements/Navbar';
+import { Footer } from '@/components/Elements/Navigation/Footer';
+import { Navbar } from '@/components/Elements/Navigation/Navbar';
 
 export const Layout = () => {
   return (
@@ -28,9 +28,12 @@ const Container = styled.div`
 const InterContainer = styled.div`
   display: flex;
   flex: 1 1 0;
+  width: 100%;
+  overflow: hidden;
 `;
 
 const MainComponent = styled.main`
-  overflow-y: auto;
+  overflow-y: scroll;
   padding: 2rem;
+  width: 100%;
 `;

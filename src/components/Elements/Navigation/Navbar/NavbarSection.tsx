@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { NavbarItem, NavbarItemProps } from '@/components/Elements/Navbar/NavbarItem.tsx';
+import { NavbarItem, NavbarItemProps } from './NavbarItem';
 
 export interface NavbarSectionProps {
   title: string;

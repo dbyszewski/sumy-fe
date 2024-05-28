@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Footer } from '@/components/Elements/Footer';
+
+import { Footer } from '@/components/Elements/Navigation/Footer';
 
 interface Props {
   children: React.ReactNode;
@@ -8,10 +9,10 @@ interface Props {
 const Layout = ({ children }: Props) => {
   return (
     <>
-    <Container>
-      <LayoutStyled>{children}</LayoutStyled>
-    </Container>
-    <Footer />
+      <Container>
+        <LayoutStyled>{children}</LayoutStyled>
+      </Container>
+      <Footer />
     </>
   );
 };

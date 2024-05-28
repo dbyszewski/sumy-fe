@@ -32,7 +32,7 @@ export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
         longitude: reportLocation.lng,
       };
       console.log('requestBody', requestBody);
-      const response = await axios.post('/home/events', requestBody);
+      const response = await axios.post('/events', requestBody);
       console.log('response', response);
       navigate('/');
       localStorage.clear();
