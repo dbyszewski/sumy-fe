@@ -10,6 +10,7 @@ import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/St
 import { axios } from '@/lib/axios.ts';
 import nullable from '@/types/nullable.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
+import { renderVisibility } from '@/utils/tableHelper';
 
 interface Event {
   eventID: number;
@@ -19,6 +20,7 @@ interface Event {
   eventDate: string;
   reportDate: string;
   status: 'pending' | 'accepted' | 'rejected';
+  visibility: boolean;
   longitude: number;
   latitude: number;
 }
@@ -82,6 +84,10 @@ export const EventDetailsCard = () => {
           <ColumnRight>
             <StatusIconWithTooltip status={event.status} colored />
           </ColumnRight>
+        </Row>
+        <Row>
+          <ColumnLeft>Widoczność:</ColumnLeft>
+          <ColumnRight>{renderVisibility(event.visibility)}</ColumnRight>
         </Row>
         <MapContainer>
           <SingleEventMap position={{ lat: event.latitude, lng: event.longitude }} />
