@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
-export const Button = ({
+export const EmergencyButton = ({
   children,
   ...rest
 }: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>) => {
@@ -9,21 +9,22 @@ export const Button = ({
 };
 
 const StyledButton = styled.button`
-  padding: 0.5rem 1rem;
+  padding: 1rem 1.5rem;
   width: 100%;
-  border-radius: 0.5rem;
-  background-color: ${({ theme }) => theme.colors.navigation.dark};
+  border-radius: 0.75rem;
+  background-color: ${({ theme }) => theme.colors.navigation.darkRed};
   color: ${({ theme }) => theme.colors.text.light};
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   display: flex;
   border: 1px solid transparent;
   justify-content: center;
   gap: 0.5rem;
   &:hover {
-    background-color: ${({ theme }) => theme.colors.navigation.darkRed};
+    opacity: 0.8;
+    transform: scale(1.1);
   }
 `;

@@ -2,6 +2,7 @@ import { ReactNode, Suspense } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
+import AuthProvider from '@/providers/AuthProvider.tsx';
 import { GlobalStyles, lightTheme } from '@/themes';
 
 type AppProviderProps = {
@@ -20,7 +21,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       }>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <Router>{children}</Router>
+        <Router>
+          <AuthProvider>{children}</AuthProvider>
+        </Router>
       </ThemeProvider>
     </Suspense>
   );

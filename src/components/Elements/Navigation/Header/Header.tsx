@@ -26,7 +26,6 @@ const StyledLink = styled(Link)`
   height: 100%;
   display: flex;
   gap: 1rem;
-  text-decoration: none;
   color: ${({ theme }) => theme.colors.text.light};
   align-items: center;
 `;
