@@ -11,7 +11,7 @@ type EventMapProps = {
   position: Nullable<Position>;
 };
 
-export const AdminEventMap = ({ position }: EventMapProps) => {
+export const SingleEventMap = ({ position }: EventMapProps) => {
   if (!position) {
     //TODO: add spinner
     return <div>Wczytywanie...</div>;
@@ -19,7 +19,7 @@ export const AdminEventMap = ({ position }: EventMapProps) => {
 
   const marker = {
     position,
-    draggable: false, // Ustawienie draggable na false
+    draggable: false,
   };
 
   return (
