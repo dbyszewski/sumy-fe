@@ -1,23 +1,32 @@
-import { faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 
-import { Tooltip } from '@/components/Elements/Tooltip.tsx';
-import { EventDetailsCard } from '@/features/admin/adminPanel/components/EventDetailsCard.tsx';
-import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
+import { Table, ActionProps, ColumnProps, TableLink } from '@/components/Elements/Table';
+import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip';
 import { axios } from '@/lib/axios.ts';
-import { formatDateTime } from '@/utils/dateHelper.ts';
+import { formatDateTime } from '@/utils/dateHelper';
+import { renderEllipsis } from '@/utils/tableHelper';
+
+interface Event {
+  eventID: number;
+  phone: string;
+  title: string;
+  description: string;
+  eventDate: string;
+  reportDate: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  longitude: number;
+  latitude: number;
+}
 
 export const AdminTableEvents = () => {
-  const [tableData, setTableData] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [tableData, setTableData] = useState<Array<Event>>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/home/events/?skip=0&limit=25');
-        setTableData(response.data.result);
+        const response = await axios.get('/events/');
+        setTableData(response.data.result as Array<Event>);
       } catch (error) {
         console.error('Błąd podczas pobierania danych:', error);
       }
@@ -26,22 +35,56 @@ export const AdminTableEvents = () => {
     fetchData();
   }, []);
 
-  const handleTitleClick = async (eventId) => {
-    try {
-      const response = await axios.get(`/home/events/${eventId}`);
-      setSelectedEvent(response.data.result);
-    } catch (error) {
-      console.error('Błąd podczas pobierania szczegółów zgłoszenia:', error);
-    }
-  };
+  const columns: Array<ColumnProps<Event>> = [
+    {
+      key: 'title',
+      title: 'Tytuł',
+      render: (_, item) => <TableLink to={`/admin/events/${item.eventID}`}>{item.title}</TableLink>,
+    },
+    {
+      key: 'description',
+      title: 'Opis',
+      render: (_, item) => renderEllipsis(item.description),
+    },
+    {
+      key: 'status',
+      title: 'Status',
+      render: (_, item) => <StatusIconWithTooltip status={item.status} colored />,
+    },
+    {
+      key: 'eventDate',
+      title: 'Data zdarzenia',
+      render: (_, item) => formatDateTime(item.eventDate),
+    },
+    {
+      key: 'reportDate',
+      title: 'Data zgłoszenia',
+      render: (_, item) => formatDateTime(item.reportDate),
+    },
+  ];
 
-  const handleCloseCard = () => {
-    setSelectedEvent(null);
-  };
+  const actions: Array<ActionProps<Event>> = [
+    {
+      key: 'accept',
+      title: 'Zatwierdź',
+      icon: faCheck,
+      hidden: (item) => item.status === 'accepted',
+      onClick: (item) => handleApprove(item.eventID),
+      colorVariant: 'success',
+    },
+    {
+      key: 'reject',
+      title: 'Odrzuć',
+      icon: faXmark,
+      hidden: (item) => item.status === 'rejected',
+      onClick: (item) => handleReject(item.eventID),
+      colorVariant: 'danger',
+    },
+  ];
 
-  const handleApprove = async (eventId) => {
+  const handleApprove = async (eventId: number) => {
     try {
-      await axios.put(`/home/events/approve/${eventId}`);
+      await axios.put(`/events/approve/${eventId}`);
       setTableData((prevData) =>
         prevData.map((event) =>
           event.eventID === eventId ? { ...event, status: 'accepted' } : event
@@ -52,9 +95,9 @@ export const AdminTableEvents = () => {
     }
   };
 
-  const handleReject = async (eventId) => {
+  const handleReject = async (eventId: number) => {
     try {
-      await axios.put(`/home/events/reject/${eventId}`);
+      await axios.put(`/events/reject/${eventId}`);
       setTableData((prevData) =>
         prevData.map((event) =>
           event.eventID === eventId ? { ...event, status: 'rejected' } : event
@@ -65,101 +108,5 @@ export const AdminTableEvents = () => {
     }
   };
 
-  return (
-    <div>
-      <StyledTable>
-        <thead>
-          <tr>
-            <th>Tytuł</th>
-            <th>Opis</th>
-            <th>Nazwa użytkownika</th>
-            <th>Numer telefonu</th>
-            <th>Data zdarzenia</th>
-            <th>Data zgłoszenia</th>
-            <th>Status</th>
-            <th colSpan={2}>Akcje</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tableData.map((row, index) => (
-            <tr key={index}>
-              <td className={'overflowed linked'} onClick={() => handleTitleClick(row.eventID)}>
-                {row.title}
-              </td>
-              <td className={'overflowed'}>{row.description}</td>
-              <td>{row.userName}</td>
-              <td>{row.phone}</td>
-              <td>{formatDateTime(row.eventDate)}</td>
-              <td>{formatDateTime(row.reportDate)}</td>
-              <td>
-                <StatusIconWithTooltip status={row.status} />
-              </td>
-              <td>
-                {(row.status === 'pending' || row.status === 'rejected') && (
-                  <p>
-                    <Icon onClick={() => handleApprove(row.eventID)}>
-                      <Tooltip message={'Potwierdź'}>
-                        <FontAwesomeIcon icon={faCheckCircle} />
-                      </Tooltip>
-                    </Icon>
-                  </p>
-                )}
-                {(row.status === 'pending' || row.status === 'accepted') && (
-                  <p>
-                    <Icon onClick={() => handleReject(row.eventID)}>
-                      <Tooltip message={'Odrzuć'}>
-                        <FontAwesomeIcon icon={faCircleXmark} />
-                      </Tooltip>
-                    </Icon>
-                  </p>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </StyledTable>
-      {selectedEvent && <EventDetailsCard event={selectedEvent} onClose={handleCloseCard} />}
-    </div>
-  );
+  return <Table columns={columns} data={tableData} actions={actions} maxRows={10} />;
 };
-
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid ${({ theme }) => theme.colors.elements.dark};
-  border-radius: 1rem;
-  overflow: hidden;
-  th,
-  td {
-    padding: 1rem;
-    text-align: center;
-  }
-
-  tr {
-    background-color: ${({ theme }) => theme.colors.elements.light};
-    color: ${({ theme }) => theme.colors.text.light};
-  }
-
-  th {
-    background-color: ${({ theme }) => theme.colors.elements.dark};
-    color: ${({ theme }) => theme.colors.text.light};
-  }
-
-  tbody tr:nth-child(even) {
-    background-color: ${({ theme }) => theme.colors.elements.brightLight};
-  }
-  .overflowed {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
-  }
-  .linked {
-    cursor: pointer;
-    font-weight: bold;
-  }
-`;
-
-const Icon = styled.i`
-  cursor: pointer;
-`;

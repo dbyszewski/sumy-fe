@@ -5,6 +5,11 @@ export const lightTheme = Object.assign({}, mainTheme, {
     buttons: {
       primary: '#0ea5e9',
       secondary: '#ef4444',
+      warning: '#f59e0b',
+      success: '#10b981',
+      danger: '#ef4444',
+      disabled: '#d4d4d4',
+      default: 'inherit',
     },
     background: '#f5f5f4',
     error: '#F52C23',

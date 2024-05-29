@@ -1,9 +1,12 @@
 import { faBan, faClock, faThumbsUp, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styled from 'styled-components';
 
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 
-export const getStatusMappedName = (status) => {
+type Status = 'pending' | 'accepted' | 'rejected';
+
+export const getStatusMappedName = (status: Status) => {
   switch (status) {
     case 'pending':
       return 'Oczekujący';
@@ -16,7 +19,7 @@ export const getStatusMappedName = (status) => {
   }
 };
 
-const getStatusIcon = (status) => {
+const getStatusIcon = (status: Status) => {
   switch (status) {
     case 'pending':
       return faClock;
@@ -29,10 +32,35 @@ const getStatusIcon = (status) => {
   }
 };
 
-export const StatusIconWithTooltip = ({ status }) => {
+const statusToColor = (status: Status) => {
+  switch (status) {
+    case 'pending':
+      return 'default';
+    case 'accepted':
+      return 'success';
+    case 'rejected':
+      return 'danger';
+    default:
+      return 'warning';
+  }
+};
+
+interface StatusIconWithTooltipProps {
+  status: Status;
+  colored: boolean;
+}
+
+export const StatusIconWithTooltip = ({ status, colored }: StatusIconWithTooltipProps) => {
   return (
     <Tooltip message={getStatusMappedName(status)}>
-      <FontAwesomeIcon icon={getStatusIcon(status)} />
+      <ColoredDiv colored={colored} status={status}>
+        <FontAwesomeIcon icon={getStatusIcon(status)} />
+      </ColoredDiv>
     </Tooltip>
   );
 };
+
+const ColoredDiv = styled.div<StatusIconWithTooltipProps>`
+  color: ${({ colored, status, theme }) =>
+    colored ? theme.colors.buttons[statusToColor(status)] : 'inherit'};
+`;

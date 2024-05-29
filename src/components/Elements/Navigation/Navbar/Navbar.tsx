@@ -9,8 +9,9 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
-import { Header } from '@/components/Elements/Header';
-import { NavbarSection } from '@/components/Elements/Navbar/NavbarSection.tsx';
+import { NavbarSection } from './NavbarSection';
+
+import { Header } from '@/components/Elements/Navigation/Header';
 
 const MOCK_NAV_DATA = [
   {
@@ -64,7 +65,7 @@ export const Navbar = () => {
         <LogOutContainer>
           <LogOutButton>
             <FontAwesomeIcon icon={faRightFromBracket} />
-            Wyloguj
+            Wyloguj się
           </LogOutButton>
         </LogOutContainer>
       </StyledNavigation>

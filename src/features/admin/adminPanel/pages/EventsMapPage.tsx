@@ -10,7 +10,7 @@ export const EventsMapPage = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('/home/events/?skip=0&limit=25');
+        const response = await axios.get('/events');
         const eventsData = response.data.result;
         setEvents(eventsData);
       } catch (error) {
