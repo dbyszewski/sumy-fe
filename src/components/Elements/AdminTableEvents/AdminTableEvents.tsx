@@ -1,7 +1,7 @@
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 
-import { Table, ActionProps, ColumnProps } from '@/components/Elements/Table';
+import { Table, ActionProps, ColumnProps, TableLink } from '@/components/Elements/Table';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip';
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper';
@@ -39,6 +39,7 @@ export const AdminTableEvents = () => {
     {
       key: 'title',
       title: 'Tytuł',
+      render: (_, item) => <TableLink to={`/admin/events/${item.eventID}`}>{item.title}</TableLink>,
     },
     {
       key: 'description',

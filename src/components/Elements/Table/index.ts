@@ -1,1 +1,2 @@
-export * from './Table.tsx';
+export * from './Table';
+export * from './TableLink';
