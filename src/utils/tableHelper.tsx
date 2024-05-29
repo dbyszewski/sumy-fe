@@ -15,7 +15,7 @@ export const renderBoolean = (value: boolean) => {
 export const renderEllipsis = (value: string) => {
   return (
     <Tooltip message={value}>
-      <div style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{value}</div>
+      <div style={{ maxWidth: '20rem', overflow: 'hidden', textOverflow: 'ellipsis' }}>{value}</div>
     </Tooltip>
   );
 };

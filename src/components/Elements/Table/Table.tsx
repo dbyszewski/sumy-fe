@@ -108,6 +108,7 @@ const TableContainer = styled.div<{ maxrows?: number }>`
   height: ${({ maxrows }) => (maxrows ? `${(maxrows + 1) * ROW_SIZE}rem` : 'auto')};
   border-radius: 1rem;
   position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 const StyledTable = styled.table`
@@ -147,7 +148,7 @@ const TableRow = styled.tr`
 
 const TableCell = styled.td`
   padding: 1rem;
-  max-width: 200px;
+  max-width: 25rem;
   text-overflow: ellipsis;
   text-align: left;
   text-wrap: nowrap;
