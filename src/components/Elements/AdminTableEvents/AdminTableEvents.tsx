@@ -5,7 +5,7 @@ import { Table, ActionProps, ColumnProps, TableLink } from '@/components/Element
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip';
 import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper';
-import { renderEllipsis } from '@/utils/tableHelper';
+import { renderEllipsis, renderVisibility } from '@/utils/tableHelper';
 
 interface Event {
   eventID: number;
@@ -15,6 +15,7 @@ interface Event {
   eventDate: string;
   reportDate: string;
   status: 'pending' | 'accepted' | 'rejected';
+  visibility: boolean;
   longitude: number;
   latitude: number;
 }
@@ -50,6 +51,11 @@ export const AdminTableEvents = () => {
       key: 'status',
       title: 'Status',
       render: (_, item) => <StatusIconWithTooltip status={item.status} colored />,
+    },
+    {
+      key: 'visibility',
+      title: 'Widoczność',
+      render: (_, item) => renderVisibility(item.visibility),
     },
     {
       key: 'eventDate',
