@@ -47,7 +47,7 @@ const statusToColor = (status: Status) => {
 
 interface StatusIconWithTooltipProps {
   status: Status;
-  colored?: boolean;
+  colored: boolean;
 }
 
 export const StatusIconWithTooltip = ({ status, colored }: StatusIconWithTooltipProps) => {

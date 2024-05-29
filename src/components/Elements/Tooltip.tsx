@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import styled from 'styled-components';
 
-export const Tooltip = ({ children, message }) => {
+interface TooltipProps {
+  children: ReactNode;
+  message: string;
+}
+
+export const Tooltip = ({ children, message }: TooltipProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
@@ -30,4 +35,5 @@ const TooltipText = styled.span`
   bottom: 125%;
   left: 50%;
   transform: translateX(-50%);
+  word-break: normal;
 `;

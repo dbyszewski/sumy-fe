@@ -11,7 +11,7 @@ export interface NavbarItemProps {
 }
 
 export const NavbarItem = ({ title, href, icon }: NavbarItemProps) => {
-  const isActive = window.location.pathname === href;
+  const isActive = window.location.pathname.includes(href);
   return (
     <StyledLink to={href} active={isActive}>
       <FontAwesomeIcon icon={icon} />

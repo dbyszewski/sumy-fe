@@ -34,9 +34,7 @@ export const AppRoutes = () => {
 
   const routes = determineRoutes(auth);
 
-  const element = useRoutes([...routes, ...commonRoutes]);
-
-  return <>{element}</>;
+  return useRoutes([...routes, ...commonRoutes]);
 };
 
 const determineRoutes = (auth: AuthType) => {

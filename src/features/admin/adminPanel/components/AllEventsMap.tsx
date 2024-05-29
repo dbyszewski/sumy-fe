@@ -20,7 +20,7 @@ type Event = {
   longitude: number;
   eventDate: string;
   reportDate: string;
-  status: string;
+  status: 'pending' | 'accepted' | 'rejected';
 };
 
 type EventsMapProps = {
