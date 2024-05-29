@@ -62,10 +62,17 @@ export const Table = <T,>({ data, columns, actions, maxRows }: Props<T>) => {
                   return null;
                 }
                 return icon ? (
-                  <Icon onClick={() => onClick(row as T)} variant={colorVariant}>
-                    <Tooltip message={title}>
+                  <Icon
+                    key={`action-${index}`}
+                    onClick={() => onClick(row as T)}
+                    variant={colorVariant}>
+                    {typeof title === 'string' ? (
+                      <Tooltip message={title}>
+                        <FontAwesomeIcon icon={icon} />
+                      </Tooltip>
+                    ) : (
                       <FontAwesomeIcon icon={icon} />
-                    </Tooltip>
+                    )}
                   </Icon>
                 ) : (
                   <button key={`action-${index}`} onClick={() => onClick(row as T)}>
@@ -81,7 +88,7 @@ export const Table = <T,>({ data, columns, actions, maxRows }: Props<T>) => {
   );
 
   return (
-    <TableContainer maxRows={maxRows}>
+    <TableContainer maxrows={maxRows}>
       <StyledTable>
         <TableHeader>
           <tr>
@@ -89,19 +96,19 @@ export const Table = <T,>({ data, columns, actions, maxRows }: Props<T>) => {
             {actions && <TableHeaderCell>Akcje</TableHeaderCell>}
           </tr>
         </TableHeader>
-
         <tbody>{rows}</tbody>
       </StyledTable>
     </TableContainer>
   );
 };
 
-const TableContainer = styled.div<{ maxRows?: number }>`
+const TableContainer = styled.div<{ maxrows?: number }>`
   width: 100%;
   overflow-x: auto;
-  height: ${({ maxRows }) => (maxRows ? `${maxRows * ROW_SIZE}rem` : 'auto')};
+  height: ${({ maxrows }) => (maxrows ? `${(maxrows + 1) * ROW_SIZE}rem` : 'auto')};
   border-radius: 1rem;
   position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 const StyledTable = styled.table`
@@ -118,6 +125,7 @@ const TableHeader = styled.thead`
   top: 0;
   margin: 0;
   z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const TableHeaderCell = styled.th`
@@ -131,6 +139,7 @@ const TableHeaderCell = styled.th`
 const TableRow = styled.tr`
   background-color: ${({ theme }) => theme.colors.elements.light};
   color: ${({ theme }) => theme.colors.text.dark};
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   &:nth-child(even) {
     background-color: ${({ theme }) => theme.colors.elements.brightLight};
@@ -139,7 +148,7 @@ const TableRow = styled.tr`
 
 const TableCell = styled.td`
   padding: 1rem;
-  max-width: 200px;
+  max-width: 25rem;
   text-overflow: ellipsis;
   text-align: left;
   text-wrap: nowrap;

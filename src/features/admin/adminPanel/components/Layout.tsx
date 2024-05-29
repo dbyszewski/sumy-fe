@@ -33,7 +33,7 @@ const InterContainer = styled.div`
 `;
 
 const MainComponent = styled.main`
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 2rem;
   width: 100%;
 `;
