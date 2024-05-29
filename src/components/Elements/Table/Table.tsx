@@ -99,7 +99,7 @@ export const Table = <T,>({ data, columns, actions, maxRows }: Props<T>) => {
 const TableContainer = styled.div<{ maxRows?: number }>`
   width: 100%;
   overflow-x: auto;
-  height: ${({ maxRows }) => (maxRows ? `${maxRows * ROW_SIZE}rem` : 'auto')};
+  height: ${({ maxRows }) => (maxRows ? `${(maxRows + 1) * ROW_SIZE}rem` : 'auto')};
   border-radius: 1rem;
   position: relative;
 `;
