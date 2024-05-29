@@ -1,4 +1,4 @@
-import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
@@ -18,6 +18,9 @@ export const renderEllipsis = (value: string) => {
       <div style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{value}</div>
     </Tooltip>
   );
+};
+export const renderVisibility = (value: boolean) => {
+  return value ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />;
 };
 
 const StyledIcon = styled(FontAwesomeIcon)<{ value: boolean }>`
