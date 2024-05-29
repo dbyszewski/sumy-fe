@@ -26,4 +26,9 @@ const StyledButton = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.colors.navigation.darkRed};
   }
+  &:disabled {
+    background-color: ${({ theme }) => theme.colors.navigation.light};
+    color: ${({ theme }) => theme.colors.text.dark};
+    cursor: not-allowed;
+  }
 `;

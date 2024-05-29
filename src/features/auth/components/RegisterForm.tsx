@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -6,16 +7,24 @@ import * as yup from 'yup';
 import { Button } from '@/components/Elements/Button';
 import { FormContainer } from '@/components/Elements/Form/Container';
 import { TextInput } from '@/components/Elements/InputFields/Text';
+import { axios } from '@/lib/axios.ts';
 
 interface IFormInput {
   email: string;
+  userName?: string;
+  phone: string;
   password: string;
   confirmPassword: string;
 }
 
 const schema = yup
   .object({
+    userName: yup.string().optional(),
     email: yup.string().email('Musi być poprawnym emailem').required('Email jest wymagany'),
+    phone: yup
+      .string()
+      .required('Numer telefonu jest wymagany')
+      .matches(/^\+48\d{9}$/, 'Niepoprawny numer telefonu'),
     password: yup
       .string()
       .min(6, 'Hasło musi mieć co najmniej 6 znaków')
@@ -29,23 +38,23 @@ const schema = yup
   .required();
 
 export const RegisterForm = () => {
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitted },
     control,
   } = useForm<IFormInput>({ resolver: yupResolver(schema) });
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      // alert('Register form data: ' + JSON.stringify(data));
-      // TODO: Implement login
-      navigate('/');
+      const response = await axios.post('/users', data);
+      console.log(response);
+      navigate('/auth/login');
     } catch (error) {
       // TODO: Handle error depending on backend response
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -53,9 +62,28 @@ export const RegisterForm = () => {
     <FormContainer title="Rejestracja" onSubmit={handleSubmit(onSubmit)}>
       <Controller
         render={({ field }) => (
+          <TextInput
+            label="Nazwa Użytkownika"
+            size="md"
+            {...field}
+            error={errors.userName?.message}
+          />
+        )}
+        name="userName"
+        control={control}
+      />
+      <Controller
+        render={({ field }) => (
           <TextInput label="Email" size="md" {...field} error={errors.email?.message} />
         )}
         name="email"
+        control={control}
+      />
+      <Controller
+        render={({ field }) => (
+          <TextInput label="Numer telefonu" size="md" {...field} error={errors.phone?.message} />
+        )}
+        name="phone"
         control={control}
       />
       <Controller
@@ -84,9 +112,7 @@ export const RegisterForm = () => {
         name="confirmPassword"
         control={control}
       />
-      <Button size="md" variant="primary">
-        Zarejestruj się
-      </Button>
+      <Button disabled={loading || (isSubmitted && !isValid)}>Zarejestruj się</Button>
     </FormContainer>
   );
 };
