@@ -26,13 +26,16 @@ type Props<T> = {
   columns: Array<ColumnProps<T>>;
   actions?: Array<ActionProps<T>>;
   data?: T[];
+  maxRows?: number;
 };
 
 type TableIconProps = {
   variant?: Variant;
 };
 
-export const Table = <T,>({ data, columns, actions }: Props<T>) => {
+const ROW_SIZE = 3.5; // rem
+
+export const Table = <T,>({ data, columns, actions, maxRows }: Props<T>) => {
   const headers = columns.map((column, index) => {
     return <TableHeaderCell key={`headCell-${index}`}>{column.title}</TableHeaderCell>;
   });
@@ -78,32 +81,48 @@ export const Table = <T,>({ data, columns, actions }: Props<T>) => {
   );
 
   return (
-    <div>
+    <TableContainer maxRows={maxRows}>
       <StyledTable>
-        <thead>
+        <TableHeader>
           <tr>
             {headers}
             {actions && <TableHeaderCell>Akcje</TableHeaderCell>}
           </tr>
-        </thead>
+        </TableHeader>
 
         <tbody>{rows}</tbody>
       </StyledTable>
-    </div>
+    </TableContainer>
   );
 };
+
+const TableContainer = styled.div<{ maxRows?: number }>`
+  width: 100%;
+  overflow-x: auto;
+  height: ${({ maxRows }) => (maxRows ? `${maxRows * ROW_SIZE}rem` : 'auto')};
+  border-radius: 1rem;
+  position: relative;
+`;
 
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   border-radius: 1rem;
-  overflow: hidden;
+  overflow: scroll;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   height: 1px;
 `;
 
+const TableHeader = styled.thead`
+  position: sticky;
+  top: 0;
+  margin: 0;
+  z-index: 10;
+`;
+
 const TableHeaderCell = styled.th`
   padding: 1rem;
+  height: ${ROW_SIZE}rem;
   text-align: left;
   background-color: ${({ theme }) => theme.colors.elements.dark};
   color: ${({ theme }) => theme.colors.text.light};
@@ -124,6 +143,7 @@ const TableCell = styled.td`
   text-overflow: ellipsis;
   text-align: left;
   text-wrap: nowrap;
+  height: ${ROW_SIZE}rem;
 `;
 
 const ActionsCell = styled.td`

@@ -107,5 +107,5 @@ export const AdminTableEvents = () => {
     }
   };
 
-  return <Table columns={columns} data={tableData} actions={actions} />;
+  return <Table columns={columns} data={tableData} actions={actions} maxRows={10} />;
 };
