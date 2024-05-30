@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { UserEventsTable } from '@/features/user/userPanel/components/EventsTab/UserTableEvents/UserEventsTable.tsx';
+import { UserEventsTable } from '@/features/user/userPanel/components/EventsTab/UserEventsTable/UserEventsTable.tsx';
 
 const meta = {
   title: 'Components/ELements/UserEventsTable',
