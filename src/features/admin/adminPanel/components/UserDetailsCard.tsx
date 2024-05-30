@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { Title } from '@/components/Elements/Headers/Title';
 import { axios } from '@/lib/axios.ts';
 import nullable from '@/types/nullable.ts';
+import { formatDateTime } from '@/utils/dateHelper.ts';
 import { renderBoolean } from '@/utils/tableHelper';
 
 interface User {
@@ -84,8 +85,12 @@ export const UserDetailsCard = () => {
           <ColumnRight>{renderBoolean(user.isAdmin)}</ColumnRight>
         </Row>
         <Row>
+          <ColumnLeft>Zablokowany:</ColumnLeft>
+          <ColumnRight>{renderBoolean(user.lockedAt)}</ColumnRight>
+        </Row>
+        <Row>
           <ColumnLeft>Data zablokowania:</ColumnLeft>
-          <ColumnRight>{user.lockedAt}</ColumnRight>
+          <ColumnRight>{formatDateTime(user.lockedAt)}</ColumnRight>
         </Row>
       </RowsContainer>
     </Content>

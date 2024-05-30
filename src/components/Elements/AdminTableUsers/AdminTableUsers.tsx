@@ -38,7 +38,7 @@ export const AdminTableUsers = () => {
       key: 'userName',
       title: 'Nazwa użytkownika',
       render: (_, item) => (
-        <TableLink to={`/admin/users/${item.userID}`}>{renderEllipsis(item.userName)}</TableLink>
+        <TableLink to={`/admin/users/${item.userID}`}>{item.userName}</TableLink>
       ),
     },
     {
