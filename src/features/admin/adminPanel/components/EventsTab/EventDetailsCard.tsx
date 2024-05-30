@@ -4,9 +4,10 @@ import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { SingleEventMap } from './SingleEventMap';
+
 import { useEvent } from '@/api/events/get-event.ts';
 import { Title } from '@/components/Elements/Headers/Title';
-import { SingleEventMap } from '@/features/admin/adminPanel/components/SingleEventMap.tsx';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 import { renderVisibility } from '@/utils/tableHelper';

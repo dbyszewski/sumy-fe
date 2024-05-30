@@ -1,17 +1,17 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { AdminTableUsers } from './AdminTableUsers.tsx';
+import { AdminUsersTable } from './AdminUsersTable.tsx';
 
 const meta = {
-  title: 'Components/ELements/AdminTableUsers',
-  component: AdminTableUsers,
+  title: 'Components/ELements/AdminUsersTable',
+  component: AdminUsersTable,
   parameters: {
     layout: 'centered',
     controls: { expanded: true },
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof AdminTableUsers>;
+} satisfies Meta<typeof AdminUsersTable>;
 export default meta;
 
-type TableStory = StoryObj<typeof AdminTableUsers>;
+type TableStory = StoryObj<typeof AdminUsersTable>;
 export const Standard: TableStory = {};

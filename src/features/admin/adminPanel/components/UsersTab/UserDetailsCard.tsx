@@ -1,7 +1,7 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Title } from '@/components/Elements/Headers/Title';
@@ -26,6 +26,7 @@ interface User {
 export const UserDetailsCard = () => {
   const [user, setUser] = useState<nullable<User>>(null);
   const { userId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,8 +42,8 @@ export const UserDetailsCard = () => {
   }, [userId]);
 
   const handleBackButtonClick = useCallback(() => {
-    window.history.back();
-  }, []);
+    navigate(-1);
+  }, [navigate]);
 
   if (!user) {
     return null;
