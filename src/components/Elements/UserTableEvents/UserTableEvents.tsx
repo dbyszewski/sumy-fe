@@ -20,7 +20,7 @@ interface Event {
   latitude: number;
 }
 
-export const AdminTableEvents = () => {
+export const UserTableEvents = () => {
   const [tableData, setTableData] = useState<Array<Event>>([]);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const AdminTableEvents = () => {
     {
       key: 'title',
       title: 'Tytuł',
-      render: (_, item) => <TableLink to={`/admin/events/${item.eventID}`}>{item.title}</TableLink>,
+      render: (_, item) => <TableLink to={`/my-events/${item.eventID}`}>{item.title}</TableLink>,
     },
     {
       key: 'description',
@@ -71,46 +71,63 @@ export const AdminTableEvents = () => {
 
   const actions: Array<ActionProps<Event>> = [
     {
-      key: 'accept',
-      title: 'Zatwierdź',
+      key: 'hide',
+      title: 'Ukryj',
       icon: faCheck,
-      hidden: (item) => item.status === 'accepted',
-      onClick: (item) => handleApprove(item.eventID),
+      hidden: (item) => !item.visibility,
+      onClick: (item) => handleVisibility(item.eventID),
+      colorVariant: 'warning',
+    },
+    {
+      key: 'show',
+      title: 'Pokaż',
+      icon: faXmark,
+      hidden: (item) => item.visibility,
+      onClick: (item) => handleVisibility(item.eventID),
       colorVariant: 'success',
     },
     {
-      key: 'reject',
-      title: 'Odrzuć',
+      key: 'delete',
+      title: 'Usuń',
       icon: faXmark,
-      hidden: (item) => item.status === 'rejected',
-      onClick: (item) => handleReject(item.eventID),
-      colorVariant: 'danger',
+      onClick: (item) => handleDelete(item.eventID),
+      colorVariant: 'secondary',
+    },
+    {
+      key: 'edit',
+      title: 'Edytuj',
+      icon: faXmark,
+      onClick: (item) => handleEdit(item.eventID),
+      colorVariant: 'primary',
     },
   ];
 
-  const handleApprove = async (eventId: number) => {
+  const handleVisibility = async (eventId: number) => {
     try {
-      await axios.patch(`/events/approve/${eventId}`);
+      await axios.patch(`/events/visibility/${eventId}`);
       setTableData((prevData) =>
         prevData.map((event) =>
-          event.eventID === eventId ? { ...event, status: 'accepted' } : event
+          event.eventID === eventId ? { ...event, visibility: !event.visibility } : event
         )
       );
     } catch (error) {
       console.error('Błąd podczas zatwierdzania zgłoszenia:', error);
     }
   };
-
-  const handleReject = async (eventId: number) => {
+  const handleEdit = async (eventId: number) => {
     try {
-      await axios.patch(`/events/reject/${eventId}`);
-      setTableData((prevData) =>
-        prevData.map((event) =>
-          event.eventID === eventId ? { ...event, status: 'rejected' } : event
-        )
-      );
+      await axios.patch(`/events/edit/${eventId}`);
     } catch (error) {
-      console.error('Błąd podczas odrzucania zgłoszenia:', error);
+      console.error('Błąd podczas edytowania zgłoszenia:', error);
+    }
+  };
+
+  const handleDelete = async (eventId: number) => {
+    try {
+      await axios.delete(`/events/${eventId}`);
+      setTableData((prevData) => prevData.filter((event) => event.eventID !== eventId));
+    } catch (error) {
+      console.error('Błąd podczas usuwania zdarzenia:', error);
     }
   };
 
