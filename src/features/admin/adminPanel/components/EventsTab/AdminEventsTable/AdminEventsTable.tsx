@@ -1,4 +1,5 @@
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import _ from 'lodash';
 
 import { useApproveEvent } from '@/api/events/approve-event.ts';
 import { useEvents } from '@/api/events/get-events';
@@ -9,7 +10,16 @@ import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/St
 import { formatDateTime } from '@/utils/dateHelper';
 import { renderEllipsis, renderVisibility } from '@/utils/tableHelper';
 
-export const AdminTableEvents = () => {
+interface AdminEventsTableProps {
+  filter?: {
+    status?: Array<Status>;
+  };
+  maxRows?: number;
+}
+
+type Status = 'pending' | 'accepted' | 'rejected';
+
+export const AdminEventsTable = ({ filter, maxRows }: AdminEventsTableProps) => {
   const eventsQuery = useEvents();
   const approveEvent = useApproveEvent({
     mutationConfig: {
@@ -95,5 +105,23 @@ export const AdminTableEvents = () => {
     }
   };
 
-  return <Table columns={columns} data={eventsQuery.data} actions={actions} maxRows={10} />;
+  const tableData = _.filter(eventsQuery.data, (event) => {
+    if (filter?.status) {
+      return filter.status.includes(event.status);
+    }
+    return true;
+  });
+
+  console.log('tableData', tableData);
+  console.log('filter', filter);
+
+  return (
+    <Table
+      columns={columns}
+      data={tableData}
+      actions={actions}
+      maxRows={maxRows}
+      isLoading={eventsQuery.isLoading}
+    />
+  );
 };
