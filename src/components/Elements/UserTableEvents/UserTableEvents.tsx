@@ -1,46 +1,45 @@
-import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { faTrash, faPenToSquare, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
+import { useChangeVisibilityEvent } from '@/api/events/change-visibility-event.ts';
+import { useDeleteEvent } from '@/api/events/delete-event.ts';
+import { useEditEvent } from '@/api/events/edit-event.ts';
+import { useEvents } from '@/api/events/get-events';
+import { Event } from '@/api/events/types';
 import { Table, ActionProps, ColumnProps, TableLink } from '@/components/Elements/Table';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip';
-import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper';
 import { renderEllipsis, renderVisibility } from '@/utils/tableHelper';
 
-interface Event {
-  eventID: number;
-  phone: string;
-  title: string;
-  description: string;
-  eventDate: string;
-  reportDate: string;
-  status: 'pending' | 'accepted' | 'rejected';
-  visibility: boolean;
-  longitude: number;
-  latitude: number;
-}
-
 export const UserTableEvents = () => {
-  const [tableData, setTableData] = useState<Array<Event>>([]);
+  const eventsQuery = useEvents();
+  const deleteEvent = useDeleteEvent({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log('Zgłoszenie usunięte');
+      },
+    },
+  });
+  const editEvent = useEditEvent({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log('Zgłoszenie zedytowane');
+      },
+    },
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/events/');
-        setTableData(response.data.result as Array<Event>);
-      } catch (error) {
-        console.error('Błąd podczas pobierania danych:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const changeVisibilityEvent = useChangeVisibilityEvent({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log('Widoczność zgłoszenia zmieniona');
+      },
+    },
+  });
 
   const columns: Array<ColumnProps<Event>> = [
     {
       key: 'title',
       title: 'Tytuł',
-      render: (_, item) => <TableLink to={`/my-events/${item.eventID}`}>{item.title}</TableLink>,
+      render: (_, item) => <TableLink to={`/admin/events/${item.eventID}`}>{item.title}</TableLink>,
     },
     {
       key: 'description',
@@ -73,7 +72,7 @@ export const UserTableEvents = () => {
     {
       key: 'hide',
       title: 'Ukryj',
-      icon: faCheck,
+      icon: faEyeSlash,
       hidden: (item) => !item.visibility,
       onClick: (item) => handleVisibility(item.eventID),
       colorVariant: 'warning',
@@ -81,7 +80,7 @@ export const UserTableEvents = () => {
     {
       key: 'show',
       title: 'Pokaż',
-      icon: faXmark,
+      icon: faEye,
       hidden: (item) => item.visibility,
       onClick: (item) => handleVisibility(item.eventID),
       colorVariant: 'success',
@@ -89,14 +88,14 @@ export const UserTableEvents = () => {
     {
       key: 'delete',
       title: 'Usuń',
-      icon: faXmark,
+      icon: faTrash,
       onClick: (item) => handleDelete(item.eventID),
       colorVariant: 'secondary',
     },
     {
       key: 'edit',
       title: 'Edytuj',
-      icon: faXmark,
+      icon: faPenToSquare,
       onClick: (item) => handleEdit(item.eventID),
       colorVariant: 'primary',
     },
@@ -104,32 +103,26 @@ export const UserTableEvents = () => {
 
   const handleVisibility = async (eventId: number) => {
     try {
-      await axios.patch(`/events/visibility/${eventId}`);
-      setTableData((prevData) =>
-        prevData.map((event) =>
-          event.eventID === eventId ? { ...event, visibility: !event.visibility } : event
-        )
-      );
+      await changeVisibilityEvent.mutateAsync(eventId);
     } catch (error) {
-      console.error('Błąd podczas zatwierdzania zgłoszenia:', error);
+      console.error('Błąd podczas zmiany widoczności zgłoszenia:', error);
     }
   };
   const handleEdit = async (eventId: number) => {
     try {
-      await axios.patch(`/events/edit/${eventId}`);
+      await editEvent.mutateAsync(eventId);
     } catch (error) {
-      console.error('Błąd podczas edytowania zgłoszenia:', error);
+      console.error('Błąd podczas edycji zgłoszenia:', error);
     }
   };
 
   const handleDelete = async (eventId: number) => {
     try {
-      await axios.delete(`/events/${eventId}`);
-      setTableData((prevData) => prevData.filter((event) => event.eventID !== eventId));
+      await deleteEvent.mutateAsync(eventId);
     } catch (error) {
       console.error('Błąd podczas usuwania zdarzenia:', error);
     }
   };
 
-  return <Table columns={columns} data={tableData} actions={actions} maxRows={10} />;
+  return <Table columns={columns} data={eventsQuery.data} actions={actions} maxRows={10} />;
 };
