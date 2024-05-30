@@ -3,7 +3,7 @@ import { faLock, faUnlock, faTrash, faUser } from '@fortawesome/free-solid-svg-i
 import { useEffect, useState } from 'react';
 
 import { Table, ColumnProps, ActionProps, TableLink } from '@/components/Elements/Table';
-import { axios } from '@/lib/axios.ts';
+import { apiClient } from '@/lib/api-client.ts';
 import Nullable from '@/types/nullable.ts';
 import { renderBoolean, renderEllipsis } from '@/utils/tableHelper';
 
@@ -24,8 +24,8 @@ export const AdminTableUsers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/users');
-        setTableData(response.data.result as Array<User>);
+        const response = await apiClient.get<never, User[]>('/users');
+        setTableData(response);
       } catch (error) {
         console.error('Błąd podczas pobierania danych:', error);
       }
@@ -38,7 +38,7 @@ export const AdminTableUsers = () => {
       key: 'userName',
       title: 'Nazwa użytkownika',
       render: (_, item) => (
-        <TableLink to={`/admin/users/${item.userID}`}>{item.userName}</TableLink>
+        <TableLink to={`/admin/users/${item.userID}`}>{renderEllipsis(item.userName)}</TableLink>
       ),
     },
     {
@@ -115,7 +115,7 @@ export const AdminTableUsers = () => {
 
   const handleLock = async (userId: number) => {
     try {
-      await axios.patch(`/users/lock/${userId}`);
+      await apiClient.patch(`/users/lock/${userId}`);
       setTableData((prevData) =>
         prevData.map((user) =>
           user.userID === userId ? { ...user, lockedAt: 'zablokowany' } : user
@@ -127,7 +127,7 @@ export const AdminTableUsers = () => {
   };
   const handleUnlock = async (userId: number) => {
     try {
-      await axios.patch(`/users/unlock/${userId}`);
+      await apiClient.patch(`/users/unlock/${userId}`);
       setTableData((prevData) =>
         prevData.map((user) => (user.userID === userId ? { ...user, lockedAt: null } : user))
       );
@@ -138,7 +138,7 @@ export const AdminTableUsers = () => {
 
   const handleDelete = async (userId: number) => {
     try {
-      await axios.delete(`/users/${userId}`);
+      await apiClient.delete(`/users/${userId}`);
       setTableData((prevData) => prevData.filter((user) => user.userID !== userId));
     } catch (error) {
       console.error('Błąd podczas usuwania użytkownika:', error);
@@ -147,7 +147,7 @@ export const AdminTableUsers = () => {
 
   const handleGrantAdmin = async (userId: number) => {
     try {
-      await axios.patch(`/users/grant_admin/${userId}`);
+      await apiClient.patch(`/users/grant_admin/${userId}`);
       setTableData((prevData) =>
         prevData.map((user) => (user.userID === userId ? { ...user, isAdmin: true } : user))
       );
@@ -158,7 +158,7 @@ export const AdminTableUsers = () => {
 
   const handleRevokeAdmin = async (userId: number) => {
     try {
-      await axios.patch(`/users/revoke_admin/${userId}`);
+      await apiClient.patch(`/users/revoke_admin/${userId}`);
       setTableData((prevData) =>
         prevData.map((user) => (user.userID === userId ? { ...user, isAdmin: false } : user))
       );

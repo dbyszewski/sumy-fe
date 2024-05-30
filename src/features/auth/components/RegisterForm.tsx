@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { Button } from '@/components/Elements/Button';
 import { FormContainer } from '@/components/Elements/Form/Container';
 import { TextInput } from '@/components/Elements/InputFields/Text';
-import { axios } from '@/lib/axios.ts';
+import { apiClient } from '@/lib/api-client.ts';
 
 interface IFormInput {
   email: string;
@@ -48,7 +48,7 @@ export const RegisterForm = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      const response = await axios.post('/users', data);
+      const response = await apiClient.post('/users', data);
       console.log(response);
       navigate('/auth/login');
     } catch (error) {

@@ -23,7 +23,7 @@ module.exports = {
         alphabetize: { order: 'asc', caseInsensitive: true },
       },
     ],
-    'linebreak-style': ['error', 'unix'],
+    'linebreak-style': ['error', 'windows'],
     'no-console': 'warn',
     'prettier/prettier': ['error', {
       "trailingComma": "es5",
@@ -35,6 +35,7 @@ module.exports = {
       "useTabs": false,
       "bracketSpacing": true,
       "semi": true,
+      "endOfLine": 'crlf',
     }, { usePrettierrc: false }],
   },
 }

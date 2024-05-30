@@ -7,21 +7,9 @@ import {
 import { useState } from 'react';
 import styled from 'styled-components';
 
+import { Event } from '@/api/events/types';
 import { getStatusMappedName } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { formatDateTime } from '@/utils/dateHelper.ts';
-
-type Event = {
-  eventID: number;
-  title: string;
-  description: string;
-  userName: string;
-  phone: string;
-  latitude: number;
-  longitude: number;
-  eventDate: string;
-  reportDate: string;
-  status: 'pending' | 'accepted' | 'rejected';
-};
 
 type EventsMapProps = {
   events: Event[];
@@ -66,9 +54,6 @@ export const AllEventsMap = ({ events }: EventsMapProps) => {
                   <h3>{`Zgłoszenie - [${event.eventID}] ${event.title}`}</h3>
                   <p>
                     <strong>Opis:</strong> {event.description}
-                  </p>
-                  <p>
-                    <strong>Nazwa użytkownika:</strong> {event.userName}
                   </p>
                   <p>
                     <strong>Numer telefonu:</strong> {event.phone}

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { Title } from '@/components/Elements/Headers/Title';
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
-import { axios } from '@/lib/axios.ts';
+import { apiClient } from '@/lib/api-client';
 import nullable from '@/types/nullable.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 import { renderBoolean } from '@/utils/tableHelper';
@@ -30,8 +30,8 @@ export const UserDetailsCard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/users/${userId}`);
-        setUser(response.data.result as User);
+        const response = await apiClient.get<never, User>(`/users/${userId}`);
+        setUser(response);
       } catch (error) {
         console.error('Błąd podczas pobierania danych:', error);
       }
