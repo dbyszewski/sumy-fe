@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Table, ColumnProps } from '@/components/Elements/Table';
+import { Table, ColumnProps, TableLink } from '@/components/Elements/Table';
 import { axios } from '@/lib/axios.ts';
 import Nullable from '@/types/nullable.ts';
 import { renderBoolean, renderEllipsis } from '@/utils/tableHelper';
@@ -23,7 +23,9 @@ export const AdminTableUsers = () => {
     {
       key: 'userName',
       title: 'Nazwa użytkownika',
-      render: (_, item) => renderEllipsis(item.userName),
+      render: (_, item) => (
+        <TableLink to={`/admin/users/${item.userID}`}>{renderEllipsis(item.userName)}</TableLink>
+      ),
     },
     {
       key: 'email',
