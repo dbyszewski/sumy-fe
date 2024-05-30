@@ -1,5 +1,5 @@
-import { AdminTableUsers } from '@/components/Elements/AdminTableUsers/AdminTableUsers.tsx';
+import { AdminUsersTable } from '../components/UsersTab/AdminUsersTable';
 
 export const AdminPanelUsers = () => {
-  return <AdminTableUsers />;
+  return <AdminUsersTable />;
 };

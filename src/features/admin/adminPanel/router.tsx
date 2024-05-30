@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { EventDetailsCard } from './components/EventsTab/EventDetailsCard';
 import { Layout } from './components/Layout.tsx';
+import { UserDetailsCard } from './components/UsersTab/UserDetailsCard';
 import { AdminPanelEvents } from './pages/AdminPanelEvents.tsx';
 
-import { EventDetailsCard } from '@/features/admin/adminPanel/components/EventDetailsCard.tsx';
-import { UserDetailsCard } from '@/features/admin/adminPanel/components/UserDetailsCard.tsx';
 import { AdminPanelUsers } from '@/features/admin/adminPanel/pages/AdminPanelUsers.tsx';
 import { EventsMapPage } from '@/features/admin/adminPanel/pages/EventsMapPage.tsx';
 

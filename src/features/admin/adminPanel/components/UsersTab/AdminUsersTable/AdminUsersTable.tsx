@@ -18,7 +18,7 @@ interface User {
   lockedAt: Nullable<string>;
 }
 
-export const AdminTableUsers = () => {
+export const AdminUsersTable = () => {
   const [tableData, setTableData] = useState<Array<User>>([]);
 
   useEffect(() => {
