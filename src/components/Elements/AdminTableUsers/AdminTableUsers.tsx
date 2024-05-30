@@ -24,8 +24,7 @@ export const AdminTableUsers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/users/');
-        console.log(response.data.result);
+        const response = await axios.get('/users');
         setTableData(response.data.result as Array<User>);
       } catch (error) {
         console.error('Błąd podczas pobierania danych:', error);
