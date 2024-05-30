@@ -88,10 +88,12 @@ export const UserDetailsCard = () => {
           <ColumnLeft>Zablokowany:</ColumnLeft>
           <ColumnRight>{renderBoolean(user.lockedAt)}</ColumnRight>
         </Row>
-        <Row>
-          <ColumnLeft>Data zablokowania:</ColumnLeft>
-          <ColumnRight>{formatDateTime(user.lockedAt)}</ColumnRight>
-        </Row>
+        {user.lockedAt && (
+          <Row>
+            <ColumnLeft>Data zablokowania:</ColumnLeft>
+            <ColumnRight>{formatDateTime(user.lockedAt)}</ColumnRight>
+          </Row>
+        )}
       </RowsContainer>
     </Content>
   );
