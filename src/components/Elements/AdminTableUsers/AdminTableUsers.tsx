@@ -25,6 +25,7 @@ export const AdminTableUsers = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/users/');
+        console.log(response.data.result);
         setTableData(response.data.result as Array<User>);
       } catch (error) {
         console.error('Błąd podczas pobierania danych:', error);
@@ -90,7 +91,7 @@ export const AdminTableUsers = () => {
       key: 'lock',
       title: 'Zablokuj',
       icon: faLock,
-      hidden: (item) => item.lockedAt === null,
+      hidden: (item) => item.lockedAt !== null,
       onClick: (item) => handleLock(item.userID),
       colorVariant: 'warning',
     },
@@ -98,7 +99,7 @@ export const AdminTableUsers = () => {
       key: 'unlock',
       title: 'Odblokuj',
       icon: faUnlock,
-      hidden: (item) => item.lockedAt !== null,
+      hidden: (item) => item.lockedAt === null,
       onClick: (item) => handleUnlock(item.userID),
       colorVariant: 'success',
     },
@@ -113,7 +114,7 @@ export const AdminTableUsers = () => {
 
   const handleLock = async (userId: number) => {
     try {
-      await axios.put(`/users/lock/${userId}`);
+      await axios.patch(`/users/lock/${userId}`);
       setTableData((prevData) =>
         prevData.map((user) =>
           user.userID === userId ? { ...user, lockedAt: 'zablokowany' } : user
@@ -125,7 +126,7 @@ export const AdminTableUsers = () => {
   };
   const handleUnlock = async (userId: number) => {
     try {
-      await axios.put(`/users/unlock/${userId}`);
+      await axios.patch(`/users/unlock/${userId}`);
       setTableData((prevData) =>
         prevData.map((user) => (user.userID === userId ? { ...user, lockedAt: null } : user))
       );
