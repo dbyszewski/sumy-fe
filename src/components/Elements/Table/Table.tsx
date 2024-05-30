@@ -1,6 +1,6 @@
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
@@ -9,13 +9,13 @@ type Variant = 'primary' | 'secondary' | 'warning' | 'success' | 'danger';
 
 export interface ColumnProps<T> {
   key: string;
-  title: string | ReactElement;
-  render?: (column: ColumnProps<T>, item: T) => ReactElement | string | number;
+  title: ReactNode;
+  render?: (column: ColumnProps<T>, item: T) => ReactNode;
 }
 
 export interface ActionProps<T> {
   key: string;
-  title: string | ReactElement;
+  title: ReactNode;
   icon?: IconDefinition;
   hidden?: (item: T) => boolean;
   onClick: (item: T) => void;

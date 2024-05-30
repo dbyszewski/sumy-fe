@@ -23,6 +23,7 @@ const LayoutStyled = styled.div`
   align-items: center;
   height: 100vh;
   justify-content: center;
+  padding: 0 1rem;
   gap: 20px;
 `;
 
