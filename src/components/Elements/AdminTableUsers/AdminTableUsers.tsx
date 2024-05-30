@@ -1,6 +1,8 @@
+import { faAdn } from '@fortawesome/free-brands-svg-icons';
+import { faLock, faUnlock, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 
-import { Table, ColumnProps } from '@/components/Elements/Table';
+import { Table, ColumnProps, ActionProps, TableLink } from '@/components/Elements/Table';
 import { apiClient } from '@/lib/api-client.ts';
 import Nullable from '@/types/nullable.ts';
 import { renderBoolean, renderEllipsis } from '@/utils/tableHelper';
@@ -19,11 +21,25 @@ interface User {
 export const AdminTableUsers = () => {
   const [tableData, setTableData] = useState<Array<User>>([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await apiClient.get<never, User[]>('/users');
+        setTableData(response);
+      } catch (error) {
+        console.error('Błąd podczas pobierania danych:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   const columns: Array<ColumnProps<User>> = [
     {
       key: 'userName',
       title: 'Nazwa użytkownika',
-      render: (_, item) => renderEllipsis(item.userName),
+      render: (_, item) => (
+        <TableLink to={`/admin/users/${item.userID}`}>{renderEllipsis(item.userName)}</TableLink>
+      ),
     },
     {
       key: 'email',
@@ -55,18 +71,101 @@ export const AdminTableUsers = () => {
     },
   ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiClient.get<never, User[]>('/users/?skip=0&limit=25');
-        setTableData(response);
-      } catch (error) {
-        console.error('Błąd podczas pobierania danych:', error);
-      }
-    };
+  const actions: Array<ActionProps<User>> = [
+    {
+      key: 'grant_admin',
+      title: 'Dodaj uprawnienia administratora',
+      icon: faAdn,
+      hidden: (item) => item.isAdmin,
+      onClick: (item) => handleGrantAdmin(item.userID),
+      colorVariant: 'primary',
+    },
+    {
+      key: 'revoke_admin',
+      title: 'Zabierz uprawnienia administratora',
+      icon: faUser,
+      hidden: (item) => !item.isAdmin,
+      onClick: (item) => handleRevokeAdmin(item.userID),
+      colorVariant: 'primary',
+    },
+    {
+      key: 'lock',
+      title: 'Zablokuj',
+      icon: faLock,
+      hidden: (item) => item.lockedAt !== null,
+      onClick: (item) => handleLock(item.userID),
+      colorVariant: 'warning',
+    },
+    {
+      key: 'unlock',
+      title: 'Odblokuj',
+      icon: faUnlock,
+      hidden: (item) => item.lockedAt === null,
+      onClick: (item) => handleUnlock(item.userID),
+      colorVariant: 'success',
+    },
+    {
+      key: 'delete',
+      title: 'Usuń',
+      icon: faTrash,
+      onClick: (item) => handleDelete(item.userID),
+      colorVariant: 'danger',
+    },
+  ];
 
-    fetchData();
-  }, []);
+  const handleLock = async (userId: number) => {
+    try {
+      await apiClient.patch(`/users/lock/${userId}`);
+      setTableData((prevData) =>
+        prevData.map((user) =>
+          user.userID === userId ? { ...user, lockedAt: 'zablokowany' } : user
+        )
+      );
+    } catch (error) {
+      console.error('Błąd podczas blokowania użytkownika:', error);
+    }
+  };
+  const handleUnlock = async (userId: number) => {
+    try {
+      await apiClient.patch(`/users/unlock/${userId}`);
+      setTableData((prevData) =>
+        prevData.map((user) => (user.userID === userId ? { ...user, lockedAt: null } : user))
+      );
+    } catch (error) {
+      console.error('Błąd podczas odblokowywania użytkownika:', error);
+    }
+  };
 
-  return <Table columns={columns} data={tableData} />;
+  const handleDelete = async (userId: number) => {
+    try {
+      await apiClient.delete(`/users/${userId}`);
+      setTableData((prevData) => prevData.filter((user) => user.userID !== userId));
+    } catch (error) {
+      console.error('Błąd podczas usuwania użytkownika:', error);
+    }
+  };
+
+  const handleGrantAdmin = async (userId: number) => {
+    try {
+      await apiClient.patch(`/users/grant_admin/${userId}`);
+      setTableData((prevData) =>
+        prevData.map((user) => (user.userID === userId ? { ...user, isAdmin: true } : user))
+      );
+    } catch (error) {
+      console.error('Błąd podczas dodawania uprawnień użytkownikowi:', error);
+    }
+  };
+
+  const handleRevokeAdmin = async (userId: number) => {
+    try {
+      await apiClient.patch(`/users/revoke_admin/${userId}`);
+      setTableData((prevData) =>
+        prevData.map((user) => (user.userID === userId ? { ...user, isAdmin: false } : user))
+      );
+    } catch (error) {
+      console.error('Błąd podczas usuwania uprawnień użytkownikowi:', error);
+    }
+  };
+
+  return <Table columns={columns} data={tableData} actions={actions} maxRows={10} />;
 };
