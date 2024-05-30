@@ -12,6 +12,10 @@ import { TextArea } from '@/components/Elements/InputFields/TextArea';
 const schema = yup
   .object({
     title: yup.string().required('Tytuł jest wymagany'),
+    phone: yup
+      .string()
+      .required('Numer telefonu jest wymagany')
+      .matches(/^\+48\d{9}$/, 'Niepoprawny numer telefonu'),
     description: yup.string().required('Opis jest wymagany'),
     eventDate: yup.string().required('Data zdarzenia jest wymagana'),
   })
@@ -19,6 +23,7 @@ const schema = yup
 
 export interface IFormInput {
   title: string;
+  phone: string;
   description: string;
   eventDate: string;
 }
@@ -36,7 +41,6 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    // alert('Register form data: ' + JSON.stringify(data));
     // save data in local storage
     const jsonData = JSON.stringify(data);
     localStorage.setItem('reportData', jsonData);
@@ -61,6 +65,13 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
       />
       <Controller
         render={({ field }) => (
+          <TextInput label="Numer telefonu" size="md" {...field} error={errors.phone?.message} />
+        )}
+        name="phone"
+        control={control}
+      />
+      <Controller
+        render={({ field }) => (
           <DateTime
             label="Data zdarzenia"
             id="eventDate"
@@ -72,9 +83,7 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
         name="eventDate"
         control={control}
       />
-      <Button size="md" variant="primary">
-        Dalej
-      </Button>
+      <Button>Dalej</Button>
     </FormContainer>
   );
 };

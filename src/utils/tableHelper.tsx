@@ -1,14 +1,15 @@
 import { faCheck, faXmark, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 
-export const renderBoolean = (value: boolean) => {
+export const renderBoolean = (value: ReactNode) => {
   return value ? (
-    <StyledIcon icon={faCheck} value={value} />
+    <StyledIcon icon={faCheck} value={!!value} />
   ) : (
-    <StyledIcon icon={faXmark} value={value} />
+    <StyledIcon icon={faXmark} value={!!value} />
   );
 };
 

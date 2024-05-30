@@ -22,27 +22,30 @@ export interface ActionProps<T> {
   colorVariant?: Variant;
 }
 
-type Props<T> = {
-  columns: Array<ColumnProps<T>>;
-  actions?: Array<ActionProps<T>>;
-  data?: T[];
-  maxRows?: number;
-};
-
 type TableIconProps = {
   variant?: Variant;
 };
 
+type TableProps<T> = {
+  columns: Array<ColumnProps<T>>;
+  actions?: Array<ActionProps<T>>;
+  data?: T[];
+  maxRows?: number;
+  isLoading?: boolean;
+};
+
 const ROW_SIZE = 3.5; // rem
 
-export const Table = <T,>({ data, columns, actions, maxRows }: Props<T>) => {
+export const Table = <T,>({ data, columns, actions, maxRows, isLoading }: TableProps<T>) => {
   const headers = columns.map((column, index) => {
     return <TableHeaderCell key={`headCell-${index}`}>{column.title}</TableHeaderCell>;
   });
 
   const rows = !data?.length ? (
     <TableRow>
-      <TableCell colSpan={columns.length}>Brak danych...</TableCell>
+      <TableCell colSpan={columns.length + +!!actions}>
+        {isLoading ? 'Ładowanie danych...' : 'Brak danych...'}
+      </TableCell>
     </TableRow>
   ) : (
     data?.map((row, index) => {
@@ -105,7 +108,7 @@ export const Table = <T,>({ data, columns, actions, maxRows }: Props<T>) => {
 const TableContainer = styled.div<{ maxrows?: number }>`
   width: 100%;
   overflow-x: auto;
-  height: ${({ maxrows }) => (maxrows ? `${(maxrows + 1) * ROW_SIZE}rem` : 'auto')};
+  max-height: ${({ maxrows }) => (maxrows ? `${(maxrows + 1) * ROW_SIZE}rem` : 'auto')};
   border-radius: 1rem;
   position: relative;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

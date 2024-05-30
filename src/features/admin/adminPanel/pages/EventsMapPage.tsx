@@ -1,29 +1,26 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { useEvents } from '@/api/events/get-events.ts';
 import { AllEventsMap } from '@/features/admin/adminPanel/components/AllEventsMap.tsx';
-import { axios } from '@/lib/axios.ts';
 
 export const EventsMapPage = () => {
-  const [events, setEvents] = useState([]);
+  const eventsQuery = useEvents();
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await axios.get('/events');
-        const eventsData = response.data.result;
-        setEvents(eventsData);
-      } catch (error) {
-        console.error('Błąd podczas pobierania danych:', error);
-      }
-    };
+  if (eventsQuery.isLoading) {
+    return <div>Ładowanie danych...</div>;
+  }
 
-    fetchEvents();
-  }, []);
+  if (eventsQuery.isError) {
+    return <div>Wystąpił błąd podczas ładowania danych</div>;
+  }
+
+  if (!eventsQuery.data) {
+    return <div>Brak danych</div>;
+  }
 
   return (
     <MapContainer>
-      <AllEventsMap events={events} />
+      <AllEventsMap events={eventsQuery.data} />
     </MapContainer>
   );
 };

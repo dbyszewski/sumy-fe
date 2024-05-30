@@ -1,40 +1,31 @@
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
 
+import { useApproveEvent } from '@/api/events/approve-event.ts';
+import { useEvents } from '@/api/events/get-events';
+import { useRejectEvent } from '@/api/events/reject-event.ts';
+import { Event } from '@/api/events/types';
 import { Table, ActionProps, ColumnProps, TableLink } from '@/components/Elements/Table';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip';
-import { axios } from '@/lib/axios.ts';
 import { formatDateTime } from '@/utils/dateHelper';
 import { renderEllipsis, renderVisibility } from '@/utils/tableHelper';
 
-interface Event {
-  eventID: number;
-  phone: string;
-  title: string;
-  description: string;
-  eventDate: string;
-  reportDate: string;
-  status: 'pending' | 'accepted' | 'rejected';
-  visibility: boolean;
-  longitude: number;
-  latitude: number;
-}
-
 export const AdminTableEvents = () => {
-  const [tableData, setTableData] = useState<Array<Event>>([]);
+  const eventsQuery = useEvents();
+  const approveEvent = useApproveEvent({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log('Zgłoszenie zatwierdzone');
+      },
+    },
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/events/');
-        setTableData(response.data.result as Array<Event>);
-      } catch (error) {
-        console.error('Błąd podczas pobierania danych:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const rejectEvent = useRejectEvent({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log('Zgłoszenie odrzucone');
+      },
+    },
+  });
 
   const columns: Array<ColumnProps<Event>> = [
     {
@@ -90,12 +81,7 @@ export const AdminTableEvents = () => {
 
   const handleApprove = async (eventId: number) => {
     try {
-      await axios.patch(`/events/approve/${eventId}`);
-      setTableData((prevData) =>
-        prevData.map((event) =>
-          event.eventID === eventId ? { ...event, status: 'accepted' } : event
-        )
-      );
+      await approveEvent.mutateAsync(eventId);
     } catch (error) {
       console.error('Błąd podczas zatwierdzania zgłoszenia:', error);
     }
@@ -103,16 +89,11 @@ export const AdminTableEvents = () => {
 
   const handleReject = async (eventId: number) => {
     try {
-      await axios.patch(`/events/reject/${eventId}`);
-      setTableData((prevData) =>
-        prevData.map((event) =>
-          event.eventID === eventId ? { ...event, status: 'rejected' } : event
-        )
-      );
+      await rejectEvent.mutateAsync(eventId);
     } catch (error) {
       console.error('Błąd podczas odrzucania zgłoszenia:', error);
     }
   };
 
-  return <Table columns={columns} data={tableData} actions={actions} maxRows={10} />;
+  return <Table columns={columns} data={eventsQuery.data} actions={actions} maxRows={10} />;
 };

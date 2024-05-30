@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { axios } from '@/lib/axios.ts';
+import { apiClient } from '@/lib/api-client.ts';
 export const AuthContext = createContext<AuthContextProps>({
   token: '',
   loginAction: () => {},
@@ -24,14 +24,18 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const loginAction = async (data: { username: string; password: string }) => {
     try {
-      const response = await axios.post('/token/login', data, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
-      if (response.data.access_token) {
-        setToken(response.data.access_token);
-        localStorage.setItem('site', response.data.access_token);
+      const response = await apiClient.post<never, { access_token: string; token_type: string }>(
+        '/token/login',
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      );
+      if (response.access_token) {
+        setToken(response.access_token);
+        localStorage.setItem('site', response.access_token);
         navigate('/');
         return;
       }
