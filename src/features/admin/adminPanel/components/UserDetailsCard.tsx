@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Title } from '@/components/Elements/Headers/Title';
+import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 import { axios } from '@/lib/axios.ts';
 import nullable from '@/types/nullable.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
@@ -86,14 +87,14 @@ export const UserDetailsCard = () => {
         </Row>
         <Row>
           <ColumnLeft>Zablokowany:</ColumnLeft>
-          <ColumnRight>{renderBoolean(user.lockedAt)}</ColumnRight>
+          {user.lockedAt ? (
+            <Tooltip message={formatDateTime(user.lockedAt)}>
+              {renderBoolean(user.lockedAt)}
+            </Tooltip>
+          ) : (
+            renderBoolean(user.lockedAt)
+          )}
         </Row>
-        {user.lockedAt && (
-          <Row>
-            <ColumnLeft>Data zablokowania:</ColumnLeft>
-            <ColumnRight>{formatDateTime(user.lockedAt)}</ColumnRight>
-          </Row>
-        )}
       </RowsContainer>
     </Content>
   );
