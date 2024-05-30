@@ -1,8 +1,8 @@
-import { UserPanelEvents } from '@/features/user/userPanel/pages/UserPanelEvents.tsx';
+import { UserEventsPanel } from '@/features/user/userPanel/pages/UserEventsPanel.tsx';
 
 export const userRoutes = [
   {
     path: '/app/*',
-    element: <UserPanelEvents />,
+    element: <UserEventsPanel />,
   },
 ];

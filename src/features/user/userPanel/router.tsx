@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { Layout } from './components/Layout.tsx';
 
-import { UserPanelEvents } from '@/features/user/userPanel/pages/UserPanelEvents.tsx';
+import { UserEventsPanel } from '@/features/user/userPanel/pages/UserEventsPanel.tsx';
 
 export const UserRouter = () => {
   return (
@@ -13,7 +13,7 @@ export const UserRouter = () => {
         children={
           <>
             <Route index element={<Navigate to="/my-events" />} />
-            <Route path="/my-events" element={<UserPanelEvents />} />
+            <Route path="/my-events" element={<UserEventsPanel />} />
             <Route path="*" element={<h1>404</h1>} />
           </>
         }

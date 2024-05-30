@@ -1,5 +1,5 @@
 import { UserEventsTable } from '@/features/user/userPanel/components/EventsTab/UserTableEvents';
 
-export const UserPanelEvents = () => {
+export const UserEventsPanel = () => {
   return <UserEventsTable />;
 };
