@@ -2,7 +2,7 @@ import { faAdn } from '@fortawesome/free-brands-svg-icons';
 import { faLock, faUnlock, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 
-import { Table, ColumnProps, ActionProps } from '@/components/Elements/Table';
+import { Table, ColumnProps, ActionProps, TableLink } from '@/components/Elements/Table';
 import { axios } from '@/lib/axios.ts';
 import Nullable from '@/types/nullable.ts';
 import { renderBoolean, renderEllipsis } from '@/utils/tableHelper';
@@ -37,7 +37,9 @@ export const AdminTableUsers = () => {
     {
       key: 'userName',
       title: 'Nazwa użytkownika',
-      render: (_, item) => renderEllipsis(item.userName),
+      render: (_, item) => (
+        <TableLink to={`/admin/users/${item.userID}`}>{item.userName}</TableLink>
+      ),
     },
     {
       key: 'email',
