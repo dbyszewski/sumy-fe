@@ -20,20 +20,20 @@ export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
 
   const handleNext = async () => {
     // alert('File sent');
-    const reportData = JSON.parse(localStorage.getItem('reportData'));
-    const reportLocation = JSON.parse(localStorage.getItem('reportLocation'));
+    const reportData = JSON.parse(localStorage.getItem('reportData') || '{}');
+    const reportLocation = JSON.parse(localStorage.getItem('reportLocation') || '{}');
     try {
       const requestBody = {
-        phone: 123456789,
+        phone: '+48123456789',
         title: reportData.title,
         description: reportData.description,
         eventDate: reportData.eventDate,
         latitude: reportLocation.lat,
         longitude: reportLocation.lng,
       };
-      console.log('requestBody', requestBody);
-      const response = await axios.post('/events', requestBody);
-      console.log('response', response);
+      const response = await axios.post('/events/notauthenticated', requestBody);
+      const eventId = response.data.id;
+      console.log(eventId);
       navigate('/');
       localStorage.clear();
     } catch (error) {
@@ -68,13 +68,9 @@ export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
       </FileContainer>
       <ButtonContainer>
         <Link to="/report/location">
-          <Button size="md" variant="primary">
-            Wstecz
-          </Button>
+          <Button>Wstecz</Button>
         </Link>
-        <Button size="md" variant="primary" onClick={handleNext}>
-          Wyślij
-        </Button>
+        <Button onClick={handleNext}>Wyślij</Button>
       </ButtonContainer>
     </>
   );

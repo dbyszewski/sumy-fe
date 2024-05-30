@@ -2,48 +2,38 @@ import { useRoutes } from 'react-router-dom';
 
 import { adminRoutes } from './admin';
 import { anonRoutes } from './anon';
-import { operatorRoutes } from './operator';
 import { userRoutes } from './user';
 
-import { AdminRouter } from '@/features/admin/adminPanel';
 import { ReportRouter } from '@/features/report';
+import { useAuth } from '@/hooks/useAuth.ts';
 import LandingPage from '@/pages/anon/LandingPage.tsx';
 import Nullable from '@/types/nullable.ts';
 
 type AuthType = Nullable<{
-  user: {
-    id: number;
-    operator: boolean;
-  };
-  admin: {
-    id: number;
-    operator: boolean;
-  };
+  user: Nullable<{
+    admin: boolean;
+  }>;
+  token: Nullable<string>;
 }>;
 
 export const AppRoutes = () => {
-  //TODO: replace with auth context
-  const auth = null;
+  const { token } = useAuth();
 
   const commonRoutes = [
     { path: '/', element: <LandingPage /> },
     { path: '/report/*', element: <ReportRouter /> },
-    { path: '/admin/*', element: <AdminRouter /> },
     { path: '/*', element: <h1>404</h1> },
   ];
+  const fullRoutes = [...adminRoutes, ...userRoutes];
 
-  const routes = determineRoutes(auth);
+  const determineRoutes = (auth: AuthType) => {
+    if (!auth?.token) return anonRoutes;
+
+    return auth.user?.admin ? fullRoutes : userRoutes;
+  };
+
+  // TODO: Brać usera z auth contextu jak będzie
+  const routes = determineRoutes({ user: { admin: true }, token });
 
   return useRoutes([...routes, ...commonRoutes]);
-};
-
-const determineRoutes = (auth: AuthType) => {
-  if (auth?.user) {
-    return auth.user.operator ? operatorRoutes : userRoutes;
-  }
-  if (auth?.admin) {
-    return auth.admin.operator ? operatorRoutes : adminRoutes;
-  } else {
-    return anonRoutes;
-  }
 };
