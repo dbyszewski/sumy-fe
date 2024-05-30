@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Table, ColumnProps } from '@/components/Elements/Table';
-import { axios } from '@/lib/axios.ts';
+import { apiClient } from '@/lib/api-client.ts';
 import Nullable from '@/types/nullable.ts';
 import { renderBoolean, renderEllipsis } from '@/utils/tableHelper';
 
@@ -58,8 +58,8 @@ export const AdminTableUsers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/users/?skip=0&limit=25');
-        setTableData(response.data.result as Array<User>);
+        const response = await apiClient.get<never, User[]>('/users/?skip=0&limit=25');
+        setTableData(response);
       } catch (error) {
         console.error('Błąd podczas pobierania danych:', error);
       }

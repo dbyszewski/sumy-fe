@@ -1,54 +1,34 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useEvent } from '@/api/events/get-event.ts';
 import { Title } from '@/components/Elements/Headers/Title';
 import { SingleEventMap } from '@/features/admin/adminPanel/components/SingleEventMap.tsx';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
-import { axios } from '@/lib/axios.ts';
-import nullable from '@/types/nullable.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 import { renderVisibility } from '@/utils/tableHelper';
 
-interface Event {
-  eventID: number;
-  phone: string;
-  title: string;
-  description: string;
-  eventDate: string;
-  reportDate: string;
-  status: 'pending' | 'accepted' | 'rejected';
-  visibility: boolean;
-  longitude: number;
-  latitude: number;
-}
-
 export const EventDetailsCard = () => {
-  const [event, setEvent] = useState<nullable<Event>>(null);
   const { eventId } = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/events/${eventId}`);
-        setEvent(response.data.result as Event);
-      } catch (error) {
-        console.error('Błąd podczas pobierania danych:', error);
-      }
-    };
-
-    fetchData();
-  }, [eventId]);
+  const eventQuery = useEvent({ eventID: eventId });
+  const navigate = useNavigate();
 
   const handleBackButtonClick = useCallback(() => {
-    window.history.back();
-  }, []);
+    navigate(-1);
+  }, [navigate]);
 
-  if (!event) {
-    return null;
+  if (eventQuery.isLoading) {
+    return <div>Ładowanie danych...</div>;
   }
+
+  if (eventQuery.isError || !eventQuery.data) {
+    return <div>Wystąpił błąd podczas ładowania danych</div>;
+  }
+
+  const event = eventQuery.data;
 
   return (
     <Content>

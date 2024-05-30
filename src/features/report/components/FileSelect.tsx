@@ -4,9 +4,10 @@ import { ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useCreateEvent } from '@/api/events/create-event.ts';
+import { CreateEventInput } from '@/api/events/types.ts';
 import { Button } from '@/components/Elements/Button';
 import ButtonContainer from '@/components/Elements/LandingPage/ButtonContainer/ButtonContainer.tsx';
-import { axios } from '@/lib/axios';
 
 interface FileInputProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -17,30 +18,29 @@ interface FileInputProps {
 
 export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
   const navigate = useNavigate();
+  const createEventMutation = useCreateEvent({
+    mutationConfig: {
+      onSuccess: () => {
+        localStorage.removeItem('reportData');
+        localStorage.removeItem('reportLocation');
+        navigate('/');
+      },
+    },
+  });
 
-  const handleNext = async () => {
+  const handleNext = () => {
     // alert('File sent');
     const reportData = JSON.parse(localStorage.getItem('reportData') || '{}');
     const reportLocation = JSON.parse(localStorage.getItem('reportLocation') || '{}');
-    try {
-      const requestBody = {
-        phone: '+48123456789',
-        title: reportData.title,
-        description: reportData.description,
-        eventDate: reportData.eventDate,
-        latitude: reportLocation.lat,
-        longitude: reportLocation.lng,
-      };
-      const response = await axios.post('/events/notauthenticated', requestBody);
-      const eventId = response.data.id;
-      console.log(eventId);
-      navigate('/');
-      localStorage.clear();
-    } catch (error) {
-      alert('Wystąpił błąd podczas wysyłania zgłoszenia');
-    } finally {
-      console.log('finally');
-    }
+    const requestBody = {
+      phone: reportData.phone,
+      title: reportData.title,
+      description: reportData.description,
+      eventDate: reportData.eventDate,
+      latitude: reportLocation.lat,
+      longitude: reportLocation.lng,
+    } as CreateEventInput;
+    createEventMutation.mutate({ data: requestBody });
   };
 
   return (
@@ -68,9 +68,11 @@ export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
       </FileContainer>
       <ButtonContainer>
         <Link to="/report/location">
-          <Button>Wstecz</Button>
+          <Button disabled={createEventMutation.isPending}>Wstecz</Button>
         </Link>
-        <Button onClick={handleNext}>Wyślij</Button>
+        <Button onClick={handleNext} disabled={createEventMutation.isPending}>
+          Wyślij
+        </Button>
       </ButtonContainer>
     </>
   );
