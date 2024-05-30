@@ -26,7 +26,6 @@ export const MapPicker = ({ initialPosition }: MapPickerProps) => {
 
   const handleNext = () => {
     localStorage.setItem('reportLocation', JSON.stringify(currentPosition));
-    // alert('Location saved: ' + JSON.stringify(currentPosition));
     navigate('/report/files');
   };
 
@@ -48,6 +47,10 @@ export const MapPicker = ({ initialPosition }: MapPickerProps) => {
       );
     } else {
       /* geolocation IS NOT available */
+      setCurrentPosition({
+        lng: 51.747357800785984,
+        lat: 19.45402886180793,
+      });
     }
   }, []);
 
@@ -81,11 +84,9 @@ export const MapPicker = ({ initialPosition }: MapPickerProps) => {
       {/*</div>*/}
       <ButtonContainer>
         <Link to="/report/data">
-          <Button size="md" variant="primary">
-            Wstecz
-          </Button>
+          <Button>Wstecz</Button>
         </Link>
-        <Button size="md" variant="primary" disabled={!currentPosition} onClick={handleNext}>
+        <Button disabled={!currentPosition} onClick={handleNext}>
           Dalej
         </Button>
       </ButtonContainer>

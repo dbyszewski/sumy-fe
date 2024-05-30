@@ -1,11 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { Button } from '@/components/Elements/Button';
 import { FormContainer } from '@/components/Elements/Form/Container';
 import { TextInput } from '@/components/Elements/InputFields/Text';
+import { useAuth } from '@/hooks/useAuth.ts';
 
 interface IFormInput {
   email: string;
@@ -24,22 +25,25 @@ const schema = yup
   .required();
 
 export const LoginForm = () => {
+  const [isLoading, setLoading] = useState(false);
   const {
     handleSubmit,
     formState: { errors },
     control,
   } = useForm<IFormInput>({ resolver: yupResolver(schema) });
-  const navigate = useNavigate();
 
+  const { loginAction } = useAuth();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    setLoading(true);
     try {
-      // TODO: Implement login
-      // alert('Login form data: ' + JSON.stringify(data));
-      navigate('/');
+      loginAction({
+        username: data.email,
+        password: data.password,
+      });
     } catch (error) {
       // TODO: Handle error depending on backend response
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -65,9 +69,7 @@ export const LoginForm = () => {
         name="password"
         control={control}
       />
-      <Button size="md" variant="primary">
-        Zaloguj się
-      </Button>
+      <Button disabled={isLoading}>Zaloguj się</Button>
     </FormContainer>
   );
 };

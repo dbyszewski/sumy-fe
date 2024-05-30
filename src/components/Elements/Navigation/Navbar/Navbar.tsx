@@ -2,7 +2,7 @@ import {
   faLocationDot,
   faGears,
   faMap,
-  faUser,
+  faUsers,
   faMapLocation,
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
@@ -11,7 +11,9 @@ import styled from 'styled-components';
 
 import { NavbarSection } from './NavbarSection';
 
+import { Button } from '@/components/Elements/Button';
 import { Header } from '@/components/Elements/Navigation/Header';
+import { useAuth } from '@/hooks/useAuth.ts';
 
 const MOCK_NAV_DATA = [
   {
@@ -25,7 +27,7 @@ const MOCK_NAV_DATA = [
       {
         title: 'Użytkownicy',
         href: '/admin/users',
-        icon: faUser,
+        icon: faUsers,
       },
       {
         title: 'Mapa zgłoszeń',
@@ -52,6 +54,12 @@ const MOCK_NAV_DATA = [
 ];
 
 export const Navbar = () => {
+  const { logOut } = useAuth();
+
+  const handleLogOut = () => {
+    logOut();
+  };
+
   return (
     <NavbarContainer>
       <Header />
@@ -63,10 +71,10 @@ export const Navbar = () => {
         </div>
 
         <LogOutContainer>
-          <LogOutButton>
+          <Button onClick={handleLogOut}>
             <FontAwesomeIcon icon={faRightFromBracket} />
             Wyloguj się
-          </LogOutButton>
+          </Button>
         </LogOutContainer>
       </StyledNavigation>
     </NavbarContainer>
@@ -101,24 +109,4 @@ const LogOutContainer = styled.div`
   justify-content: center;
   align-items: center;
   padding: 1rem;
-`;
-
-const LogOutButton = styled.button`
-  padding: 0.5rem 1rem;
-  width: 100%;
-  border-radius: 0.5rem;
-  background-color: ${({ theme }) => theme.colors.navigation.dark};
-  color: ${({ theme }) => theme.colors.text.light};
-  font-size: 1rem;
-  font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  display: flex;
-  border: 1px solid transparent;
-  justify-content: center;
-  gap: 0.5rem;
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.navigation.darkRed};
-  }
 `;
