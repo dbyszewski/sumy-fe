@@ -13,7 +13,7 @@ export const UserRouter = () => {
         element={<Layout />}
         children={
           <>
-            <Route index element={<Navigate to="/events" />} />
+            <Route index element={<Navigate to="/user/events" />} />
             <Route path="/events" element={<UserEventsPanel />} />
             <Route path="/map" element={<EventsMapPanel />} />
             <Route path="*" element={<h1>404</h1>} />

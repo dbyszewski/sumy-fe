@@ -15,46 +15,48 @@ import { Button } from '@/components/Elements/Button';
 import { Header } from '@/components/Elements/Navigation/Header';
 import { useAuth } from '@/hooks/useAuth.ts';
 
-const MOCK_NAV_DATA = [
-  {
-    title: 'Narzędzia Administracyjne',
-    items: [
-      {
-        title: 'Zgłoszenia',
-        href: '/admin/events',
-        icon: faLocationDot,
-      },
-      {
-        title: 'Użytkownicy',
-        href: '/admin/users',
-        icon: faUsers,
-      },
-    ],
-  },
-  {
-    title: 'Moje konto',
-    items: [
-      {
-        title: 'Moje zgłoszenia',
-        href: '/user/events',
-        icon: faMapLocation,
-      },
-      {
-        title: 'Mapa zgłoszeń',
-        href: '/user/map',
-        icon: faMap,
-      },
-      {
-        title: 'Ustawienia',
-        href: '/user/settings',
-        icon: faGears,
-      },
-    ],
-  },
-];
-
 export const Navbar = () => {
-  const { logOut } = useAuth();
+  const { logOut, isAdmin } = useAuth();
+  const navigationItems = [
+    {
+      title: 'Moje konto',
+      items: [
+        {
+          title: 'Moje zgłoszenia',
+          href: '/user/events',
+          icon: faMapLocation,
+        },
+        {
+          title: 'Mapa zgłoszeń',
+          href: '/user/map',
+          icon: faMap,
+        },
+        {
+          title: 'Ustawienia',
+          href: '/user/settings',
+          icon: faGears,
+        },
+      ],
+    },
+  ];
+
+  if (isAdmin) {
+    navigationItems.unshift({
+      title: 'Narzędzia Administracyjne',
+      items: [
+        {
+          title: 'Zgłoszenia',
+          href: '/admin/events',
+          icon: faLocationDot,
+        },
+        {
+          title: 'Użytkownicy',
+          href: '/admin/users',
+          icon: faUsers,
+        },
+      ],
+    });
+  }
 
   const handleLogOut = () => {
     logOut();
@@ -65,7 +67,7 @@ export const Navbar = () => {
       <Header />
       <StyledNavigation>
         <div>
-          {MOCK_NAV_DATA.map(({ title, items }, index) => (
+          {navigationItems.map(({ title, items }, index) => (
             <NavbarSection title={title} items={items} key={index} />
           ))}
         </div>

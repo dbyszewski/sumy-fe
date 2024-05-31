@@ -12,7 +12,7 @@ export const AdminEventsPanel = () => {
       <AdminEventsTable maxRows={5} filter={{ status: ['pending'] }} />
       <Divider />
       <Title>Wszystkie zgłoszenia</Title>
-      <AdminEventsTable maxRows={10} />
+      <AdminEventsTable maxRows={9} />
     </Container>
   );
 };

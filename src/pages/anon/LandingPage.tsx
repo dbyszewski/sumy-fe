@@ -10,14 +10,13 @@ import Logo from '@/components/Elements/LandingPage/Logo/Logo.tsx';
 import { useAuth } from '@/hooks/useAuth.ts';
 
 const LandingPage = () => {
-  const { token } = useAuth();
+  const { token, isAdmin } = useAuth();
 
   const buttons = useMemo(() => {
     if (token) {
       return (
         <ButtonContainer>
-          {/*TODO: Dać warunek żeby user zwykły był przekierowany na /app, czeka na be*/}
-          <Link to="/admin">
+          <Link to={isAdmin ? '/admin' : '/user'}>
             <Button>Przejdź do panelu</Button>
           </Link>
         </ButtonContainer>

@@ -5,6 +5,7 @@ import { useNotifications } from '@/hooks/useNotifications.ts';
 import { apiClient } from '@/lib/api-client.ts';
 export const AuthContext = createContext<AuthContextProps>({
   token: '',
+  isAdmin: false,
   loginAction: () => {},
   logOut: () => {},
 });
@@ -15,29 +16,32 @@ interface AuthProviderProps {
 
 interface AuthContextProps {
   token: string;
+  isAdmin: boolean;
   loginAction: (data: { username: string; password: string }) => void;
   logOut: () => void;
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState(localStorage.getItem('site') || '');
+  const [isAdmin, setIsAdmin] = useState(localStorage.getItem('admin') === 'true');
   const navigate = useNavigate();
   const notifications = useNotifications();
 
   const loginAction = async (data: { username: string; password: string }) => {
     try {
-      const response = await apiClient.post<never, { access_token: string; token_type: string }>(
-        '/token/login',
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        }
-      );
+      const response = await apiClient.post<
+        never,
+        { access_token: string; token_type: string; user: { isAdmin: boolean } }
+      >('/token/login', data, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
       if (response.access_token) {
         setToken(response.access_token);
+        setIsAdmin(response.user.isAdmin);
         localStorage.setItem('site', response.access_token);
+        localStorage.setItem('admin', response.user.isAdmin.toString());
         notifications.addNotification({
           type: 'success',
           message: 'Zalogowano pomyślnie',
@@ -53,6 +57,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const logOut = () => {
     setToken('');
     localStorage.removeItem('site');
+    localStorage.removeItem('admin');
     notifications.addNotification({
       type: 'success',
       message: 'Wylogowano pomyślnie',
@@ -61,7 +66,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, loginAction, logOut }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ token, isAdmin, loginAction, logOut }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
