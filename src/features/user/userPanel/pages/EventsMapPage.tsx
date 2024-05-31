@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { useEvents } from '@/api/events/get-events.ts';
+import { Title } from '@/components/Elements/Headers/Title';
 import { AllEventsMap } from '@/features/user/userPanel/components/AllEventsMap.tsx';
 
 export const EventsMapPage = () => {
@@ -19,15 +20,24 @@ export const EventsMapPage = () => {
   }
 
   return (
-    <MapContainer>
-      <AllEventsMap events={eventsQuery.data} />
-    </MapContainer>
+    <Container>
+      <Title>Mapa zgłoszeń</Title>
+      <MapContainer>
+        <AllEventsMap events={eventsQuery.data} />
+      </MapContainer>
+    </Container>
   );
 };
 
 const MapContainer = styled.div`
-  height: 70vh;
-  width: 70vh;
-  max-height: 700px;
-  max-width: 700px;
+  height: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+`;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
 `;
