@@ -1,4 +1,5 @@
-import { MapPicker, Position } from '@/features/report/components/MapPicker';
+import { Position } from '@/api/events/types';
+import { MapPicker } from '@/features/report/components/MapPicker';
 
 export const LocationSelect = () => {
   const initialPosition = localStorage.getItem('reportLocation');

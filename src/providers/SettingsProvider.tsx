@@ -30,6 +30,7 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
     setTheme(theme);
     localStorage.setItem('theme', theme);
   };
+
   const changeVisibility = (visibility: boolean) => {
     setVisibility(visibility);
     localStorage.setItem('visibility', JSON.stringify(visibility));

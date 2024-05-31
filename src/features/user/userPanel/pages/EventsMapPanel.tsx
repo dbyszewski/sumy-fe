@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useEvents } from '@/api/events/get-events.ts';
 import { Position } from '@/api/events/types.ts';
 import { Title } from '@/components/Elements/Headers/Title';
+import { LoadingSpinner } from '@/components/Elements/LoadingSpinner';
 import { AllEventsMap } from '@/features/user/userPanel/components/AllEventsMap.tsx';
 import Nullable from '@/types/nullable.ts';
 import { getGeolocation } from '@/utils/geoHelper.tsx';
@@ -19,7 +20,7 @@ export const EventsMapPanel = () => {
   }, []);
 
   if (eventsQuery.isLoading) {
-    return <div>Ładowanie danych...</div>;
+    return <LoadingSpinner />;
   }
 
   if (eventsQuery.isError) {

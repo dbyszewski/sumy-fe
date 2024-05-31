@@ -5,6 +5,8 @@ export const ReportData = () => {
 
   const defaultValues = {
     description: '',
+    title: '',
+    phone: '',
     eventDate: new Date().toISOString().split('.')[0],
   };
 

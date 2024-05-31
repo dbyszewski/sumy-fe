@@ -8,6 +8,7 @@ import { SingleEventMap } from './SingleEventMap';
 
 import { useEvent } from '@/api/events/get-event.ts';
 import { Title } from '@/components/Elements/Headers/Title';
+import { LoadingSpinner } from '@/components/Elements/LoadingSpinner';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 import { renderVisibility } from '@/utils/tableHelper';
@@ -22,7 +23,7 @@ export const EventDetailsCard = () => {
   }, [navigate]);
 
   if (eventQuery.isLoading) {
-    return <div>Ładowanie danych...</div>;
+    return <LoadingSpinner />;
   }
 
   if (eventQuery.isError || !eventQuery.data) {
