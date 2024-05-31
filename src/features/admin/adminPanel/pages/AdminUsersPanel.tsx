@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { AdminUsersTable } from '../components/UsersTab/AdminUsersTable';
 
 import { Title } from '@/components/Elements/Headers/Title';
-export const AdminPanelUsers = () => {
+export const AdminUsersPanel = () => {
   return (
     <Container>
       <Title>Wszyscy użytkownicy</Title>

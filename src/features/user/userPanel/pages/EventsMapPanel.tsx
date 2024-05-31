@@ -4,7 +4,7 @@ import { useEvents } from '@/api/events/get-events.ts';
 import { Title } from '@/components/Elements/Headers/Title';
 import { AllEventsMap } from '@/features/user/userPanel/components/AllEventsMap.tsx';
 
-export const EventsMapPage = () => {
+export const EventsMapPanel = () => {
   const eventsQuery = useEvents();
 
   if (eventsQuery.isLoading) {
