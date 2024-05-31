@@ -1,7 +1,4 @@
 import { createContext, ReactNode, useState, useEffect } from 'react';
-import { ThemeProvider } from 'styled-components';
-
-import { lightTheme, darkTheme } from '@/themes'; // zaimportuj motywy
 
 export const SettingsContext = createContext<SettingsContextProps>({
   theme: 'light',
