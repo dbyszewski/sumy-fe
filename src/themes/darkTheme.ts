@@ -19,6 +19,7 @@ export const darkTheme = Object.assign({}, mainTheme, {
     elements: {
       light: '#d4d4d4',
       dark: '#78716c',
+      darkRed: '#b91c1c',
       brightLight: '#e5e5e5',
     },
     navigation: {
