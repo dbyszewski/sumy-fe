@@ -7,6 +7,7 @@ import { useRejectEvent } from '@/api/events/reject-event.ts';
 import { Event } from '@/api/events/types';
 import { Table, ActionProps, ColumnProps, TableLink } from '@/components/Elements/Table';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip';
+import { useNotifications } from '@/hooks/useNotifications.ts';
 import { formatDateTime } from '@/utils/dateHelper';
 import { renderEllipsis, renderVisibility } from '@/utils/tableHelper';
 
@@ -21,10 +22,14 @@ type Status = 'pending' | 'accepted' | 'rejected';
 
 export const AdminEventsTable = ({ filter, maxRows }: AdminEventsTableProps) => {
   const eventsQuery = useEvents();
+  const notifications = useNotifications();
   const approveEvent = useApproveEvent({
     mutationConfig: {
       onSuccess: () => {
-        console.log('Zgłoszenie zatwierdzone');
+        notifications.addNotification({
+          message: 'Zgłoszenie zatwierdzone',
+          type: 'success',
+        });
       },
     },
   });
@@ -32,7 +37,10 @@ export const AdminEventsTable = ({ filter, maxRows }: AdminEventsTableProps) => 
   const rejectEvent = useRejectEvent({
     mutationConfig: {
       onSuccess: () => {
-        console.log('Zgłoszenie odrzucone');
+        notifications.addNotification({
+          message: 'Zgłoszenie odrzucone',
+          type: 'success',
+        });
       },
     },
   });
@@ -111,9 +119,6 @@ export const AdminEventsTable = ({ filter, maxRows }: AdminEventsTableProps) => 
     }
     return true;
   });
-
-  console.log('tableData', tableData);
-  console.log('filter', filter);
 
   return (
     <Table

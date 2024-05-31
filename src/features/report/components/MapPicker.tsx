@@ -39,7 +39,6 @@ export const MapPicker = ({ initialPosition }: MapPickerProps) => {
         url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentPosition.lat},${currentPosition.lng}&key=AIzaSyD-vIAZx7ywuyHukcLw2qZlgm8CRceTOsc&language=pl`,
       })
         .then((response) => {
-          console.log(response.data);
           setAddress(response.data.results[0].formatted_address);
         })
         .catch((error) => {

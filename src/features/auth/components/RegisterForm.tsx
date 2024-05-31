@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { Button } from '@/components/Elements/Button';
 import { FormContainer } from '@/components/Elements/Form/Container';
 import { TextInput } from '@/components/Elements/InputFields/Text';
+import { useNotifications } from '@/hooks/useNotifications.ts';
 import { apiClient } from '@/lib/api-client.ts';
 
 interface IFormInput {
@@ -45,14 +46,18 @@ export const RegisterForm = () => {
     control,
   } = useForm<IFormInput>({ resolver: yupResolver(schema) });
   const navigate = useNavigate();
-
+  const notifications = useNotifications();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      const response = await apiClient.post('/users', data);
-      console.log(response);
+      await apiClient.post('/users', data);
+      notifications.addNotification({
+        type: 'success',
+        message: 'Zarejestrowano pomyślnie',
+      });
+
       navigate('/auth/login');
     } catch (error) {
-      // TODO: Handle error depending on backend response
+      console.error(error);
     } finally {
       setLoading(false);
     }
