@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { EventDetailsCard } from './components/EventsTab/EventDetailsCard';
 import { Layout } from './components/Layout.tsx';
 import { UserDetailsCard } from './components/UsersTab/UserDetailsCard';
 import { AdminEventsPanel } from './pages/AdminEventsPanel.tsx';
@@ -18,7 +17,6 @@ export const AdminRouter = () => {
           <>
             <Route index element={<Navigate to="/admin/events" />} />
             <Route path="/events" element={<AdminEventsPanel />} />
-            <Route path="/events/:eventId" element={<EventDetailsCard />} />
             <Route path="/users" element={<AdminUsersPanel />} />
             <Route path="/users/:userId" element={<UserDetailsCard />} />
             <Route path="/map" element={<EventsMapPanel />} />

@@ -39,7 +39,7 @@ export const UserEventsTable = () => {
     {
       key: 'title',
       title: 'Tytuł',
-      render: (_, item) => <TableLink to={`/admin/events/${item.eventID}`}>{item.title}</TableLink>,
+      render: (_, item) => <TableLink to={`/user/events/${item.eventID}`}>{item.title}</TableLink>,
     },
     {
       key: 'description',
