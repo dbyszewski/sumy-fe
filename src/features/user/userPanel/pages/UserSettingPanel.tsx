@@ -56,7 +56,6 @@ const Container = styled.div`
   flex-direction: column;
   gap: 1rem;
   height: 100%;
-  padding: 2rem;
 `;
 
 const RoundedContainer = styled.div`
