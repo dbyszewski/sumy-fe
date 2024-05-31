@@ -1,53 +1,33 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useUser } from '@/api/users/get-user.ts';
 import { Title } from '@/components/Elements/Headers/Title';
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
-import { apiClient } from '@/lib/api-client';
-import nullable from '@/types/nullable.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 import { renderBoolean } from '@/utils/tableHelper';
 
-interface User {
-  userID: number;
-  userName: string;
-  phone: string;
-  email: string;
-  status: 'active' | 'inactive';
-  isPhoneVerified: boolean;
-  isMailVerified: boolean;
-  isAdmin: boolean;
-  lockedAt: nullable<string>;
-}
-
 export const UserDetailsCard = () => {
-  const [user, setUser] = useState<nullable<User>>(null);
   const { userId } = useParams();
+  const userQuery = useUser({ userID: userId });
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiClient.get<never, User>(`/users/${userId}`);
-        setUser(response);
-      } catch (error) {
-        console.error('Błąd podczas pobierania danych:', error);
-      }
-    };
-
-    fetchData();
-  }, [userId]);
 
   const handleBackButtonClick = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
-  if (!user) {
-    return null;
+  if (userQuery.isLoading) {
+    return <div>Ładowanie danych...</div>;
   }
+
+  if (userQuery.isError || !userQuery.data) {
+    return <div>Wystąpił błąd podczas ładowania danych</div>;
+  }
+
+  const user = userQuery.data;
 
   return (
     <Content>

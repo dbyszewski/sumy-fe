@@ -1,38 +1,54 @@
 import { faAdn } from '@fortawesome/free-brands-svg-icons';
 import { faLock, faUnlock, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
 
+import { useDeleteUser } from '@/api/users/delete-user.ts';
+import { useUsers } from '@/api/users/get-users.ts';
+import { useGrantAdmin } from '@/api/users/grant-admin.ts';
+import { useLockUser } from '@/api/users/lock-user.ts';
+import { useRevokeAdmin } from '@/api/users/revoke-admin.ts';
+import { User } from '@/api/users/types.ts';
+import { useUnlockUser } from '@/api/users/unlock-user.ts';
 import { Table, ColumnProps, ActionProps, TableLink } from '@/components/Elements/Table';
-import { apiClient } from '@/lib/api-client.ts';
-import Nullable from '@/types/nullable.ts';
 import { renderBoolean, renderEllipsis } from '@/utils/tableHelper';
 
-interface User {
-  userID: number;
-  userName: string;
-  email: string;
-  status: 'active' | 'inactive';
-  isPhoneVerified: boolean;
-  isMailVerified: boolean;
-  isAdmin: boolean;
-  lockedAt: Nullable<string>;
-}
-
 export const AdminUsersTable = () => {
-  const [tableData, setTableData] = useState<Array<User>>([]);
+  const usersQuery = useUsers();
+  const lockUser = useLockUser({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log('Użytkownik zablokowany');
+      },
+    },
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiClient.get<never, User[]>('/users');
-        setTableData(response);
-      } catch (error) {
-        console.error('Błąd podczas pobierania danych:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const unlockUser = useUnlockUser({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log('Użytkownik odblokowany');
+      },
+    },
+  });
+  const grantAdmin = useGrantAdmin({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log('Przyznano użytkownikowi uprawnienia administratora');
+      },
+    },
+  });
+  const revokeAdmin = useRevokeAdmin({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log('Odebrano użytkownikowi uprawnienia administratora');
+      },
+    },
+  });
+  const deleteUser = useDeleteUser({
+    mutationConfig: {
+      onSuccess: () => {
+        console.log('Użytkownik usunięty');
+      },
+    },
+  });
   const columns: Array<ColumnProps<User>> = [
     {
       key: 'userName',
@@ -115,22 +131,14 @@ export const AdminUsersTable = () => {
 
   const handleLock = async (userId: number) => {
     try {
-      await apiClient.patch(`/users/lock/${userId}`);
-      setTableData((prevData) =>
-        prevData.map((user) =>
-          user.userID === userId ? { ...user, lockedAt: 'zablokowany' } : user
-        )
-      );
+      await lockUser.mutateAsync(userId);
     } catch (error) {
       console.error('Błąd podczas blokowania użytkownika:', error);
     }
   };
   const handleUnlock = async (userId: number) => {
     try {
-      await apiClient.patch(`/users/unlock/${userId}`);
-      setTableData((prevData) =>
-        prevData.map((user) => (user.userID === userId ? { ...user, lockedAt: null } : user))
-      );
+      await unlockUser.mutateAsync(userId);
     } catch (error) {
       console.error('Błąd podczas odblokowywania użytkownika:', error);
     }
@@ -138,8 +146,7 @@ export const AdminUsersTable = () => {
 
   const handleDelete = async (userId: number) => {
     try {
-      await apiClient.delete(`/users/${userId}`);
-      setTableData((prevData) => prevData.filter((user) => user.userID !== userId));
+      await deleteUser.mutateAsync(userId);
     } catch (error) {
       console.error('Błąd podczas usuwania użytkownika:', error);
     }
@@ -147,25 +154,19 @@ export const AdminUsersTable = () => {
 
   const handleGrantAdmin = async (userId: number) => {
     try {
-      await apiClient.patch(`/users/grant_admin/${userId}`);
-      setTableData((prevData) =>
-        prevData.map((user) => (user.userID === userId ? { ...user, isAdmin: true } : user))
-      );
+      await grantAdmin.mutateAsync(userId);
     } catch (error) {
-      console.error('Błąd podczas dodawania uprawnień użytkownikowi:', error);
+      console.error('Błąd podczas przyznawania uprawnień użytkownikowi:', error);
     }
   };
 
   const handleRevokeAdmin = async (userId: number) => {
     try {
-      await apiClient.patch(`/users/revoke_admin/${userId}`);
-      setTableData((prevData) =>
-        prevData.map((user) => (user.userID === userId ? { ...user, isAdmin: false } : user))
-      );
+      await revokeAdmin.mutateAsync(userId);
     } catch (error) {
-      console.error('Błąd podczas usuwania uprawnień użytkownikowi:', error);
+      console.error('Błąd podczas odbierania uprawnień użytkownikowi:', error);
     }
   };
 
-  return <Table columns={columns} data={tableData} actions={actions} maxRows={10} />;
+  return <Table columns={columns} data={usersQuery.data} actions={actions} maxRows={10} />;
 };
