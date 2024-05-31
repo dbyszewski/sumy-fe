@@ -22,8 +22,8 @@ interface SettingsContextProps {
 }
 
 export const SettingsProvider = ({ children }: SettingsProviderProps) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [visibility, setVisibility] = useState<boolean>(true);
+  const [theme, setTheme] = useState<'light' | 'dark'>(localStorage.getItem('theme') || 'light');
+  const [visibility, setVisibility] = useState<boolean>(localStorage.getItem('visibility') || true);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
