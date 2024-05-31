@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { useEvents } from '@/api/events/get-events.ts';
-import { AllEventsMap } from '@/features/admin/adminPanel/components/AllEventsMap.tsx';
+import { AllEventsMap } from '@/features/user/userPanel/components/AllEventsMap.tsx';
 
 export const EventsMapPage = () => {
   const eventsQuery = useEvents();

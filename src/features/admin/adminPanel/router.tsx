@@ -6,7 +6,7 @@ import { UserDetailsCard } from './components/UsersTab/UserDetailsCard';
 import { AdminPanelEvents } from './pages/AdminPanelEvents.tsx';
 
 import { AdminPanelUsers } from '@/features/admin/adminPanel/pages/AdminPanelUsers.tsx';
-import { EventsMapPage } from '@/features/admin/adminPanel/pages/EventsMapPage.tsx';
+import { EventsMapPage } from '@/features/user/userPanel/pages/EventsMapPage.tsx';
 
 export const AdminRouter = () => {
   return (

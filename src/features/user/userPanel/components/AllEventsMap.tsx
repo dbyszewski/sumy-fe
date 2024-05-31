@@ -7,7 +7,7 @@ import {
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { Event } from '@/api/events/types';
+import { Event } from '@/api/events/types.ts';
 import { getStatusMappedName } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 
