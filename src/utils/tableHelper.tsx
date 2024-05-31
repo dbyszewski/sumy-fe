@@ -33,22 +33,25 @@ export const renderVisibility = (value: boolean) => {
   return value ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />;
 };
 export const renderAdmin = (value: ReactNode) => {
-  return value ? (
-    <StyledIcon icon={faAdn} value={!!value} />
-  ) : (
-    <StyledIcon icon={faUser} value={!!value} />
-  );
+  return value ? <StyledAdminIcon icon={faAdn} /> : <StyledAdminIcon icon={faUser} />;
 };
 
 export const renderLocked = (value: ReactNode) => {
   return value ? (
-    <StyledIcon icon={faLock} value={!value} />
+    <StyledLockedIcon icon={faLock} value={!!value} />
   ) : (
-    <StyledIcon icon={faUnlock} value={!value} />
+    <StyledLockedIcon icon={faUnlock} value={!!value} />
   );
 };
 
 const StyledIcon = styled(FontAwesomeIcon)<{ value: boolean }>`
   color: ${({ value, theme }) =>
     value ? theme.colors.buttons.success : theme.colors.buttons.danger};
+`;
+const StyledAdminIcon = styled(FontAwesomeIcon)`
+  color: ${({ theme }) => theme.colors.buttons.primary};
+`;
+const StyledLockedIcon = styled(FontAwesomeIcon)<{ value: boolean }>`
+  color: ${({ value, theme }) =>
+    value ? theme.colors.buttons.warning : theme.colors.buttons.success};
 `;
