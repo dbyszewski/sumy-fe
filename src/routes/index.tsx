@@ -7,17 +7,9 @@ import { userRoutes } from './user';
 import { ReportRouter } from '@/features/report';
 import { useAuth } from '@/hooks/useAuth.ts';
 import LandingPage from '@/pages/anon/LandingPage.tsx';
-import Nullable from '@/types/nullable.ts';
-
-type AuthType = Nullable<{
-  user: Nullable<{
-    admin: boolean;
-  }>;
-  token: Nullable<string>;
-}>;
 
 export const AppRoutes = () => {
-  const { token } = useAuth();
+  const { token, isAdmin } = useAuth();
 
   const commonRoutes = [
     { path: '/', element: <LandingPage /> },
@@ -26,14 +18,13 @@ export const AppRoutes = () => {
   ];
   const fullRoutes = [...adminRoutes, ...userRoutes];
 
-  const determineRoutes = (auth: AuthType) => {
-    if (!auth?.token) return anonRoutes;
+  const determineRoutes = () => {
+    if (!token) return anonRoutes;
 
-    return auth.user?.admin ? fullRoutes : userRoutes;
+    return isAdmin ? fullRoutes : userRoutes;
   };
 
-  // TODO: Brać usera z auth contextu jak będzie
-  const routes = determineRoutes({ user: { admin: true }, token });
+  const routes = determineRoutes();
 
   return useRoutes([...routes, ...commonRoutes]);
 };
