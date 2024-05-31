@@ -33,11 +33,16 @@ export const AllEventsMap = ({ events, currentPosition }: EventsMapProps) => {
     setSelectedEvents(overlappingEvents);
   };
 
+  if (!currentPosition) {
+    //TODO: add spinner
+    return <div>Wczytywanie...</div>;
+  }
+
   return (
     <APIProvider apiKey={'AIzaSyD-vIAZx7ywuyHukcLw2qZlgm8CRceTOsc'}>
       <GoogleMap
-        defaultZoom={15}
-        center={currentPosition}
+        defaultZoom={12}
+        defaultCenter={currentPosition}
         clickableIcons={false}
         disableDefaultUI={true}
         zoomControl={true}

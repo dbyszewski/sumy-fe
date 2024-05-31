@@ -32,6 +32,7 @@ export const EventsMapPanel = () => {
         }
       );
     } else {
+      /* geolocation IS NOT available */
       setCurrentPosition({
         lng: 51.747357800785984,
         lat: 19.45402886180793,
@@ -55,7 +56,9 @@ export const EventsMapPanel = () => {
     <Container>
       <Title>Mapa zgłoszeń</Title>
       <MapContainer>
-        <AllEventsMap events={eventsQuery.data} currentPosition={currentPosition} />
+        {currentPosition && (
+          <AllEventsMap events={eventsQuery.data} currentPosition={currentPosition} />
+        )}
       </MapContainer>
     </Container>
   );
