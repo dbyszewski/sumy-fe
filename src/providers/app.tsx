@@ -3,6 +3,7 @@ import { ReactNode, Suspense } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
+import { LoadingSpinner } from '@/components/Elements/LoadingSpinner';
 import { queryClient } from '@/lib/react-query.ts';
 import AuthProvider from '@/providers/AuthProvider.tsx';
 import NotificationsProvider from '@/providers/NotificationsProvider.tsx';
@@ -15,13 +16,7 @@ type AppProviderProps = {
 const theme = lightTheme;
 export const AppProvider = ({ children }: AppProviderProps) => {
   return (
-    <Suspense
-      fallback={
-        <div>
-          Loading...
-          {/* TODO: Change to spinner */}
-        </div>
-      }>
+    <Suspense fallback={<LoadingSpinner />}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         <Router>

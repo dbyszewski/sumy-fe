@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { useUser } from '@/api/users/get-user.ts';
 import { Title } from '@/components/Elements/Headers/Title';
+import { LoadingSpinner } from '@/components/Elements/LoadingSpinner';
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 import { renderBoolean } from '@/utils/tableHelper';
@@ -20,7 +21,7 @@ export const UserDetailsCard = () => {
   }, [navigate]);
 
   if (userQuery.isLoading) {
-    return <div>Ładowanie danych...</div>;
+    return <LoadingSpinner />;
   }
 
   if (userQuery.isError || !userQuery.data) {

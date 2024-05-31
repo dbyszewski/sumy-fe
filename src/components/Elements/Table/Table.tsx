@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
+import { LoadingSpinner } from '@/components/Elements/LoadingSpinner';
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 
 type Variant = 'primary' | 'secondary' | 'warning' | 'success' | 'danger';
@@ -44,7 +45,7 @@ export const Table = <T,>({ data, columns, actions, maxRows, isLoading }: TableP
   const rows = !data?.length ? (
     <TableRow>
       <TableCell colSpan={columns.length + +!!actions}>
-        {isLoading ? 'Ładowanie danych...' : 'Brak danych...'}
+        {isLoading ? <LoadingSpinner /> : 'Brak danych...'}
       </TableCell>
     </TableRow>
   ) : (
