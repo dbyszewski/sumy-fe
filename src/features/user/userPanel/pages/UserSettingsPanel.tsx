@@ -47,14 +47,13 @@ const Container = styled.div`
   flex-direction: column;
   gap: 1rem;
   height: 100%;
-  padding: 2rem;
 `;
 
 const RoundedContainer = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 2rem;
-  background-color: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.elements.brightLight};
   overflow: hidden;
 `;
 
@@ -102,7 +101,7 @@ const Slider = styled.label`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: ${({ theme }) => theme.colors.elements.brightLight};
+  background-color: ${({ theme }) => theme.colors.elements.light};
   transition: 0.4s;
   border-radius: 40px;
 
