@@ -33,13 +33,6 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
     setVisibility(savedVisibility);
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  useEffect(() => {
-    localStorage.setItem('visibility', visibility.toString());
-  }, [visibility]);
 
   return (
     <SettingsContext.Provider value={{ theme, visibility, setTheme, setVisibility }}>
