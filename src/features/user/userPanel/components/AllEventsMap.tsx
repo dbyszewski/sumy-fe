@@ -7,18 +7,23 @@ import {
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { Event } from '@/api/events/types';
+import { Event } from '@/api/events/types.ts';
 import { getStatusMappedName } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
+import Nullable from '@/types/nullable.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
+
+type Position = {
+  lat: number;
+  lng: number;
+};
 
 type EventsMapProps = {
   events: Event[];
+  currentPosition: Nullable<Position>;
 };
 
-export const AllEventsMap = ({ events }: EventsMapProps) => {
+export const AllEventsMap = ({ events, currentPosition }: EventsMapProps) => {
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
-
-  const LodzCoordinates = { lat: 51.7592, lng: 19.456 };
 
   const handleMarkerClick = (clickedEvent: Event) => {
     const overlappingEvents = events.filter(
@@ -28,11 +33,16 @@ export const AllEventsMap = ({ events }: EventsMapProps) => {
     setSelectedEvents(overlappingEvents);
   };
 
+  if (!currentPosition) {
+    //TODO: add spinner
+    return <div>Wczytywanie...</div>;
+  }
+
   return (
     <APIProvider apiKey={'AIzaSyD-vIAZx7ywuyHukcLw2qZlgm8CRceTOsc'}>
       <GoogleMap
-        defaultZoom={10}
-        defaultCenter={LodzCoordinates}
+        defaultZoom={12}
+        defaultCenter={currentPosition}
         clickableIcons={false}
         disableDefaultUI={true}
         zoomControl={true}

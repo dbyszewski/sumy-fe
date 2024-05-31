@@ -29,11 +29,6 @@ const MOCK_NAV_DATA = [
         href: '/admin/users',
         icon: faUsers,
       },
-      {
-        title: 'Mapa zgłoszeń',
-        href: '/admin/map',
-        icon: faMap,
-      },
     ],
   },
   {
@@ -43,6 +38,11 @@ const MOCK_NAV_DATA = [
         title: 'Moje zgłoszenia',
         href: '/user/events',
         icon: faMapLocation,
+      },
+      {
+        title: 'Mapa zgłoszeń',
+        href: '/user/map',
+        icon: faMap,
       },
       {
         title: 'Ustawienia',

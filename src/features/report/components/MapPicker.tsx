@@ -3,15 +3,12 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Position } from '@/api/events/types.ts';
 import { Button } from '@/components/Elements/Button';
 import ButtonContainer from '@/components/Elements/LandingPage/ButtonContainer/ButtonContainer';
 import { Map } from '@/components/Elements/Map';
 import Nullable from '@/types/nullable';
-
-export type Position = {
-  lat: number;
-  lng: number;
-};
+import { getGeolocation } from '@/utils/geoHelper.tsx';
 
 interface MapPickerProps {
   initialPosition?: Position;
@@ -30,28 +27,9 @@ export const MapPicker = ({ initialPosition }: MapPickerProps) => {
   };
 
   useLayoutEffect(() => {
-    if ('geolocation' in navigator && !currentPosition) {
-      navigator.geolocation.getCurrentPosition(
-        (position) =>
-          setCurrentPosition({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          }),
-        (error) => {
-          console.error(error);
-          setCurrentPosition({
-            lng: 51.747357800785984,
-            lat: 19.45402886180793,
-          });
-        }
-      );
-    } else {
-      /* geolocation IS NOT available */
-      setCurrentPosition({
-        lng: 51.747357800785984,
-        lat: 19.45402886180793,
-      });
-    }
+    getGeolocation().then((position) => {
+      setCurrentPosition(position);
+    });
   }, []);
 
   useEffect(() => {

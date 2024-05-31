@@ -5,7 +5,7 @@ import { AdminEventsTable } from '../components/EventsTab/AdminEventsTable';
 import { Title } from '@/components/Elements/Headers/Title';
 import { Divider } from '@/components/Elements/LandingPage/Divider';
 
-export const AdminPanelEvents = () => {
+export const AdminEventsPanel = () => {
   return (
     <Container>
       <Title>Zgłoszenia oczekujące</Title>
