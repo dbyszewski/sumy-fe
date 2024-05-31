@@ -12,6 +12,11 @@ export interface Event {
   latitude: number;
 }
 
+export type Position = {
+  lat: number;
+  lng: number;
+};
+
 export interface GetEventParams {
   eventID?: string | number;
 }

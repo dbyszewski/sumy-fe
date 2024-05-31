@@ -1,23 +1,39 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Card } from '@/components/Elements/Card';
+import { Footer } from '@/components/Elements/Navigation/Footer';
+import { Navbar } from '@/components/Elements/Navigation/Navbar';
 
 export const Layout = () => {
   return (
     <Container>
-      <Card title="Zgłoszenie">
-        <Outlet />
-      </Card>
+      <InterContainer>
+        <Navbar />
+        <MainComponent>
+          <Outlet />
+        </MainComponent>
+      </InterContainer>
+      <Footer />
     </Container>
   );
 };
 
 const Container = styled.div`
   height: 100vh;
-  margin: 0 auto;
+  width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+`;
+
+const InterContainer = styled.div`
+  display: flex;
+  flex: 1 1 0;
+  width: 100%;
+  overflow: hidden;
+`;
+
+const MainComponent = styled.main`
+  overflow-y: auto;
+  padding: 2rem;
+  width: 100%;
 `;
