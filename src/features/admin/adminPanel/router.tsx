@@ -3,10 +3,10 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { EventDetailsCard } from './components/EventsTab/EventDetailsCard';
 import { Layout } from './components/Layout.tsx';
 import { UserDetailsCard } from './components/UsersTab/UserDetailsCard';
-import { AdminPanelEvents } from './pages/AdminPanelEvents.tsx';
+import { AdminEventsPanel } from './pages/AdminEventsPanel.tsx';
 
-import { AdminPanelUsers } from '@/features/admin/adminPanel/pages/AdminPanelUsers.tsx';
-import { EventsMapPage } from '@/features/admin/adminPanel/pages/EventsMapPage.tsx';
+import { AdminUsersPanel } from '@/features/admin/adminPanel/pages/AdminUsersPanel.tsx';
+import { EventsMapPanel } from '@/features/user/userPanel/pages/EventsMapPanel.tsx';
 
 export const AdminRouter = () => {
   return (
@@ -17,11 +17,11 @@ export const AdminRouter = () => {
         children={
           <>
             <Route index element={<Navigate to="/admin/events" />} />
-            <Route path="/events" element={<AdminPanelEvents />} />
+            <Route path="/events" element={<AdminEventsPanel />} />
             <Route path="/events/:eventId" element={<EventDetailsCard />} />
-            <Route path="/users" element={<AdminPanelUsers />} />
+            <Route path="/users" element={<AdminUsersPanel />} />
             <Route path="/users/:userId" element={<UserDetailsCard />} />
-            <Route path="/map" element={<EventsMapPage />} />
+            <Route path="/map" element={<EventsMapPanel />} />
             <Route path="*" element={<h1>404</h1>} />
           </>
         }
