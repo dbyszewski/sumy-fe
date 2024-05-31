@@ -36,7 +36,7 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
 
   return (
     <SettingsContext.Provider value={{ theme, visibility, setTheme, setVisibility }}>
-      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>{children}</ThemeProvider>
+      {children}
     </SettingsContext.Provider>
   );
 };
