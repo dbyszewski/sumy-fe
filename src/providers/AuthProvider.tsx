@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useNotifications } from '@/hooks/useNotifications.ts';
 import { apiClient } from '@/lib/api-client.ts';
 export const AuthContext = createContext<AuthContextProps>({
   token: '',
@@ -21,6 +22,7 @@ interface AuthContextProps {
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState(localStorage.getItem('site') || '');
   const navigate = useNavigate();
+  const notifications = useNotifications();
 
   const loginAction = async (data: { username: string; password: string }) => {
     try {
@@ -36,17 +38,25 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       if (response.access_token) {
         setToken(response.access_token);
         localStorage.setItem('site', response.access_token);
+        notifications.addNotification({
+          type: 'success',
+          message: 'Zalogowano pomyślnie',
+        });
         navigate('/');
         return;
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const logOut = () => {
     setToken('');
     localStorage.removeItem('site');
+    notifications.addNotification({
+      type: 'success',
+      message: 'Wylogowano pomyślnie',
+    });
     navigate('/');
   };
 

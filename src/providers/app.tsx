@@ -5,6 +5,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { queryClient } from '@/lib/react-query.ts';
 import AuthProvider from '@/providers/AuthProvider.tsx';
+import NotificationsProvider from '@/providers/NotificationsProvider.tsx';
 import { GlobalStyles, lightTheme } from '@/themes';
 
 type AppProviderProps = {
@@ -24,9 +25,11 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         <Router>
-          <QueryClientProvider client={queryClient}>
-            <AuthProvider>{children}</AuthProvider>
-          </QueryClientProvider>
+          <NotificationsProvider>
+            <QueryClientProvider client={queryClient}>
+              <AuthProvider>{children}</AuthProvider>
+            </QueryClientProvider>
+          </NotificationsProvider>
         </Router>
       </ThemeProvider>
     </Suspense>

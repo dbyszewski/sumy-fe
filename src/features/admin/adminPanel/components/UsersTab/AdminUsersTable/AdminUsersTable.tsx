@@ -9,14 +9,19 @@ import { useRevokeAdmin } from '@/api/users/revoke-admin.ts';
 import { User } from '@/api/users/types.ts';
 import { useUnlockUser } from '@/api/users/unlock-user.ts';
 import { Table, ColumnProps, ActionProps, TableLink } from '@/components/Elements/Table';
+import { useNotifications } from '@/hooks/useNotifications.ts';
 import { renderAdmin, renderBoolean, renderEllipsis, renderLocked } from '@/utils/tableHelper';
 
 export const AdminUsersTable = () => {
   const usersQuery = useUsers();
+  const notifications = useNotifications();
   const lockUser = useLockUser({
     mutationConfig: {
       onSuccess: () => {
-        console.log('Użytkownik zablokowany');
+        notifications.addNotification({
+          message: 'Zablokoawno użytkownika',
+          type: 'success',
+        });
       },
     },
   });
@@ -24,28 +29,40 @@ export const AdminUsersTable = () => {
   const unlockUser = useUnlockUser({
     mutationConfig: {
       onSuccess: () => {
-        console.log('Użytkownik odblokowany');
+        notifications.addNotification({
+          message: 'Odblokowano użytkownika',
+          type: 'success',
+        });
       },
     },
   });
   const grantAdmin = useGrantAdmin({
     mutationConfig: {
       onSuccess: () => {
-        console.log('Przyznano użytkownikowi uprawnienia administratora');
+        notifications.addNotification({
+          message: 'Przyznano uprawnienia administratora',
+          type: 'success',
+        });
       },
     },
   });
   const revokeAdmin = useRevokeAdmin({
     mutationConfig: {
       onSuccess: () => {
-        console.log('Odebrano użytkownikowi uprawnienia administratora');
+        notifications.addNotification({
+          message: 'Odebrano uprawnienia administratora',
+          type: 'success',
+        });
       },
     },
   });
   const deleteUser = useDeleteUser({
     mutationConfig: {
       onSuccess: () => {
-        console.log('Użytkownik usunięty');
+        notifications.addNotification({
+          message: 'Usunięto użytkownika',
+          type: 'success',
+        });
       },
     },
   });
