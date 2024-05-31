@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
 
 import { Title } from '@/components/Elements/Headers/Title';
-import { SettingsContext } from '@/providers/SettingsProvider';
+import { useSettings } from '@/hooks/useSettings.ts';
 
 export const UserSettingsPanel = () => {
-  const { theme, visibility, setTheme, setVisibility } = useContext(SettingsContext);
+  const { theme, visibility, setTheme, setVisibility } = useSettings();
 
   return (
     <Container>
@@ -14,30 +13,22 @@ export const UserSettingsPanel = () => {
         <Section>
           <Label>Motyw:</Label>
           <SwitchContainer>
-            <SwitchInput
-              type="radio"
-              id="light"
-              name="theme"
-              value="light"
-              checked={theme === 'light'}
-              onChange={() => setTheme('light')}
-            />
-            <SwitchLabel htmlFor="light">Jasny</SwitchLabel>
-            <SwitchInput
-              type="radio"
-              id="dark"
-              name="theme"
-              value="dark"
-              checked={theme === 'dark'}
-              onChange={() => setTheme('dark')}
-            />
-            <SwitchLabel htmlFor="dark">Ciemny</SwitchLabel>
+            <Switch>
+              <SwitchInput
+                type="checkbox"
+                id="themeSwitch"
+                checked={theme === 'dark'}
+                onChange={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              />
+              <Slider htmlFor="themeSwitch" />
+            </Switch>
+            <SwitchLabel>{theme === 'light' ? 'Jasny' : 'Ciemny'}</SwitchLabel>
           </SwitchContainer>
         </Section>
         <Section>
           <Label>Domyślna widoczność zgłoszeń:</Label>
           <CheckboxContainer>
-            <Checkbox
+            <StyledCheckbox
               type="checkbox"
               id="visibility"
               checked={visibility}
@@ -56,6 +47,7 @@ const Container = styled.div`
   flex-direction: column;
   gap: 1rem;
   height: 100%;
+  padding: 2rem;
 `;
 
 const RoundedContainer = styled.div`
@@ -78,30 +70,58 @@ const Label = styled.label`
 
 const SwitchContainer = styled.div`
   display: flex;
+  align-items: center;
   gap: 1rem;
 `;
 
-const SwitchInput = styled.input`
-  display: none;
+const Switch = styled.div`
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 40px;
 `;
 
-const SwitchLabel = styled.label`
+const SwitchInput = styled.input`
+  opacity: 0;
+  width: 0;
+  height: 0;
+
+  &:checked + label {
+    background-color: ${({ theme }) => theme.colors.navigation.darkRed};
+  }
+
+  &:checked + label:before {
+    transform: translateX(40px);
+  }
+`;
+
+const Slider = styled.label`
+  position: absolute;
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: ${({ theme }) => theme.colors.elements.brightLight};
-  transition: background-color 0.2s;
+  transition: 0.4s;
+  border-radius: 40px;
 
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.elements.light};
+  &:before {
+    position: absolute;
+    content: '';
+    height: 32px;
+    width: 32px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
   }
+`;
 
-  ${SwitchInput}:checked + & {
-    background-color: ${({ theme }) => theme.colors.buttons.primary};
-    color: ${({ theme }) => theme.colors.buttonsText};
-    border-color: ${({ theme }) => theme.colors.buttons.primary};
-  }
+const SwitchLabel = styled.span`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.text.dark};
 `;
 
 const CheckboxContainer = styled.div`
@@ -109,10 +129,14 @@ const CheckboxContainer = styled.div`
   align-items: center;
 `;
 
-const Checkbox = styled.input`
-  margin-right: 0.5rem;
+const StyledCheckbox = styled.input`
+  accent-color: ${({ theme }) => theme.colors.navigation.darkRed};
+  width: 24px;
+  height: 24px;
 `;
 
 const CheckboxLabel = styled.label`
   cursor: pointer;
+  font-size: 1rem;
+  margin-left: 0.5rem;
 `;

@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import { queryClient } from '@/lib/react-query.ts';
 import AuthProvider from '@/providers/AuthProvider.tsx';
 import NotificationsProvider from '@/providers/NotificationsProvider.tsx';
+import { SettingsProvider } from '@/providers/SettingsProvider.tsx';
 import { GlobalStyles, lightTheme } from '@/themes';
 
 type AppProviderProps = {
@@ -22,16 +23,18 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           {/* TODO: Change to spinner */}
         </div>
       }>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <Router>
-          <NotificationsProvider>
-            <QueryClientProvider client={queryClient}>
-              <AuthProvider>{children}</AuthProvider>
-            </QueryClientProvider>
-          </NotificationsProvider>
-        </Router>
-      </ThemeProvider>
+      <SettingsProvider>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          <Router>
+            <NotificationsProvider>
+              <QueryClientProvider client={queryClient}>
+                <AuthProvider>{children}</AuthProvider>
+              </QueryClientProvider>
+            </NotificationsProvider>
+          </Router>
+        </ThemeProvider>
+      </SettingsProvider>
     </Suspense>
   );
 };
