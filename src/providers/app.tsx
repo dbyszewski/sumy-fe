@@ -3,18 +3,20 @@ import { ReactNode, Suspense } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
+import { useSettings } from '@/hooks/useSettings.ts';
 import { queryClient } from '@/lib/react-query.ts';
 import AuthProvider from '@/providers/AuthProvider.tsx';
 import NotificationsProvider from '@/providers/NotificationsProvider.tsx';
 import { SettingsProvider } from '@/providers/SettingsProvider.tsx';
-import { GlobalStyles, lightTheme } from '@/themes';
+import { GlobalStyles, darkTheme, lightTheme } from '@/themes';
 
 type AppProviderProps = {
   children: ReactNode;
 };
 
-const theme = lightTheme;
 export const AppProvider = ({ children }: AppProviderProps) => {
+  const theme = useSettings().theme;
+
   return (
     <Suspense
       fallback={
@@ -24,7 +26,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         </div>
       }>
       <SettingsProvider>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
           <GlobalStyles />
           <Router>
             <NotificationsProvider>

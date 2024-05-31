@@ -4,7 +4,7 @@ import { Title } from '@/components/Elements/Headers/Title';
 import { useSettings } from '@/hooks/useSettings.ts';
 
 export const UserSettingsPanel = () => {
-  const { theme, visibility, setTheme, setVisibility } = useSettings();
+  const { theme, visibility, changeTheme, changeVisibility } = useSettings();
 
   return (
     <Container>
@@ -18,7 +18,7 @@ export const UserSettingsPanel = () => {
                 type="checkbox"
                 id="themeSwitch"
                 checked={theme === 'dark'}
-                onChange={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                onChange={() => changeTheme(theme === 'light' ? 'dark' : 'light')}
               />
               <Slider htmlFor="themeSwitch" />
             </Switch>
@@ -32,7 +32,7 @@ export const UserSettingsPanel = () => {
               type="checkbox"
               id="visibility"
               checked={visibility}
-              onChange={() => setVisibility(!visibility)}
+              onChange={() => changeVisibility(!visibility)}
             />
             <CheckboxLabel htmlFor="visibility">Włącz</CheckboxLabel>
           </CheckboxContainer>
