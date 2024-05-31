@@ -9,7 +9,7 @@ import { useRevokeAdmin } from '@/api/users/revoke-admin.ts';
 import { User } from '@/api/users/types.ts';
 import { useUnlockUser } from '@/api/users/unlock-user.ts';
 import { Table, ColumnProps, ActionProps, TableLink } from '@/components/Elements/Table';
-import { renderBoolean, renderEllipsis } from '@/utils/tableHelper';
+import { renderAdmin, renderBoolean, renderEllipsis, renderLocked } from '@/utils/tableHelper';
 
 export const AdminUsersTable = () => {
   const usersQuery = useUsers();
@@ -66,11 +66,6 @@ export const AdminUsersTable = () => {
       title: 'Status',
     },
     {
-      key: 'isPhoneVerified',
-      title: 'Telefon zweryfikowany',
-      render: (_, item) => renderBoolean(item.isPhoneVerified),
-    },
-    {
       key: 'isMailVerified',
       title: 'Email zweryfikowany',
       render: (_, item) => renderBoolean(item.isMailVerified),
@@ -78,12 +73,12 @@ export const AdminUsersTable = () => {
     {
       key: 'isAdmin',
       title: 'Admin',
-      render: (_, item) => renderBoolean(item.isAdmin),
+      render: (_, item) => renderAdmin(item.isAdmin),
     },
     {
       key: 'lockedAt',
       title: 'Zablokowany',
-      render: (_, item) => renderBoolean(!!item.lockedAt),
+      render: (_, item) => renderLocked(!!item.lockedAt),
     },
   ];
 
