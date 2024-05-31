@@ -1,6 +1,6 @@
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -43,6 +43,8 @@ export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
     createEventMutation.mutate({ data: requestBody });
   };
 
+  const [isChecked, setIsChecked] = useState(false);
+
   return (
     <>
       <FileContainer>
@@ -66,11 +68,19 @@ export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
           </ImageContainer>
         )}
       </FileContainer>
+      <CheckboxContainer>
+        <StyledCheckbox
+          type="checkbox"
+          checked={isChecked}
+          onChange={() => setIsChecked(!isChecked)}
+        />
+        <CheckboxLabel htmlFor="visibility">Akceptuję zasady</CheckboxLabel>
+      </CheckboxContainer>
       <ButtonContainer>
         <Link to="/report/location">
           <Button disabled={createEventMutation.isPending}>Wstecz</Button>
         </Link>
-        <Button onClick={handleNext} disabled={createEventMutation.isPending}>
+        <Button onClick={handleNext} disabled={!isChecked || createEventMutation.isPending}>
           Wyślij
         </Button>
       </ButtonContainer>
@@ -126,7 +136,7 @@ const FilePreview = styled.img`
 
 const ImageContainer = styled.div`
   position: relative;
-  margin-top: 10;
+  margin-top: 10px;
 `;
 
 const FileContainer = styled.div`
@@ -137,4 +147,22 @@ const Label = styled.div`
   font-size: 1rem;
   margin-bottom: 1rem;
   width: 100%;
+`;
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+`;
+
+const StyledCheckbox = styled.input`
+  accent-color: ${({ theme }) => theme.colors.navigation.darkRed};
+  width: 24px;
+  height: 24px;
+`;
+
+const CheckboxLabel = styled.label`
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 0.5rem;
 `;
