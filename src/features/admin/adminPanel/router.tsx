@@ -18,7 +18,6 @@ export const AdminRouter = () => {
           <>
             <Route index element={<Navigate to="/admin/events" />} />
             <Route path="/events" element={<AdminEventsPanel />} />
-            <Route path="/events/:eventId" element={<EventDetailsCard />} />
             <Route path="/users" element={<AdminUsersPanel />} />
             <Route path="/users/:userId" element={<UserDetailsCard />} />
             <Route path="/map" element={<EventsMapPanel />} />
