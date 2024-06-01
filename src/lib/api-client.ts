@@ -18,6 +18,13 @@ apiClient.interceptors.request.use((config) => {
 
 apiClient.interceptors.response.use(
   (response) => {
+    if (response.headers['content-type'] === 'application/octet-stream') {
+      return {
+        data: response.data,
+        contentType: response.headers['content-type'],
+      };
+    }
+
     if (response.data?.result) return response.data.result;
 
     return response.data;
@@ -40,9 +47,6 @@ apiClient.interceptors.response.use(
       } else {
         toast.error('Nieokreślony błąd walidacji');
       }
-    }
-    if (error.response.status === 404) {
-      toast.error('Nie znaleziono');
     }
     if (error.response.status === 403) {
       toast.error('Nie masz prawa');

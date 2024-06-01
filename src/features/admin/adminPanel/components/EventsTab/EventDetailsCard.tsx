@@ -8,6 +8,7 @@ import { SingleEventMap } from './SingleEventMap';
 
 import { useEvent } from '@/api/events/get-event.ts';
 import { Title } from '@/components/Elements/Headers/Title';
+import { ImageContainer } from '@/components/Elements/Image';
 import { LoadingSpinner } from '@/components/Elements/LoadingSpinner';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
 import { formatDateTime } from '@/utils/dateHelper.ts';
@@ -74,6 +75,12 @@ export const EventDetailsCard = () => {
         <MapContainer>
           <SingleEventMap position={{ lat: event.latitude, lng: event.longitude }} />
         </MapContainer>
+        <ImagesContainer>
+          {eventId &&
+            event.filesList.map((fileId) => (
+              <ImageContainer key={fileId} fileID={fileId} eventID={eventId} />
+            ))}
+        </ImagesContainer>
       </RowsContainer>
     </Content>
   );
@@ -109,6 +116,7 @@ const RowsContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  gap: 1rem;
 `;
 
 const Row = styled.div`
@@ -135,8 +143,13 @@ const ColumnRight = styled.div`
 const MapContainer = styled.div`
   height: 20rem;
   background: #e5e5e5;
-  margin-top: 3rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   overflow: hidden;
+`;
+
+const ImagesContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 `;

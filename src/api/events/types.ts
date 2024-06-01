@@ -10,7 +10,13 @@ export interface Event {
   visibility: boolean;
   longitude: number;
   latitude: number;
+  filesList: string[];
 }
+
+export type DownloadedImage = {
+  data: Blob;
+  contentType: string;
+};
 
 export type Position = {
   lat: number;
@@ -19,6 +25,11 @@ export type Position = {
 
 export interface GetEventParams {
   eventID?: string | number;
+}
+
+export interface DownloadImageParams {
+  eventID: string | number;
+  fileID: string;
 }
 
 export type CreateEventInput = FormData;
