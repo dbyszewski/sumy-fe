@@ -90,7 +90,7 @@ export const UserEventsTable = () => {
       title: 'Usuń',
       icon: faTrash,
       onClick: (item) => handleDelete(item.eventID),
-      colorVariant: 'secondary',
+      colorVariant: 'danger',
     },
     {
       key: 'edit',

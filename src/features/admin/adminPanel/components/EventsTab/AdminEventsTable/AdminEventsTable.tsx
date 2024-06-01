@@ -1,7 +1,8 @@
-import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
 import _ from 'lodash';
 
 import { useApproveEvent } from '@/api/events/approve-event.ts';
+import { useDeleteEvent } from '@/api/events/delete-event.ts';
 import { useEvents } from '@/api/events/get-events';
 import { useRejectEvent } from '@/api/events/reject-event.ts';
 import { Event } from '@/api/events/types';
@@ -39,6 +40,16 @@ export const AdminEventsTable = ({ filter, maxRows }: AdminEventsTableProps) => 
       onSuccess: () => {
         notifications.addNotification({
           message: 'Zgłoszenie odrzucone',
+          type: 'success',
+        });
+      },
+    },
+  });
+  const deleteEvent = useDeleteEvent({
+    mutationConfig: {
+      onSuccess: () => {
+        notifications.addNotification({
+          message: 'Usunięto zdarzenie',
           type: 'success',
         });
       },
@@ -93,6 +104,13 @@ export const AdminEventsTable = ({ filter, maxRows }: AdminEventsTableProps) => 
       icon: faXmark,
       hidden: (item) => item.status === 'rejected',
       onClick: (item) => handleReject(item.eventID),
+      colorVariant: 'warning',
+    },
+    {
+      key: 'delete',
+      title: 'Usuń',
+      icon: faTrash,
+      onClick: (item) => handleDelete(item.eventID),
       colorVariant: 'danger',
     },
   ];
@@ -110,6 +128,13 @@ export const AdminEventsTable = ({ filter, maxRows }: AdminEventsTableProps) => 
       await rejectEvent.mutateAsync(eventId);
     } catch (error) {
       console.error('Błąd podczas odrzucania zgłoszenia:', error);
+    }
+  };
+  const handleDelete = async (userId: number) => {
+    try {
+      await deleteEvent.mutateAsync(userId);
+    } catch (error) {
+      console.error('Błąd podczas usuwania zdarzenia:', error);
     }
   };
 
