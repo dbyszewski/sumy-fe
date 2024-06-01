@@ -12,4 +12,7 @@ const FooterContainer = styled.footer`
   padding: 0.5rem;
   background-color: ${({ theme }) => theme.colors.elements.dark};
   color: ${({ theme }) => theme.colors.text.light};
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
