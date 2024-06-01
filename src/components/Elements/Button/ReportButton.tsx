@@ -31,7 +31,7 @@ export const ReportButton = () => {
   };
 
   return (
-    <Container>
+    <>
       <StyledButton
         onClick={handleClick}
         initial={isHidden ? 'visible' : 'hidden'}
@@ -50,12 +50,12 @@ export const ReportButton = () => {
         variants={hideButtonVariants}>
         <FontAwesomeIcon icon={faAnglesRight} />
       </HideButton>
-    </Container>
+    </>
   );
 };
 
 const StyledButton = styled(motion.button)`
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,10 +71,14 @@ const StyledButton = styled(motion.button)`
   font-size: 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  @media (max-width: 768px) {
+    bottom: 1rem;
+    right: 1rem;
+  }
 `;
 
 const HideButton = styled(motion.button)`
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,10 +92,7 @@ const HideButton = styled(motion.button)`
   cursor: pointer;
   background: none;
   border: none;
-`;
-
-const Container = styled.div`
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
+  @media (max-width: 768px) {
+    bottom: 7rem;
+  }
 `;
