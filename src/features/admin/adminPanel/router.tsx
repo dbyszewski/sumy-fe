@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { EventDetailsCard } from './components/EventsTab/EventDetailsCard';
 import { UserDetailsCard } from './components/UsersTab/UserDetailsCard';
 import { AdminEventsPanel } from './pages/AdminEventsPanel.tsx';
 
