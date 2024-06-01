@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Footer } from '@/components/Elements/Navigation/Footer';
 import { Navbar } from '@/components/Elements/Navigation/Navbar';
 
-export const Layout = () => {
+export const AppLayout = () => {
   return (
     <Container>
       <InterContainer>
@@ -36,4 +36,8 @@ const MainComponent = styled.main`
   overflow-y: auto;
   padding: 2rem;
   width: 100%;
+  @media (max-width: 768px) {
+    margin-top: 4rem;
+    padding: 1rem;
+  }
 `;

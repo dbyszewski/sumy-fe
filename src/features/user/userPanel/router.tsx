@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { Layout } from './components/Layout.tsx';
-
+import { AppLayout } from '@/components/Layout/AppLayout';
 import { EventsMapPanel } from '@/features/user/userPanel/pages/EventsMapPanel.tsx';
 import { UserEventsPanel } from '@/features/user/userPanel/pages/UserEventsPanel.tsx';
 import { UserSettingsPanel } from '@/features/user/userPanel/pages/UserSettingsPanel.tsx';
@@ -11,7 +10,7 @@ export const UserRouter = () => {
     <Routes>
       <Route
         path="/"
-        element={<Layout />}
+        element={<AppLayout />}
         children={
           <>
             <Route index element={<Navigate to="/user/events" />} />
