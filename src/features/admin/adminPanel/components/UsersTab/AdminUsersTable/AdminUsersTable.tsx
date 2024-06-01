@@ -79,10 +79,6 @@ export const AdminUsersTable = () => {
       title: 'Email',
     },
     {
-      key: 'status',
-      title: 'Status',
-    },
-    {
       key: 'isMailVerified',
       title: 'Email zweryfikowany',
       render: (_, item) => renderBoolean(item.isMailVerified),

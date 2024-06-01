@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { Layout } from './components/Layout.tsx';
 import { UserDetailsCard } from './components/UsersTab/UserDetailsCard';
 import { AdminEventsPanel } from './pages/AdminEventsPanel.tsx';
 
+import { AppLayout } from '@/components/Layout/AppLayout';
 import { AdminUsersPanel } from '@/features/admin/adminPanel/pages/AdminUsersPanel.tsx';
 import { EventsMapPanel } from '@/features/user/userPanel/pages/EventsMapPanel.tsx';
 
@@ -12,7 +12,7 @@ export const AdminRouter = () => {
     <Routes>
       <Route
         path="/"
-        element={<Layout />}
+        element={<AppLayout />}
         children={
           <>
             <Route index element={<Navigate to="/admin/events" />} />

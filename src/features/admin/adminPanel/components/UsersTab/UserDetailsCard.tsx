@@ -9,7 +9,7 @@ import { Title } from '@/components/Elements/Headers/Title';
 import { LoadingSpinner } from '@/components/Elements/LoadingSpinner';
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 import { formatDateTime } from '@/utils/dateHelper.ts';
-import { renderBoolean } from '@/utils/tableHelper';
+import { renderAdmin, renderBoolean, renderLocked } from '@/utils/tableHelper';
 
 export const UserDetailsCard = () => {
   const { userId } = useParams();
@@ -43,21 +43,10 @@ export const UserDetailsCard = () => {
           <ColumnLeft>Nazwa użytkownika:</ColumnLeft>
           <ColumnRight>{user.userName}</ColumnRight>
         </Row>
-        <Row>
-          <ColumnLeft>Numer telefonu:</ColumnLeft>
-          <ColumnRight>{user.phone}</ColumnRight>
-        </Row>
+
         <Row>
           <ColumnLeft>Adres email:</ColumnLeft>
           <ColumnRight>{user.email}</ColumnRight>
-        </Row>
-        <Row>
-          <ColumnLeft>Status:</ColumnLeft>
-          <ColumnRight>{user.status}</ColumnRight>
-        </Row>
-        <Row>
-          <ColumnLeft>Telefon zweryfikowany:</ColumnLeft>
-          <ColumnRight>{renderBoolean(user.isPhoneVerified)}</ColumnRight>
         </Row>
         <Row>
           <ColumnLeft>Email zweryfikowany:</ColumnLeft>
@@ -65,16 +54,14 @@ export const UserDetailsCard = () => {
         </Row>
         <Row>
           <ColumnLeft>Admin</ColumnLeft>
-          <ColumnRight>{renderBoolean(user.isAdmin)}</ColumnRight>
+          <ColumnRight>{renderAdmin(user.isAdmin)}</ColumnRight>
         </Row>
         <Row>
           <ColumnLeft>Zablokowany:</ColumnLeft>
           {user.lockedAt ? (
-            <Tooltip message={formatDateTime(user.lockedAt)}>
-              {renderBoolean(user.lockedAt)}
-            </Tooltip>
+            <Tooltip message={formatDateTime(user.lockedAt)}>{renderLocked(user.lockedAt)}</Tooltip>
           ) : (
-            renderBoolean(user.lockedAt)
+            renderLocked(user.lockedAt)
           )}
         </Row>
       </RowsContainer>
