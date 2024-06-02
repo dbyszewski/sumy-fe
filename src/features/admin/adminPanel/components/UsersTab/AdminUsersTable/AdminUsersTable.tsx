@@ -19,7 +19,7 @@ export const AdminUsersTable = () => {
     mutationConfig: {
       onSuccess: () => {
         notifications.addNotification({
-          message: 'Zablokoawno użytkownika',
+          message: 'Zablokowano użytkownika',
           type: 'success',
         });
       },
