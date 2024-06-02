@@ -3,13 +3,33 @@ import { ChangeEvent, useState } from 'react';
 import { FileSelect } from '@/features/report/components/FileSelect.tsx';
 
 export const FilesUpload = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
 
-    const file = files?.[0] ?? null;
-    setFile(file);
+    if (!files) return;
+
+    appendFiles(files);
   };
 
-  return <FileSelect onChange={handleFileChange} value={file} name="event-file" />;
+  const appendFiles = (newFiles: File | FileList) => {
+    if (newFiles instanceof FileList) {
+      setFiles([...files, ...newFiles]);
+      return;
+    }
+    setFiles([...files, newFiles]);
+  };
+
+  const handleRemoveFile = (file: File) => {
+    setFiles((prevFiles) => prevFiles.filter((prevFile) => prevFile !== file));
+  };
+
+  return (
+    <FileSelect
+      onChange={handleFileChange}
+      onRemoveFile={handleRemoveFile}
+      value={files}
+      name="event-file"
+    />
+  );
 };

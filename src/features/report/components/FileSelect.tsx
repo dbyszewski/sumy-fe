@@ -5,18 +5,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useCreateEvent } from '@/api/events/create-event.ts';
-import { CreateEventInput } from '@/api/events/types.ts';
 import { Button } from '@/components/Elements/Button';
 import ButtonContainer from '@/components/Elements/LandingPage/ButtonContainer/ButtonContainer.tsx';
 
 interface FileInputProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  value: File | null;
+  onRemoveFile: (file: File) => void;
+  value: File[];
   name: string;
   alt?: string;
 }
 
-export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
+export const FileSelect = ({ name, value, ...rest }: FileInputProps) => {
   const navigate = useNavigate();
   const createEventMutation = useCreateEvent({
     mutationConfig: {
@@ -29,18 +29,21 @@ export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
   });
 
   const handleNext = () => {
-    // alert('File sent');
     const reportData = JSON.parse(localStorage.getItem('reportData') || '{}');
     const reportLocation = JSON.parse(localStorage.getItem('reportLocation') || '{}');
-    const requestBody = {
-      phone: reportData.phone,
-      title: reportData.title,
-      description: reportData.description,
-      eventDate: reportData.eventDate,
-      latitude: reportLocation.lat,
-      longitude: reportLocation.lng,
-    } as CreateEventInput;
-    createEventMutation.mutate({ data: requestBody });
+    const visibility = JSON.parse(localStorage.getItem('visibility') || 'false');
+    const formData = new FormData();
+    if (reportData.phone) formData.append('phone', reportData.phone);
+    if (reportData.title) formData.append('title', reportData.title);
+    formData.append('description', reportData.description);
+    formData.append('eventDate', reportData.eventDate);
+    formData.append('latitude', reportLocation.lat);
+    formData.append('longitude', reportLocation.lng);
+    formData.append('visibility', visibility);
+    value.forEach((file) => {
+      formData.append('files', file);
+    });
+    createEventMutation.mutate({ data: formData });
   };
 
   const [isChecked, setIsChecked] = useState(false);
@@ -55,18 +58,25 @@ export const FileSelect = ({ name, alt, value, ...rest }: FileInputProps) => {
             name={name}
             {...rest}
             type="file"
+            multiple
             accept="image/png, image/jpeg"
           />
           <FileInputLabel htmlFor={name}>
             <FontAwesomeIcon icon={faUpload} />
           </FileInputLabel>
-          {value?.name && <FileNameDisplay title={value?.name}>{value?.name}</FileNameDisplay>}
         </FileInputWrapper>
-        {value && (
-          <ImageContainer>
-            <FilePreview src={URL.createObjectURL(value)} alt={alt} />
-          </ImageContainer>
-        )}
+        <PreviewContainer>
+          {value.map((file, index) => (
+            <ImageContainer key={index}>
+              <Button
+                onClick={() => {
+                  rest.onRemoveFile(file);
+                }}
+              />
+              <FilePreview src={URL.createObjectURL(file)} alt={file.name} />
+            </ImageContainer>
+          ))}
+        </PreviewContainer>
       </FileContainer>
       <CheckboxContainer>
         <StyledCheckbox
@@ -116,22 +126,14 @@ const FileInputLabel = styled.label`
   }
 `;
 
-const FileNameDisplay = styled.span`
-  display: inline-block;
-  padding: 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-grow: 1;
-  max-width: 100%;
+const PreviewContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 `;
 
 const FilePreview = styled.img`
-  max-width: 100%;
+  max-width: 5rem;
 `;
 
 const ImageContainer = styled.div`

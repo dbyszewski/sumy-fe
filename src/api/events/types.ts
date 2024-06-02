@@ -21,12 +21,4 @@ export interface GetEventParams {
   eventID?: string | number;
 }
 
-export interface CreateEventInput {
-  title: string;
-  phone?: string;
-  description: string;
-  eventDate: string;
-  longitude: number;
-  latitude: number;
-  visibility?: boolean;
-}
+export type CreateEventInput = FormData;
