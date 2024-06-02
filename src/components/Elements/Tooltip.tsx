@@ -21,7 +21,11 @@ export const Tooltip = ({ children, message }: TooltipProps) => {
 
 const TooltipWrapper = styled.div`
   position: relative;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 `;
 
 const TooltipText = styled.span`
