@@ -7,7 +7,7 @@ import { apiClient } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
 export const rejectEvent = (eventID: GetEventParams['eventID']): Promise<Event> => {
-  return apiClient.patch(`/events/reject/${eventID}`);
+  return apiClient.patch(`/events/reject_event/${eventID}`);
 };
 
 interface UseRejectEventOptions extends GetEventParams {

@@ -7,7 +7,7 @@ import { apiClient } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
 export const approveEvent = (eventID: GetEventParams['eventID']): Promise<Event> => {
-  return apiClient.patch(`/events/approve/${eventID}`);
+  return apiClient.patch(`/events/approve_event/${eventID}`);
 };
 
 interface UseApproveEventOptions {

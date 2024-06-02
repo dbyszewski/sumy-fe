@@ -7,7 +7,7 @@ import { apiClient } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
 export const deleteUser = (userID: GetUserParams['userID']): Promise<User> => {
-  return apiClient.delete(`/users/${userID}`);
+  return apiClient.delete(`/users/delete_user/${userID}`);
 };
 
 interface UseDeleteUserOptions {

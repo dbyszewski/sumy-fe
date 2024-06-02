@@ -7,7 +7,7 @@ import { apiClient } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
 export const deleteEvent = (eventID: GetEventParams['eventID']): Promise<Event> => {
-  return apiClient.delete(`/events/${eventID}`);
+  return apiClient.delete(`/events/delete_event/${eventID}`);
 };
 
 interface UseDeleteEventOptions {
