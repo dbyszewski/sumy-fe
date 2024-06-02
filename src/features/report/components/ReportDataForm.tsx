@@ -50,22 +50,20 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit)}>
       <Controller
-        render={({ field }) => (
-          <TextInput label="Tytuł" size="md" {...field} error={errors.title?.message} />
-        )}
+        render={({ field }) => <TextInput label="Tytuł" {...field} error={errors.title?.message} />}
         name="title"
         control={control}
       />
       <Controller
         render={({ field }) => (
-          <TextArea label="Opis" size="md" {...field} error={errors.description?.message} />
+          <TextArea label="Opis" {...field} error={errors.description?.message} />
         )}
         name="description"
         control={control}
       />
       <Controller
         render={({ field }) => (
-          <TextInput label="Numer telefonu" size="md" {...field} error={errors.phone?.message} />
+          <TextInput label="Numer telefonu" {...field} error={errors.phone?.message} />
         )}
         name="phone"
         control={control}

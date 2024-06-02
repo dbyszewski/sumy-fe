@@ -1,22 +1,24 @@
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
+import Dropzone from 'react-dropzone';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useCreateEvent } from '@/api/events/create-event.ts';
 import { Button } from '@/components/Elements/Button';
+import { ImageComponent } from '@/components/Elements/Image/Image.tsx';
 import ButtonContainer from '@/components/Elements/LandingPage/ButtonContainer/ButtonContainer.tsx';
 
 interface FileInputProps {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onDrop: (files: File[]) => void;
   onRemoveFile: (file: File) => void;
   value: File[];
   name: string;
   alt?: string;
 }
 
-export const FileSelect = ({ name, value, ...rest }: FileInputProps) => {
+export const FileSelect = ({ value, onDrop, onRemoveFile }: FileInputProps) => {
   const navigate = useNavigate();
   const createEventMutation = useCreateEvent({
     mutationConfig: {
@@ -49,31 +51,22 @@ export const FileSelect = ({ name, value, ...rest }: FileInputProps) => {
   const [isChecked, setIsChecked] = useState(false);
 
   return (
-    <>
+    <Container>
       <FileContainer>
-        <Label>Dodaj zdjęcie związane ze zgłosieniem:</Label>
-        <FileInputWrapper>
-          <HiddenFileInput
-            id={name}
-            name={name}
-            {...rest}
-            type="file"
-            multiple
-            accept="image/png, image/jpeg"
-          />
-          <FileInputLabel htmlFor={name}>
-            <FontAwesomeIcon icon={faUpload} />
-          </FileInputLabel>
-        </FileInputWrapper>
+        <Dropzone onDrop={onDrop} maxSize={5000000} multiple>
+          {({ getRootProps, getInputProps }) => (
+            <StyledDropzone {...getRootProps()}>
+              <input {...getInputProps()} multiple />
+              <p>{`Przeciągnij i upuść zdjęcia, lub kliknij aby wybrać pliki`}</p>
+
+              <FontAwesomeIcon icon={faUpload} style={{ width: 200, height: 200 }} />
+            </StyledDropzone>
+          )}
+        </Dropzone>
         <PreviewContainer>
           {value.map((file, index) => (
             <ImageContainer key={index}>
-              <Button
-                onClick={() => {
-                  rest.onRemoveFile(file);
-                }}
-              />
-              <FilePreview src={URL.createObjectURL(file)} alt={file.name} />
+              <ImageComponent url={URL.createObjectURL(file)} onDelete={() => onRemoveFile(file)} />
             </ImageContainer>
           ))}
         </PreviewContainer>
@@ -94,61 +87,40 @@ export const FileSelect = ({ name, value, ...rest }: FileInputProps) => {
           Wyślij
         </Button>
       </ButtonContainer>
-    </>
+    </Container>
   );
 };
 
-const HiddenFileInput = styled.input`
-  display: none;
-`;
-
-const FileInputWrapper = styled.div`
+const Container = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin: 10px 0;
-  max-width: 100%;
-`;
-
-const FileInputLabel = styled.label`
-  display: inline-block;
-  padding: 10px;
-  background-color: #eee;
-  border-radius: 4px;
-  cursor: pointer;
-  margin: 0;
-  font-size: 16px;
-  border: 1px solid #ccc;
-
-  &:hover {
-    background-color: #ddd;
-  }
+  width: 100%;
+  max-height: 85vh;
+  text-align: start;
+  overflow-y: auto;
 `;
 
 const PreviewContainer = styled.div`
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-`;
-
-const FilePreview = styled.img`
-  max-width: 5rem;
+  max-height: 50vh;
+  overflow-y: auto;
 `;
 
 const ImageContainer = styled.div`
-  position: relative;
-  margin-top: 10px;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  flex: 1;
+  min-width: 20rem;
+  background-color: ${({ theme }) => theme.colors.elements.light};
 `;
 
 const FileContainer = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Label = styled.div`
-  font-size: 1rem;
   margin-bottom: 1rem;
-  width: 100%;
 `;
 
 const CheckboxContainer = styled.div`
@@ -167,4 +139,22 @@ const CheckboxLabel = styled.label`
   cursor: pointer;
   font-size: 1rem;
   margin-left: 0.5rem;
+`;
+
+const StyledDropzone = styled.div`
+  border: 2px dashed ${({ theme }) => theme.colors.elements.light};
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.elements.dark};
+  }
+  color: ${({ theme }) => theme.colors.text.themeDark};
 `;

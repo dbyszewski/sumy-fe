@@ -1,76 +1,43 @@
 import { InputHTMLAttributes } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+
+import {
+  Container,
+  LabelText,
+  StyledError,
+} from '@/components/Elements/InputFields/StyledElements.tsx';
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label: string;
-  size: 'sm' | 'md' | 'lg';
   error?: string;
 }
 
-const sizes = {
-  sm: [2, 4],
-  md: [2, 6],
-  lg: [3, 8],
-};
-
-export const TextInput = ({ label, size, error, ...rest }: InputProps) => {
+export const TextInput = ({ label, error, ...rest }: InputProps) => {
   return (
-    <Label>
+    <Container>
       <LabelText>{label}</LabelText>
-      <StyledInput size={size} aria-invalid={error ? 'true' : 'false'} {...rest} />
+      <StyledInput aria-invalid={error ? 'true' : 'false'} {...rest} />
       <StyledError>{error}</StyledError>
-    </Label>
+    </Container>
   );
 };
 
-const Label = styled.label`
-  display: block;
-  margin-bottom: 1rem;
+const StyledInput = styled.input`
   width: 100%;
+  height: 3rem;
+  color: ${({ theme }) => theme.colors.text.dark};
+  background-color: ${({ theme }) => theme.colors.background};
   font-size: 1rem;
-  font-weight: 600;
-`;
-
-const LabelText = styled.span`
-  display: block;
-  margin-bottom: 0.5rem;
-`;
-
-type StyledInputProps = {
-  size: 'sm' | 'md' | 'lg';
-};
-
-const StyledInput = styled.input<StyledInputProps>`
-  ${({ size, theme }) => {
-    return css`
-      width: 100%;
-      max-width: 400px;
-      background-color: ${theme.colors.input};
-      font-size: ${theme.text[size]};
-      padding: ${theme.space[sizes[size][0]]} 5px;
-      border: none;
-      border-bottom: 2px solid ${theme.colors.input};
-      border-radius: 0;
-      &:focus,
-      &:hover {
-        border-color: ${theme.colors.buttons.primary};
-        outline: none;
-      }
-      &:invalid {
-        border-color: ${theme.colors.error};
-      }
-    `;
-  }}
-`;
-
-const StyledError = styled.div`
-  ${({ theme }) => {
-    return css`
-      color: ${theme.colors.error};
-      font-size: ${theme.text.sm};
-      margin-top: 0.25rem;
-      height: 2rem;
-      display: flex;
-    `;
-  }}
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.elements.light};
+  border-radius: 0;
+  &:focus,
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.elements.dark};
+    outline: none;
+  }
+  &:invalid {
+    border-color: ${({ theme }) => theme.colors.buttons.danger};
+  }
 `;

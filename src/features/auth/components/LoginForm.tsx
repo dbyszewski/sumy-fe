@@ -50,21 +50,13 @@ export const LoginForm = () => {
   return (
     <FormContainer title="Logowanie" onSubmit={handleSubmit(onSubmit)}>
       <Controller
-        render={({ field }) => (
-          <TextInput label="Email" size="md" {...field} error={errors.email?.message} />
-        )}
+        render={({ field }) => <TextInput label="Email" {...field} error={errors.email?.message} />}
         name="email"
         control={control}
       />
       <Controller
         render={({ field }) => (
-          <TextInput
-            label="Hasło"
-            size="md"
-            type="password"
-            {...field}
-            error={errors.password?.message}
-          />
+          <TextInput label="Hasło" type="password" {...field} error={errors.password?.message} />
         )}
         name="password"
         control={control}
