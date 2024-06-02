@@ -7,7 +7,7 @@ import { apiClient } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
 export const changeVisibilityEvent = (eventID: GetEventParams['eventID']): Promise<Event> => {
-  return apiClient.patch(`/events/change_event_visibility/${eventID}`);
+  return apiClient.patch(`/events/change_visibility/${eventID}`);
 };
 
 interface UseChangeVisibilityEventOptions {

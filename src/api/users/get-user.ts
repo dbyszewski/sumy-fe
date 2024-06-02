@@ -6,7 +6,7 @@ import { apiClient } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
 
 export const getUser = ({ userID }: GetUserParams): Promise<User> => {
-  return apiClient.get(`/users/get_user/${userID}`);
+  return apiClient.get(`/users/${userID}`);
 };
 
 export const getUserQueryOptions = (userID: GetUserParams['userID']) => {

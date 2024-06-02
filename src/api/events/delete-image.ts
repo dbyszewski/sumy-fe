@@ -7,7 +7,7 @@ import { apiClient } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
 export const deleteEventImage = ({ eventID, fileID }: DownloadImageParams): Promise<never> => {
-  return apiClient.delete(`/events/delete_file_for_event/${eventID}/files/${fileID}`);
+  return apiClient.delete(`/events/${eventID}/files/${fileID}`);
 };
 
 interface UseDeleteEventImageOptions {

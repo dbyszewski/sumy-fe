@@ -9,7 +9,7 @@ export const downloadEventImage = ({
   eventID,
   fileID,
 }: DownloadImageParams): Promise<DownloadedImage> => {
-  return apiClient.get(`/events/get_file_for_event_id/${eventID}/files/${fileID}`, {
+  return apiClient.get(`/events/${eventID}/files/${fileID}`, {
     responseType: 'arraybuffer',
   });
 };

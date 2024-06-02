@@ -6,7 +6,7 @@ import { apiClient } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
 
 export const getEvent = ({ eventID }: GetEventParams): Promise<Event> => {
-  return apiClient.get(`/events/get_event_authenticated/${eventID}`);
+  return apiClient.get(`/events/authenticated/${eventID}`);
 };
 
 export const getEventQueryOptions = (eventID: GetEventParams['eventID']) => {
