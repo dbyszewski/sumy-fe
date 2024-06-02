@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { ReportButton } from '@/components/Elements/Button';
 import { Footer } from '@/components/Elements/Navigation/Footer';
 import { Navbar } from '@/components/Elements/Navigation/Navbar';
 
@@ -14,6 +15,7 @@ export const AppLayout = () => {
         </MainComponent>
       </InterContainer>
       <Footer />
+      <ReportButton />
     </Container>
   );
 };
