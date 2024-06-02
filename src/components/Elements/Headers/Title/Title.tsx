@@ -12,6 +12,7 @@ export const Title = ({ children }: TitleProps) => {
 const StyledTitle = styled.h1`
   font-size: 2rem;
   font-weight: 600;
+  flex: 1;
   margin: 0;
   padding: 0;
   color: ${({ theme }) => theme.colors.text.themeDark};

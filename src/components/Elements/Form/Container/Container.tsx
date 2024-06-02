@@ -1,6 +1,8 @@
 import { FormHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
+import { Title } from '@/components/Elements/Headers/Title';
+
 export interface FormContainerProps extends FormHTMLAttributes<HTMLFormElement> {
   title?: string;
 }
@@ -21,11 +23,5 @@ const Container = styled.form`
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  background: #f9f9f9;
   align-items: center;
-`;
-
-const Title = styled.h1`
-  font-size: 1.5rem;
-  text-align: center;
 `;

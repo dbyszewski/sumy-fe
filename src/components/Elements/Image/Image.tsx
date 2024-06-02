@@ -10,11 +10,12 @@ import { useNotifications } from '@/hooks/useNotifications.ts';
 
 interface ImageProps {
   url: string;
-  fileID: string;
-  eventID: string;
+  fileID?: string;
+  eventID?: string;
+  onDelete?: () => void;
 }
 
-export const ImageComponent = ({ url, fileID, eventID }: ImageProps) => {
+export const ImageComponent = ({ url, fileID, eventID, onDelete }: ImageProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const notification = useNotifications();
 
@@ -35,6 +36,8 @@ export const ImageComponent = ({ url, fileID, eventID }: ImageProps) => {
 
   const handleDelete = async () => {
     try {
+      if (onDelete) onDelete();
+      if (!eventID || !fileID) return;
       await deleteEventImage.mutateAsync({ eventID, fileID });
     } catch (error) {
       console.error('Błąd podczas usuwania użytkownika:', error);
@@ -53,9 +56,11 @@ export const ImageComponent = ({ url, fileID, eventID }: ImageProps) => {
           onClick={toggleModal}>
           <StyledImage src={url} />
         </ImageOverlay>
-        <DeleteButton onClick={handleDelete}>
-          <FontAwesomeIcon icon={faTrash} />
-        </DeleteButton>
+        {onDelete || (fileID && eventID) ? (
+          <DeleteButton onClick={handleDelete}>
+            <FontAwesomeIcon icon={faTrash} />
+          </DeleteButton>
+        ) : null}
       </RelativeContainer>
       <ImagePreview src={url} open={isModalOpen} onClose={toggleModal} />
     </AnimatePresence>

@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { Card } from '@/components/Elements/Card';
 
 export const Layout = () => {
@@ -19,4 +20,5 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
 `;

@@ -49,16 +49,13 @@ export const MapPicker = ({ initialPosition }: MapPickerProps) => {
 
   return (
     <Container>
-      <Label>Wybierz lokalizację zgłoszenia z mapy lub wprowadź adres:</Label>
+      <Label>Wybierz lokalizację zgłoszenia z mapy:</Label>
       <MapContainer>
         {currentPosition && (
           <Map currentPosition={currentPosition} setCurrentPosition={setCurrentPosition} />
         )}
       </MapContainer>
       <AddressContent>{address}</AddressContent>
-      {/*<div>*/}
-      {/*  [DEBUG] Current position: {currentPosition?.lat}, {currentPosition?.lng}*/}
-      {/*</div>*/}
       <ButtonContainer>
         <Link to="/report/data">
           <Button>Wstecz</Button>
@@ -83,16 +80,21 @@ const Container = styled.div`
 const MapContainer = styled.div`
   width: 100%;
   height: 50vh;
+  border-radius: 1rem;
+  overflow: hidden;
 `;
 
 const Label = styled.div`
-  font-size: 1rem;
-  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
   width: 100%;
+  color: ${({ theme }) => theme.colors.text.themeDark};
+  font-weight: bold;
 `;
 
 const AddressContent = styled.div`
-  margin: 1rem auto 2rem;
+  margin: 0.5rem auto 2rem;
   width: 100%;
   font-weight: bold;
+  color: ${({ theme }) => theme.colors.text.themeDark};
 `;
