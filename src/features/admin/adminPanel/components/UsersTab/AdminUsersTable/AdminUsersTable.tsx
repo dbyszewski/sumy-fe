@@ -142,6 +142,10 @@ export const AdminUsersTable = () => {
       await lockUser.mutateAsync(userId);
     } catch (error) {
       console.error('Błąd podczas blokowania użytkownika:', error);
+      notifications.addNotification({
+        message: 'Błąd podczas blokowania użytkownika',
+        type: 'error',
+      });
     }
   };
   const handleUnlock = async (userId: number) => {
@@ -149,6 +153,10 @@ export const AdminUsersTable = () => {
       await unlockUser.mutateAsync(userId);
     } catch (error) {
       console.error('Błąd podczas odblokowywania użytkownika:', error);
+      notifications.addNotification({
+        message: 'Błąd podczas odblokowywania użytkownika',
+        type: 'error',
+      });
     }
   };
 
@@ -157,6 +165,10 @@ export const AdminUsersTable = () => {
       await deleteUser.mutateAsync(userId);
     } catch (error) {
       console.error('Błąd podczas usuwania użytkownika:', error);
+      notifications.addNotification({
+        message: 'Błąd podczas usuwania użytkownika',
+        type: 'error',
+      });
     }
   };
 
@@ -165,6 +177,10 @@ export const AdminUsersTable = () => {
       await grantAdmin.mutateAsync(userId);
     } catch (error) {
       console.error('Błąd podczas przyznawania uprawnień użytkownikowi:', error);
+      notifications.addNotification({
+        message: 'Błąd podczas przyznawania uprawnień użytkownikowi',
+        type: 'error',
+      });
     }
   };
 
@@ -173,6 +189,10 @@ export const AdminUsersTable = () => {
       await revokeAdmin.mutateAsync(userId);
     } catch (error) {
       console.error('Błąd podczas odbierania uprawnień użytkownikowi:', error);
+      notifications.addNotification({
+        message: 'Błąd podczas odbierania uprawnień użytkownikowi',
+        type: 'error',
+      });
     }
   };
 

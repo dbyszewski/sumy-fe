@@ -2,7 +2,6 @@ export interface Event {
   eventID: number;
   phone: string;
   title: string;
-  userID: string;
   description: string;
   eventDate: string;
   reportDate: string;
@@ -11,6 +10,10 @@ export interface Event {
   longitude: number;
   latitude: number;
   filesList: string[];
+  user: {
+    userID: number;
+    userName: string;
+  };
 }
 
 export type DownloadedImage = {

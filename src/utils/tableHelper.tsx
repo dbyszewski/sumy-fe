@@ -24,7 +24,7 @@ export const renderBoolean = (value: ReactNode) => {
 
 export const renderEllipsis = (value: string) => {
   return (
-    <Tooltip message={value}>
+    <Tooltip message={value} button={false}>
       <div style={{ maxWidth: '20rem', overflow: 'hidden', textOverflow: 'ellipsis' }}>{value}</div>
     </Tooltip>
   );

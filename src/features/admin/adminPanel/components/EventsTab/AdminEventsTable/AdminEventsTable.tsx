@@ -120,6 +120,10 @@ export const AdminEventsTable = ({ filter, maxRows }: AdminEventsTableProps) => 
       await approveEvent.mutateAsync(eventId);
     } catch (error) {
       console.error('Błąd podczas zatwierdzania zgłoszenia:', error);
+      notifications.addNotification({
+        message: 'Błąd podczas zatwierdzania zgłoszenia',
+        type: 'error',
+      });
     }
   };
 
@@ -128,6 +132,10 @@ export const AdminEventsTable = ({ filter, maxRows }: AdminEventsTableProps) => 
       await rejectEvent.mutateAsync(eventId);
     } catch (error) {
       console.error('Błąd podczas odrzucania zgłoszenia:', error);
+      notifications.addNotification({
+        message: 'Błąd podczas odrzucania zgłoszenia',
+        type: 'error',
+      });
     }
   };
   const handleDelete = async (userId: number) => {
@@ -135,6 +143,10 @@ export const AdminEventsTable = ({ filter, maxRows }: AdminEventsTableProps) => 
       await deleteEvent.mutateAsync(userId);
     } catch (error) {
       console.error('Błąd podczas usuwania zdarzenia:', error);
+      notifications.addNotification({
+        message: 'Błąd podczas usuwania zdarzenia',
+        type: 'error',
+      });
     }
   };
 
