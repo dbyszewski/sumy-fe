@@ -71,7 +71,7 @@ export const Table = <T,>({ data, columns, actions, maxRows, isLoading }: TableP
                     onClick={() => onClick(row as T)}
                     variant={colorVariant}>
                     {typeof title === 'string' ? (
-                      <Tooltip message={title}>
+                      <Tooltip button={true} message={title}>
                         <FontAwesomeIcon icon={icon} />
                       </Tooltip>
                     ) : (
