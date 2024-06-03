@@ -10,7 +10,8 @@ const sourceMap = {
 };
 
 const detailMap = {
-  string_pattern_mismatch: 'niepoprawny format',
+  string_pattern_mismatch: 'Niepoprawny format tekstu',
+  value_error: 'Niepoprawna wartość',
 };
 
 type SourceMapKeys = keyof typeof sourceMap;
@@ -86,6 +87,12 @@ apiClient.interceptors.response.use(
     }
     if (error.response.status === 403) {
       toast.error('Nie masz prawa');
+    }
+    if (error.response.status === 404) {
+      toast.error('Nie znaleziono zasobu');
+    }
+    if (error.response.status === 418) {
+      toast.error('Jesteś dzbanem i masz bana :)');
     }
     if (error.response.status === 401) {
       localStorage.removeItem('site');
