@@ -9,7 +9,7 @@ export const ReportButton = () => {
   const [isHidden, setIsHidden] = useState(false);
   const navigate = useNavigate();
   const handleClick = useCallback(() => {
-    navigate('/report');
+    navigate('/report/');
   }, [navigate]);
 
   const reportVariants = {
