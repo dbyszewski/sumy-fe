@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { Layout } from './components/Layout';
 import { FilesUpload } from './pages/FilesUpload';
@@ -13,6 +13,7 @@ export const ReportRouter = () => {
         element={<Layout />}
         children={
           <>
+            <Route index element={<Navigate to="/report/data" />} />
             <Route path="/data" element={<ReportData />} />
             <Route path="/location" element={<LocationSelect />} />
             <Route path="/files" element={<FilesUpload />} />
