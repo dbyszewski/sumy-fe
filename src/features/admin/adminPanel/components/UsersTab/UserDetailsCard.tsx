@@ -59,7 +59,9 @@ export const UserDetailsCard = () => {
         <Row>
           <ColumnLeft>Zablokowany:</ColumnLeft>
           {user.lockedAt ? (
-            <Tooltip message={formatDateTime(user.lockedAt)}>{renderLocked(user.lockedAt)}</Tooltip>
+            <Tooltip button={false} message={formatDateTime(user.lockedAt)}>
+              {renderLocked(user.lockedAt)}
+            </Tooltip>
           ) : (
             renderLocked(user.lockedAt)
           )}

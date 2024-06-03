@@ -6,15 +6,27 @@ import { useEvents } from '@/api/events/get-events.ts';
 import { Event } from '@/api/events/types.ts';
 import { Table, ActionProps, ColumnProps, TableLink } from '@/components/Elements/Table';
 import { StatusIconWithTooltip } from '@/features/admin/adminPanel/components/StatusIconWithTooltip.tsx';
+import { useNotifications } from '@/hooks/useNotifications.ts';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 import { renderEllipsis, renderVisibility } from '@/utils/tableHelper.tsx';
 
-export const UserEventsTable = () => {
+interface UserEventsTableProps {
+  filter?: {
+    userID?: number;
+  };
+  maxRows?: number;
+}
+
+export const UserEventsTable = ({ filter, maxRows }: UserEventsTableProps) => {
   const eventsQuery = useEvents();
+  const notifications = useNotifications();
   const deleteEvent = useDeleteEvent({
     mutationConfig: {
       onSuccess: () => {
-        console.log('Zgłoszenie usunięte');
+        notifications.addNotification({
+          message: 'Zgłoszenie usunięte',
+          type: 'success',
+        });
       },
     },
   });
@@ -22,7 +34,10 @@ export const UserEventsTable = () => {
   const changeVisibilityEvent = useChangeVisibilityEvent({
     mutationConfig: {
       onSuccess: () => {
-        console.log('Widoczność zgłoszenia zmieniona');
+        notifications.addNotification({
+          message: 'Widoczność zgłoszenia została zmieniona',
+          type: 'success',
+        });
       },
     },
   });
@@ -104,5 +119,20 @@ export const UserEventsTable = () => {
     }
   };
 
-  return <Table columns={columns} data={eventsQuery.data} actions={actions} maxRows={10} />;
+  const tableData = _.filter(eventsQuery.data, (event) => {
+    if (filter?.userID) {
+      return filter?.userID === event.user.userID;
+    }
+    return true;
+  });
+
+  return (
+    <Table
+      columns={columns}
+      data={tableData}
+      actions={actions}
+      maxRows={maxRows}
+      isLoading={eventsQuery.isLoading}
+    />
+  );
 };
