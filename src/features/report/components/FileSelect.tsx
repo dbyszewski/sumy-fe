@@ -53,7 +53,7 @@ export const FileSelect = ({ value, onDrop, onRemoveFile }: FileInputProps) => {
   return (
     <Container>
       <FileContainer>
-        <Dropzone onDrop={onDrop} maxSize={5000000} multiple>
+        <Dropzone onDrop={onDrop} maxSize={5000000} multiple accept={{ 'image/*': [] }}>
           {({ getRootProps, getInputProps }) => (
             <StyledDropzone {...getRootProps()}>
               <input {...getInputProps()} multiple />
