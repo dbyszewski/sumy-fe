@@ -92,6 +92,7 @@ const InfoWindowContent = styled.div`
   max-width: 500px;
   white-space: pre-wrap;
   word-wrap: break-word;
+  color: black;
   h3 {
     margin: 0;
     text-align: center;
