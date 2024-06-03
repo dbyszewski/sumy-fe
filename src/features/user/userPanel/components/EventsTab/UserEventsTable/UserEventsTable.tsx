@@ -125,10 +125,6 @@ export const UserEventsTable = ({ filter, maxRows }: UserEventsTableProps) => {
       await changeVisibilityEvent.mutateAsync(eventId);
     } catch (error) {
       console.error('Błąd podczas zmiany widoczności zgłoszenia:', error);
-      notifications.addNotification({
-        message: 'Błąd podczas zmiany widoczności zgłoszenia',
-        type: 'error',
-      });
     }
   };
   const handleEdit = async (eventId: number) => {
@@ -148,10 +144,6 @@ export const UserEventsTable = ({ filter, maxRows }: UserEventsTableProps) => {
       await deleteEvent.mutateAsync(eventId);
     } catch (error) {
       console.error('Błąd podczas usuwania zdarzenia:', error);
-      notifications.addNotification({
-        message: 'Błąd podczas usuwania zdarzenia',
-        type: 'error',
-      });
     }
   };
 
