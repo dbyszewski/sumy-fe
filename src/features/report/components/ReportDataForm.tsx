@@ -24,7 +24,13 @@ const schema = yup
         otherwise: (schema) => schema.notRequired(),
       }),
     description: yup.string().required('Opis jest wymagany'),
-    eventDate: yup.string().required('Data zdarzenia jest wymagana'),
+    eventDate: yup
+      .date()
+      .required('Data zdarzenia jest wymagana')
+      .max(
+        new Date(),
+        ({ max }) => `Data zdarzenia nie może być późniejsza niż ${max.toLocaleString()}`
+      ),
   })
   .required();
 
@@ -89,7 +95,6 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
           <DateTime
             label="Data zdarzenia"
             id="eventDate"
-            max={new Date().toISOString().split('.')[0]}
             {...field}
             error={errors.eventDate?.message}
           />
