@@ -1,8 +1,7 @@
-import { faTrash, faPenToSquare, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 import { useChangeVisibilityEvent } from '@/api/events/change-visibility-event.ts';
 import { useDeleteEvent } from '@/api/events/delete-event.ts';
-import { useEditEvent } from '@/api/events/edit-event.ts';
 import { useEvents } from '@/api/events/get-events.ts';
 import { Event } from '@/api/events/types.ts';
 import { Table, ActionProps, ColumnProps, TableLink } from '@/components/Elements/Table';
@@ -16,13 +15,6 @@ export const UserEventsTable = () => {
     mutationConfig: {
       onSuccess: () => {
         console.log('Zgłoszenie usunięte');
-      },
-    },
-  });
-  const editEvent = useEditEvent({
-    mutationConfig: {
-      onSuccess: () => {
-        console.log('Zgłoszenie zedytowane');
       },
     },
   });
@@ -94,13 +86,6 @@ export const UserEventsTable = () => {
       onClick: (item) => handleDelete(item.eventID),
       colorVariant: 'danger',
     },
-    {
-      key: 'edit',
-      title: 'Edytuj',
-      icon: faPenToSquare,
-      onClick: (item) => handleEdit(item.eventID),
-      colorVariant: 'primary',
-    },
   ];
 
   const handleVisibility = async (eventId: number) => {
@@ -108,13 +93,6 @@ export const UserEventsTable = () => {
       await changeVisibilityEvent.mutateAsync(eventId);
     } catch (error) {
       console.error('Błąd podczas zmiany widoczności zgłoszenia:', error);
-    }
-  };
-  const handleEdit = async (eventId: number) => {
-    try {
-      await editEvent.mutateAsync(eventId);
-    } catch (error) {
-      console.error('Błąd podczas edycji zgłoszenia:', error);
     }
   };
 
