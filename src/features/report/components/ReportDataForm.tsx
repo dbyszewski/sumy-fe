@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -9,21 +10,33 @@ import { DateTime } from '@/components/Elements/InputFields/DateTime';
 import { TextInput } from '@/components/Elements/InputFields/Text';
 import { TextArea } from '@/components/Elements/InputFields/TextArea';
 
+const userPhone = localStorage.getItem('phone');
+
 const schema = yup
   .object({
     title: yup.string().required('Tytuł jest wymagany'),
     phone: yup
       .string()
-      .required('Numer telefonu jest wymagany')
-      .matches(/^\+48\d{9}$/, 'Niepoprawny numer telefonu'),
+      .matches(/^\+48\d{9}$/, 'Niepoprawny numer telefonu')
+      .when([], {
+        is: () => !userPhone,
+        then: (schema) => schema.required('Numer telefonu jest wymagany'),
+        otherwise: (schema) => schema.notRequired(),
+      }),
     description: yup.string().required('Opis jest wymagany'),
-    eventDate: yup.string().required('Data zdarzenia jest wymagana'),
+    eventDate: yup
+      .date()
+      .required('Data zdarzenia jest wymagana')
+      .max(
+        new Date(),
+        ({ max }) => `Data zdarzenia nie może być późniejsza niż ${max.toLocaleString()}`
+      ),
   })
   .required();
 
 export interface IFormInput {
   title: string;
-  phone: string;
+  phone?: string;
   description: string;
   eventDate: string;
 }
@@ -33,12 +46,19 @@ type ReportDataFormProps = {
 };
 
 export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
+  const [phoneExists, setPhoneExists] = useState(false);
   const {
     handleSubmit,
     formState: { errors },
     control,
   } = useForm<IFormInput>({ resolver: yupResolver(schema), defaultValues: initialValues });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userPhone) {
+      setPhoneExists(true);
+    }
+  }, []);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     // save data in local storage
@@ -61,19 +81,20 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
         name="description"
         control={control}
       />
-      <Controller
-        render={({ field }) => (
-          <TextInput label="Numer telefonu" {...field} error={errors.phone?.message} />
-        )}
-        name="phone"
-        control={control}
-      />
+      {!phoneExists && (
+        <Controller
+          render={({ field }) => (
+            <TextInput label="Numer telefonu" {...field} error={errors.phone?.message} />
+          )}
+          name="phone"
+          control={control}
+        />
+      )}
       <Controller
         render={({ field }) => (
           <DateTime
             label="Data zdarzenia"
             id="eventDate"
-            max={new Date().toISOString().split('.')[0]}
             {...field}
             error={errors.eventDate?.message}
           />

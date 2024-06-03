@@ -49,7 +49,7 @@ export const RegisterForm = () => {
   const notifications = useNotifications();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      await apiClient.post('/users', data);
+      await apiClient.post('/users/create/', data);
       notifications.addNotification({
         type: 'success',
         message: 'Zarejestrowano pomyślnie',
