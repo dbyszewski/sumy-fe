@@ -9,7 +9,7 @@ import { MutationConfig } from '@/lib/react-query';
 export const createEvent = ({ data }: { data: CreateEventInput }): Promise<Event> => {
   const token = localStorage.getItem('site');
   return apiClient.post(
-    `/events/${token ? 'create_authenticated' : 'create_not_not_authenticated'}`,
+    `/events/${token ? 'create_authenticated' : 'create_not_authenticated'}`,
     data,
     {
       headers: {
