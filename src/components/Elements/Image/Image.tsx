@@ -81,6 +81,7 @@ const ImageOverlay = styled(motion.button)`
   height: 100%;
   padding: 0;
   border: none;
+  min-height: 4rem;
 
   &:hover {
     cursor: pointer;
