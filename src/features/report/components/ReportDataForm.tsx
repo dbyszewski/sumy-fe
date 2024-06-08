@@ -45,7 +45,7 @@ export interface IFormInput {
   title: string;
   phone?: string;
   description: string;
-  eventDate: string;
+  eventDate: Date;
 }
 
 type ReportDataFormProps = {
