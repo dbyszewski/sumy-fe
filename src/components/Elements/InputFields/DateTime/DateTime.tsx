@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react';
+import { forwardRef, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -12,15 +12,24 @@ interface DateTimeProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-export const DateTime = ({ label, error, id, value, ...rest }: DateTimeProps) => {
-  return (
-    <Container>
-      <LabelText htmlFor={id}>{label}</LabelText>
-      <StyledDatePicker {...rest} type="datetime-local" id={id} name={id} defaultValue={value} />
-      <StyledError>{error}</StyledError>
-    </Container>
-  );
-};
+export const DateTime = forwardRef<HTMLInputElement, DateTimeProps>(
+  ({ label, error, id, value, ...rest }, ref) => {
+    return (
+      <Container>
+        <LabelText htmlFor={id}>{label}</LabelText>
+        <StyledDatePicker
+          ref={ref}
+          {...rest}
+          type="datetime-local"
+          id={id}
+          name={id}
+          defaultValue={value}
+        />
+        <StyledError>{error}</StyledError>
+      </Container>
+    );
+  }
+);
 
 const StyledDatePicker = styled.input`
   width: 100%;
@@ -28,19 +37,19 @@ const StyledDatePicker = styled.input`
   border: none;
   border-bottom: 2px solid ${({ theme }) => theme.colors.elements.light};
   border-radius: 0;
-    padding: 0.5rem 0.75rem;
-    font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
 
   &:focus,
   &:hover {
     border-color: ${({ theme }) => theme.colors.elements.dark}};
-    outline: none;
-  }
-  &:invalid {
-    border-color: ${({ theme }) => theme.colors.buttons.danger};
-  }
+  outline: none;
+}
+&:invalid {
+  border-color: ${({ theme }) => theme.colors.buttons.danger};
+}
 
-  &::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-  }
+&::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
 `;

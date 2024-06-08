@@ -2,16 +2,21 @@ import { IFormInput, ReportDataForm } from '@/features/report/components/ReportD
 
 export const ReportData = () => {
   const localData = localStorage.getItem('reportData');
+  const userPhone = localStorage.getItem('phone');
 
   const defaultValues = {
     description: '',
     title: '',
-    phone: '',
-    eventDate: new Date().toISOString().split('.')[0],
+    phone: userPhone || '', // Zawsze pobieraj numer telefonu z localStorage, jeśli jest dostępny
+    eventDate: new Date(),
   };
 
-  if (!localData) {
-    return <ReportDataForm initialValues={defaultValues} />;
+  const initialValues = localData ? (JSON.parse(localData) as IFormInput) : defaultValues;
+
+  // Nadpisanie phone, jeśli jest dostępny w localStorage
+  if (userPhone) {
+    initialValues.phone = userPhone;
   }
-  return <ReportDataForm initialValues={JSON.parse(localData) as IFormInput} />;
+
+  return <ReportDataForm initialValues={initialValues} />;
 };

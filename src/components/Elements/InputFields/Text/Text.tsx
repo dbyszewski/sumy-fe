@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
@@ -13,31 +13,34 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   error?: string;
 }
 
-export const TextInput = ({ label, error, ...rest }: InputProps) => {
-  const [value, setValue] = useState('+48');
+export const TextInput = forwardRef<HTMLInputElement, InputProps>(
+  ({ label, error, ...rest }, ref) => {
+    const [value, setValue] = useState('+48');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    if (inputValue.startsWith('+48')) {
-      setValue(inputValue);
-    } else {
-      setValue('+48' + inputValue.replace(/^\+48/, ''));
-    }
-  };
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const inputValue = e.target.value;
+      if (inputValue.startsWith('+48')) {
+        setValue(inputValue);
+      } else {
+        setValue('+48' + inputValue.replace(/^\+48/, ''));
+      }
+    };
 
-  return (
-    <Container>
-      <LabelText>{label}</LabelText>
-      <StyledInput
-        aria-invalid={error ? 'true' : 'false'}
-        value={value}
-        onChange={handleChange}
-        {...rest}
-      />
-      <StyledError>{error}</StyledError>
-    </Container>
-  );
-};
+    return (
+      <Container>
+        <LabelText>{label}</LabelText>
+        <StyledInput
+          aria-invalid={error ? 'true' : 'false'}
+          value={value}
+          onChange={handleChange}
+          ref={ref}
+          {...rest}
+        />
+        <StyledError>{error}</StyledError>
+      </Container>
+    );
+  }
+);
 
 const StyledInput = styled.input`
   width: 100%;

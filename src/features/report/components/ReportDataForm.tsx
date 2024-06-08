@@ -73,7 +73,6 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
   }, []);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    // save data in local storage
     const jsonData = JSON.stringify(data);
     localStorage.setItem('reportData', jsonData);
     navigate('/report/location');
@@ -106,17 +105,18 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
         render={({ field }) => (
           <DateTime
             {...field}
-            label="Data zgłoszenia"
+            label="Data zdarzenia"
             id="eventDate"
             value={currentDateTime}
             type="datetime-local"
             error={errors.eventDate?.message}
+            onChange={(e) => field.onChange(new Date(e.target.value))}
           />
         )}
         name="eventDate"
         control={control}
       />
-      <Button>Dalej</Button>
+      <Button type="submit">Dalej</Button>
     </FormContainer>
   );
 };
