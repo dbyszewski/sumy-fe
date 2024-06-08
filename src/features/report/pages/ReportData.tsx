@@ -7,13 +7,12 @@ export const ReportData = () => {
   const defaultValues = {
     description: '',
     title: '',
-    phone: userPhone || '', // Zawsze pobieraj numer telefonu z localStorage, jeśli jest dostępny
+    phone: userPhone || '',
     eventDate: new Date(),
   };
 
   const initialValues = localData ? (JSON.parse(localData) as IFormInput) : defaultValues;
 
-  // Nadpisanie phone, jeśli jest dostępny w localStorage
   if (userPhone) {
     initialValues.phone = userPhone;
   }

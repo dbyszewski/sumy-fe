@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
@@ -7,7 +7,6 @@ import {
   LabelText,
   StyledError,
 } from '@/components/Elements/InputFields/StyledElements.tsx';
-
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label: string;
   error?: string;
@@ -15,27 +14,10 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
 
 export const TextInput = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, ...rest }, ref) => {
-    const [value, setValue] = useState('+48');
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const inputValue = e.target.value;
-      if (inputValue.startsWith('+48')) {
-        setValue(inputValue);
-      } else {
-        setValue('+48' + inputValue.replace(/^\+48/, ''));
-      }
-    };
-
     return (
       <Container>
         <LabelText>{label}</LabelText>
-        <StyledInput
-          aria-invalid={error ? 'true' : 'false'}
-          value={value}
-          onChange={handleChange}
-          ref={ref}
-          {...rest}
-        />
+        <StyledInput aria-invalid={error ? 'true' : 'false'} {...rest} ref={ref} maxLength={300} />
         <StyledError>{error}</StyledError>
       </Container>
     );
