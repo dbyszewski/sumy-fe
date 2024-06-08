@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
@@ -13,10 +14,26 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
 }
 
 export const TextInput = ({ label, error, ...rest }: InputProps) => {
+  const [value, setValue] = useState('+48');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    if (inputValue.startsWith('+48')) {
+      setValue(inputValue);
+    } else {
+      setValue('+48' + inputValue.replace(/^\+48/, ''));
+    }
+  };
+
   return (
     <Container>
       <LabelText>{label}</LabelText>
-      <StyledInput aria-invalid={error ? 'true' : 'false'} {...rest} />
+      <StyledInput
+        aria-invalid={error ? 'true' : 'false'}
+        value={value}
+        onChange={handleChange}
+        {...rest}
+      />
       <StyledError>{error}</StyledError>
     </Container>
   );

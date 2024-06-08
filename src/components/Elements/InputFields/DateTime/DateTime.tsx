@@ -12,11 +12,11 @@ interface DateTimeProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-export const DateTime = ({ label, error, id, ...rest }: DateTimeProps) => {
+export const DateTime = ({ label, error, id, value, ...rest }: DateTimeProps) => {
   return (
     <Container>
       <LabelText htmlFor={id}>{label}</LabelText>
-      <StyledDatePicker {...rest} type="datetime-local" id={id} name={id} />
+      <StyledDatePicker {...rest} type="datetime-local" id={id} name={id} defaultValue={value} />
       <StyledError>{error}</StyledError>
     </Container>
   );
