@@ -108,9 +108,7 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
             label="Data zdarzenia"
             id="eventDate"
             value={currentDateTime}
-            type="datetime-local"
             error={errors.eventDate?.message}
-            onChange={(e) => field.onChange(new Date(e.target.value))}
           />
         )}
         name="eventDate"
