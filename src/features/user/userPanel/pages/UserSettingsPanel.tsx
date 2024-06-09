@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { Title } from '@/components/Elements/Headers/Title';
+import { UserInfo } from '@/features/user/userPanel/components/UserInfo.tsx';
 import { useSettings } from '@/hooks/useSettings.ts';
 
 export const UserSettingsPanel = () => {
@@ -38,6 +39,12 @@ export const UserSettingsPanel = () => {
           </CheckboxContainer>
         </Section>
       </RoundedContainer>
+      <Title>Moje Dane</Title>
+      <RoundedContainer>
+        <Section>
+          <UserInfo />
+        </Section>
+      </RoundedContainer>
     </Container>
   );
 };
@@ -46,7 +53,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  height: 100%;
+  height: auto;
 `;
 
 const RoundedContainer = styled.div`
@@ -55,6 +62,7 @@ const RoundedContainer = styled.div`
   padding: 2rem;
   background: ${({ theme }) => theme.colors.elements.brightLight};
   overflow: hidden;
+  flex-grow: 1;
 `;
 
 const Section = styled.div`
