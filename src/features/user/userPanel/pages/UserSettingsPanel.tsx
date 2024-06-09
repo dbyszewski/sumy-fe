@@ -5,7 +5,7 @@ import { UserInfo } from '@/features/user/userPanel/components/UserInfo.tsx';
 import { useSettings } from '@/hooks/useSettings.ts';
 
 export const UserSettingsPanel = () => {
-  const { theme, visibility, changeTheme, changeVisibility } = useSettings();
+  const { theme, changeTheme } = useSettings();
 
   return (
     <Container>
@@ -25,18 +25,6 @@ export const UserSettingsPanel = () => {
             </Switch>
             <SwitchLabel>{theme === 'light' ? 'Jasny' : 'Ciemny'}</SwitchLabel>
           </SwitchContainer>
-        </Section>
-        <Section>
-          <Label>Domyślna widoczność zgłoszeń:</Label>
-          <CheckboxContainer>
-            <StyledCheckbox
-              type="checkbox"
-              id="visibility"
-              checked={visibility}
-              onChange={() => changeVisibility(!visibility)}
-            />
-            <CheckboxLabel htmlFor="visibility">Włącz</CheckboxLabel>
-          </CheckboxContainer>
         </Section>
       </RoundedContainer>
       <Title>Moje Dane</Title>
@@ -66,7 +54,7 @@ const RoundedContainer = styled.div`
 `;
 
 const Section = styled.div`
-  margin-bottom: 1.5rem;
+  margin: 1rem 0;
 `;
 
 const Label = styled.label`
@@ -129,21 +117,4 @@ const Slider = styled.label`
 const SwitchLabel = styled.span`
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.text.dark};
-`;
-
-const CheckboxContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledCheckbox = styled.input`
-  accent-color: ${({ theme }) => theme.colors.navigation.darkRed};
-  width: 24px;
-  height: 24px;
-`;
-
-const CheckboxLabel = styled.label`
-  cursor: pointer;
-  font-size: 1rem;
-  margin-left: 0.5rem;
 `;
