@@ -5,23 +5,24 @@ import { User } from './types';
 import { apiClient } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
 
-export const getUsers = (): Promise<User[]> => {
-  return apiClient.get(`/users`);
+export const getMe = (): Promise<User> => {
+  return apiClient.get(`/token/me`);
 };
 
-export const getUsersQueryOptions = () => {
+export const getMeQueryOptions = () => {
   return queryOptions({
-    queryKey: ['users'],
-    queryFn: getUsers,
+    queryKey: ['user'],
+    queryFn: getMe,
   });
 };
-type UseUsersOptions = {
-  queryConfig?: QueryConfig<typeof getUsersQueryOptions>;
+
+type UseUserOptions = {
+  queryConfig?: QueryConfig<typeof getMeQueryOptions>;
 };
 
-export const useUsers = ({ queryConfig }: UseUsersOptions = {}) => {
+export const useMe = ({ queryConfig }: UseUserOptions = {}) => {
   return useQuery({
-    ...getUsersQueryOptions(),
+    ...getMeQueryOptions(),
     ...queryConfig,
   });
 };

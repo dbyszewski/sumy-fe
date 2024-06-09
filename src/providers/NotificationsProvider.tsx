@@ -32,7 +32,10 @@ const NotificationsProvider = ({ children }: NotificationsProviderProps) => {
           duration: 3000,
           style: {
             padding: '0',
-            minWidth: '30rem',
+            minWidth: '20rem',
+            width: '30rem',
+            maxWidth: '90vw',
+            margin: 'auto',
           },
         }}>
         {(t) => (

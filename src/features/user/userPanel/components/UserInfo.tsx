@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 
-import { useUser } from '@/api/users/get-user.ts';
+import { useMe } from '@/api/users/token-me.ts';
 import { LoadingSpinner } from '@/components/Elements/LoadingSpinner';
 import { Tooltip } from '@/components/Elements/Tooltip.tsx';
 import { formatDateTime } from '@/utils/dateHelper.ts';
 import { renderAdmin, renderBoolean, renderLocked } from '@/utils/tableHelper';
 
 export const UserInfo = () => {
-  const userId = localStorage.getItem('userID');
-  const userQuery = useUser({ userID: userId });
+  const userQuery = useMe();
 
   if (userQuery.isLoading) {
     return <LoadingSpinner />;
@@ -60,12 +59,10 @@ export const UserInfo = () => {
 const RowsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1rem;
 `;
 
 const Row = styled.div`
   display: flex;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.elements.light};
   gap: 0.5rem;
   word-break: break-word;
   height: auto;
@@ -74,9 +71,10 @@ const Row = styled.div`
 
 const ColumnLeft = styled.div`
   font-weight: bold;
-  flex: 0 0 150px;
-  text-align: end;
+  flex: 0 0 170px;
+  text-align: left;
   padding-right: 0.5rem;
+  width: auto;
 `;
 
 const ColumnRight = styled.div`
