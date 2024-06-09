@@ -24,6 +24,8 @@ export const DateTime = forwardRef<HTMLInputElement, DateTimeProps>(
           id={id}
           name={id}
           defaultValue={value}
+          min="2024-01-01T00:00"
+          max={value}
         />
         <StyledError>{error}</StyledError>
       </Container>
