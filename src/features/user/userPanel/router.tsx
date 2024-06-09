@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { AppLayout } from '@/components/Layout/AppLayout';
-
 import { EventDetailsCard } from '@/features/admin/adminPanel/components/EventsTab/EventDetailsCard.tsx';
 import { EventsMapPanel } from '@/features/user/userPanel/pages/EventsMapPanel.tsx';
 import { UserEventsPanel } from '@/features/user/userPanel/pages/UserEventsPanel.tsx';
@@ -20,7 +19,7 @@ export const UserRouter = () => {
             <Route path="/events/:eventId" element={<EventDetailsCard />} />
             <Route path="/map" element={<EventsMapPanel />} />
             <Route path="/settings" element={<UserSettingsPanel />} />
-            <Route path="*" element={<h1>404</h1>} />
+            <Route path="*" element={<Navigate to="/" />} />
           </>
         }
       />
