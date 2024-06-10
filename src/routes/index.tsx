@@ -15,7 +15,7 @@ export const AppRoutes = () => {
   const commonRoutes = [
     { path: '/', element: <LandingPage /> },
     { path: '/report/*', element: <ReportRouter /> },
-    { path: '/verify_email*', element: <VerifyEmail /> },
+    { path: '/verify_email', element: <VerifyEmail /> },
     { path: '/*', element: <Navigate to="/" /> },
   ];
   const fullRoutes = [...adminRoutes, ...userRoutes];

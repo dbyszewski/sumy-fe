@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useNotifications } from '@/hooks/useNotifications.ts';
 import { apiClient } from '@/lib/api-client.ts';
 
-export const VerifyEmail: React.FC = () => {
+export const VerifyEmail = () => {
   const location = useLocation();
   const notifications = useNotifications();
   const navigate = useNavigate();
@@ -16,20 +16,26 @@ export const VerifyEmail: React.FC = () => {
     if (token) {
       const verifyEmail = async () => {
         try {
-          await apiClient.patch('/users/verify_email', { token });
-          navigate('/auth/login');
+          const url = `/users/verify_email?verify_token=${token}`;
+          await apiClient.patch(url);
+          navigate('/');
           notifications.addNotification({
-            message: 'Email został potwierdzony',
+            message: 'Email został zweryfikowany',
             type: 'success',
           });
         } catch (error) {
-          console.error('Error verifying email:', error);
+          navigate('/');
+          notifications.addNotification({
+            message: 'Wystąpił błąd, spróbuj wysłać nowy email weryfikacyjny',
+            type: 'error',
+          });
+          console.error('Błąd podczas weryfikacji maila', error);
         }
       };
 
       verifyEmail();
     }
-  }, [location, notifications, navigate]);
+  }, [location.search, navigate, notifications]);
 
   return (
     <div>
