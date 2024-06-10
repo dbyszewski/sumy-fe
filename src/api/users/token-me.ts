@@ -11,7 +11,7 @@ export const getMe = (): Promise<User> => {
 
 export const getMeQueryOptions = () => {
   return queryOptions({
-    queryKey: ['user'],
+    queryKey: ['me'],
     queryFn: getMe,
   });
 };
