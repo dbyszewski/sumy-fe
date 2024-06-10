@@ -88,9 +88,6 @@ apiClient.interceptors.response.use(
     if (error.response.status === 403) {
       toast.error('Nie masz prawa');
     }
-    if (error.response.status === 404) {
-      toast.error('Nie znaleziono zasobu');
-    }
     if (error.response.status === 418) {
       toast.error('Jesteś dzbanem i masz bana :)');
     }

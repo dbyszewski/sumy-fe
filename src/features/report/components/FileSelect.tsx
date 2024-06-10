@@ -9,6 +9,7 @@ import { useCreateEvent } from '@/api/events/create-event.ts';
 import { Button } from '@/components/Elements/Button';
 import { ImageComponent } from '@/components/Elements/Image/Image.tsx';
 import ButtonContainer from '@/components/Elements/LandingPage/ButtonContainer/ButtonContainer.tsx';
+import { useNotifications } from '@/hooks/useNotifications.ts';
 
 interface FileInputProps {
   onDrop: (files: File[]) => void;
@@ -20,12 +21,17 @@ interface FileInputProps {
 
 export const FileSelect = ({ value, onDrop, onRemoveFile }: FileInputProps) => {
   const navigate = useNavigate();
+  const notifications = useNotifications();
   const createEventMutation = useCreateEvent({
     mutationConfig: {
       onSuccess: () => {
         localStorage.removeItem('reportData');
         localStorage.removeItem('reportLocation');
         navigate('/');
+        notifications.addNotification({
+          message: 'Dziękujemy za zgłoszenie',
+          type: 'success',
+        });
       },
     },
   });

@@ -67,39 +67,26 @@ export const RegisterForm = () => {
     <FormContainer title="Rejestracja" onSubmit={handleSubmit(onSubmit)}>
       <Controller
         render={({ field }) => (
-          <TextInput
-            label="Nazwa Użytkownika"
-            size="md"
-            {...field}
-            error={errors.userName?.message}
-          />
+          <TextInput label="Nazwa Użytkownika" {...field} error={errors.userName?.message} />
         )}
         name="userName"
         control={control}
       />
       <Controller
-        render={({ field }) => (
-          <TextInput label="Email" size="md" {...field} error={errors.email?.message} />
-        )}
+        render={({ field }) => <TextInput label="Email" {...field} error={errors.email?.message} />}
         name="email"
         control={control}
       />
       <Controller
         render={({ field }) => (
-          <TextInput label="Numer telefonu" size="md" {...field} error={errors.phone?.message} />
+          <TextInput label="Numer telefonu" {...field} error={errors.phone?.message} />
         )}
         name="phone"
         control={control}
       />
       <Controller
         render={({ field }) => (
-          <TextInput
-            label="Hasło"
-            size="md"
-            type="password"
-            {...field}
-            error={errors.password?.message}
-          />
+          <TextInput label="Hasło" type="password" {...field} error={errors.password?.message} />
         )}
         name="password"
         control={control}
@@ -108,7 +95,6 @@ export const RegisterForm = () => {
         render={({ field }) => (
           <TextInput
             label="Potwierdź hasło"
-            size="md"
             type="password"
             {...field}
             error={errors.confirmPassword?.message}
