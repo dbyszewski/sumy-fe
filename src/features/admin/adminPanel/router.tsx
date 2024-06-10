@@ -20,7 +20,7 @@ export const AdminRouter = () => {
             <Route path="/users" element={<AdminUsersPanel />} />
             <Route path="/users/:userId" element={<UserDetailsCard />} />
             <Route path="/map" element={<EventsMapPanel />} />
-            <Route path="*" element={<h1>404</h1>} />
+            <Route path="*" element={<Navigate to="/" />} />
           </>
         }
       />

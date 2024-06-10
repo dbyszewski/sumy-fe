@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 import { Title } from '@/components/Elements/Headers/Title';
+import { UserInfo } from '@/features/user/userPanel/components/UserInfo.tsx';
 import { useSettings } from '@/hooks/useSettings.ts';
 
 export const UserSettingsPanel = () => {
-  const { theme, visibility, changeTheme, changeVisibility } = useSettings();
+  const { theme, changeTheme } = useSettings();
 
   return (
     <Container>
@@ -25,17 +26,11 @@ export const UserSettingsPanel = () => {
             <SwitchLabel>{theme === 'light' ? 'Jasny' : 'Ciemny'}</SwitchLabel>
           </SwitchContainer>
         </Section>
+      </RoundedContainer>
+      <Title>Moje Dane</Title>
+      <RoundedContainer>
         <Section>
-          <Label>Domyślna widoczność zgłoszeń:</Label>
-          <CheckboxContainer>
-            <StyledCheckbox
-              type="checkbox"
-              id="visibility"
-              checked={visibility}
-              onChange={() => changeVisibility(!visibility)}
-            />
-            <CheckboxLabel htmlFor="visibility">Włącz</CheckboxLabel>
-          </CheckboxContainer>
+          <UserInfo />
         </Section>
       </RoundedContainer>
     </Container>
@@ -46,7 +41,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  height: 100%;
+  height: auto;
 `;
 
 const RoundedContainer = styled.div`
@@ -55,10 +50,11 @@ const RoundedContainer = styled.div`
   padding: 2rem;
   background: ${({ theme }) => theme.colors.elements.brightLight};
   overflow: hidden;
+  flex-grow: 1;
 `;
 
 const Section = styled.div`
-  margin-bottom: 1.5rem;
+  margin: 1rem 0;
 `;
 
 const Label = styled.label`
@@ -121,21 +117,4 @@ const Slider = styled.label`
 const SwitchLabel = styled.span`
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.text.dark};
-`;
-
-const CheckboxContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledCheckbox = styled.input`
-  accent-color: ${({ theme }) => theme.colors.navigation.darkRed};
-  width: 24px;
-  height: 24px;
-`;
-
-const CheckboxLabel = styled.label`
-  cursor: pointer;
-  font-size: 1rem;
-  margin-left: 0.5rem;
 `;

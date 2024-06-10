@@ -12,7 +12,7 @@ import { apiClient } from '@/lib/api-client.ts';
 
 interface IFormInput {
   email: string;
-  userName?: string;
+  userName: string;
   phone: string;
   password: string;
   confirmPassword: string;
@@ -20,7 +20,7 @@ interface IFormInput {
 
 const schema = yup
   .object({
-    userName: yup.string().optional(),
+    userName: yup.string().required('Nazwa użytkownika jest wymagana'),
     email: yup.string().email('Musi być poprawnym emailem').required('Email jest wymagany'),
     phone: yup
       .string()
@@ -28,8 +28,12 @@ const schema = yup
       .matches(/^\+48\d{9}$/, 'Niepoprawny numer telefonu'),
     password: yup
       .string()
-      .min(6, 'Hasło musi mieć co najmniej 6 znaków')
-      .max(20, 'Hasło może mieć maksymalnie 20 znaków')
+      .min(8, 'Hasło musi mieć minimum 8 znaków')
+      .matches(/[a-z]/, 'Hasło musi zawierać minimum 1 mała literę')
+      .matches(/[A-Z]/, 'Hasło musi zawierać minimum 1 wielką literę')
+      .matches(/\d/, 'Hasło musi zawierać minimum 1 cyfrę')
+      .matches(/[#!?@$%^&*-]/, 'Hasło musi zawierać minimum 1 znak specjalny')
+      .matches(/^\S*$/, 'Hasło nie może zawierać spacji')
       .required('Hasło jest wymagane'),
     confirmPassword: yup
       .string()
@@ -67,39 +71,26 @@ export const RegisterForm = () => {
     <FormContainer title="Rejestracja" onSubmit={handleSubmit(onSubmit)}>
       <Controller
         render={({ field }) => (
-          <TextInput
-            label="Nazwa Użytkownika"
-            size="md"
-            {...field}
-            error={errors.userName?.message}
-          />
+          <TextInput label="Nazwa Użytkownika" {...field} error={errors.userName?.message} />
         )}
         name="userName"
         control={control}
       />
       <Controller
-        render={({ field }) => (
-          <TextInput label="Email" size="md" {...field} error={errors.email?.message} />
-        )}
+        render={({ field }) => <TextInput label="Email" {...field} error={errors.email?.message} />}
         name="email"
         control={control}
       />
       <Controller
         render={({ field }) => (
-          <TextInput label="Numer telefonu" size="md" {...field} error={errors.phone?.message} />
+          <TextInput label="Numer telefonu" {...field} error={errors.phone?.message} />
         )}
         name="phone"
         control={control}
       />
       <Controller
         render={({ field }) => (
-          <TextInput
-            label="Hasło"
-            size="md"
-            type="password"
-            {...field}
-            error={errors.password?.message}
-          />
+          <TextInput label="Hasło" type="password" {...field} error={errors.password?.message} />
         )}
         name="password"
         control={control}
@@ -108,7 +99,6 @@ export const RegisterForm = () => {
         render={({ field }) => (
           <TextInput
             label="Potwierdź hasło"
-            size="md"
             type="password"
             {...field}
             error={errors.confirmPassword?.message}
