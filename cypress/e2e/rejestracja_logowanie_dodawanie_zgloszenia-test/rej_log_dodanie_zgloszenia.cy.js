@@ -7,7 +7,7 @@ describe('Rejestracja, logowanie, dodanie zdarzenia', () => {
     const userName = faker.random.alphaNumeric(10);
     const email = faker.internet.email();
     const phone = `+48${faker.phone.number('#########')}`;
-    const password = faker.internet.password(12);
+    const password = '@Mgh0e2kL$';
 
     cy.visit('/');
 
