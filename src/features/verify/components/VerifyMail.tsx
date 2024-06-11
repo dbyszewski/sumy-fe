@@ -25,10 +25,6 @@ export const VerifyEmail = () => {
           });
         } catch (error) {
           navigate('/');
-          notifications.addNotification({
-            message: 'Wystąpił błąd, spróbuj wysłać nowy email weryfikacyjny',
-            type: 'error',
-          });
           console.error('Błąd podczas weryfikacji maila', error);
         }
       };
