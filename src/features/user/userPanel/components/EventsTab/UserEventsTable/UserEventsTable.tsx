@@ -1,4 +1,5 @@
 import { faTrash, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import _ from 'lodash';
 
 import { useChangeVisibilityEvent } from '@/api/events/change-visibility-event.ts';
 import { useDeleteEvent } from '@/api/events/delete-event.ts';
