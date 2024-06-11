@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react';
+import { forwardRef, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -12,15 +12,17 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLTextAreaElement
   error?: string;
 }
 
-export const TextArea = ({ label, error, ...rest }: InputProps) => {
-  return (
-    <Container>
-      <LabelText>{label}</LabelText>
-      <StyledInput aria-invalid={error ? 'true' : 'false'} maxLength={300} {...rest} />
-      <StyledError>{error}</StyledError>
-    </Container>
-  );
-};
+export const TextArea = forwardRef<HTMLTextAreaElement, InputProps>(
+  ({ label, error, ...rest }, ref) => {
+    return (
+      <Container>
+        <LabelText>{label}</LabelText>
+        <StyledInput aria-invalid={error ? 'true' : 'false'} maxLength={300} ref={ref} {...rest} />
+        <StyledError>{error}</StyledError>
+      </Container>
+    );
+  }
+);
 
 const StyledInput = styled.textarea`
   width: 100%;

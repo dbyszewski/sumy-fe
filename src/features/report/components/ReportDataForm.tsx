@@ -10,7 +10,14 @@ import { DateTime } from '@/components/Elements/InputFields/DateTime';
 import { TextInput } from '@/components/Elements/InputFields/Text';
 import { TextArea } from '@/components/Elements/InputFields/TextArea';
 
-const userPhone = localStorage.getItem('phone');
+const getFormattedDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
 
 const schema = yup
   .object({
@@ -19,7 +26,7 @@ const schema = yup
       .string()
       .matches(/^\+48\d{9}$/, 'Niepoprawny numer telefonu')
       .when([], {
-        is: () => !userPhone,
+        is: () => !localStorage.getItem('phone'),
         then: (schema) => schema.required('Numer telefonu jest wymagany'),
         otherwise: (schema) => schema.notRequired(),
       }),
@@ -38,7 +45,7 @@ export interface IFormInput {
   title: string;
   phone?: string;
   description: string;
-  eventDate: string;
+  eventDate: Date;
 }
 
 type ReportDataFormProps = {
@@ -46,6 +53,7 @@ type ReportDataFormProps = {
 };
 
 export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
+  const [currentDateTime, setCurrentDateTime] = useState('');
   const [phoneExists, setPhoneExists] = useState(false);
   const {
     handleSubmit,
@@ -55,13 +63,16 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userPhone) {
-      setPhoneExists(true);
-    }
+    const now = new Date();
+    setCurrentDateTime(getFormattedDate(now));
+  }, []);
+
+  useEffect(() => {
+    const userPhone = localStorage.getItem('phone');
+    setPhoneExists(!!userPhone);
   }, []);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    // save data in local storage
     const jsonData = JSON.stringify(data);
     localStorage.setItem('reportData', jsonData);
     navigate('/report/location');
@@ -93,16 +104,17 @@ export const ReportDataForm = ({ initialValues }: ReportDataFormProps) => {
       <Controller
         render={({ field }) => (
           <DateTime
+            {...field}
             label="Data zdarzenia"
             id="eventDate"
-            {...field}
+            value={currentDateTime}
             error={errors.eventDate?.message}
           />
         )}
         name="eventDate"
         control={control}
       />
-      <Button>Dalej</Button>
+      <Button type="submit">Dalej</Button>
     </FormContainer>
   );
 };
