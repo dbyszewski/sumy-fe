@@ -2,6 +2,7 @@ import { createContext, ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useNotifications } from '@/hooks/useNotifications.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
 import { apiClient } from '@/lib/api-client.ts';
 export const AuthContext = createContext<AuthContextProps>({
   token: '',
@@ -31,6 +32,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [userID, setUserID] = useState(localStorage.getItem('userID') || '0');
   const [phone, setPhone] = useState(localStorage.getItem('phone') || '0');
 
+  const settings = useSettings();
   const navigate = useNavigate();
   const notifications = useNotifications();
 
@@ -38,7 +40,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const response = await apiClient.post<
         never,
-        { access_token: string; token_type: string; user: { isAdmin: boolean; userID: number; phone: string} }
+        {
+          access_token: string;
+          token_type: string;
+          user: { isAdmin: boolean; userID: number; phone: string };
+        }
       >('/token/login', data, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -71,6 +77,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem('admin');
     localStorage.removeItem('userID');
     localStorage.removeItem('phone');
+    settings.changeTheme('light');
     notifications.addNotification({
       type: 'success',
       message: 'Wylogowano pomyślnie',
