@@ -18,6 +18,11 @@ const getFormattedDate = (date: Date) => {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
+const roundToMinute = (date: Date) => {
+  const newDate = new Date(date);
+  newDate.setSeconds(0, 0);
+  return newDate;
+};
 
 const schema = yup
   .object({
@@ -35,7 +40,7 @@ const schema = yup
       .date()
       .required('Data zdarzenia jest wymagana')
       .max(
-        new Date(),
+        roundToMinute(new Date()),
         ({ max }) => `Data zdarzenia nie może być późniejsza niż ${max.toLocaleString()}`
       ),
   })
